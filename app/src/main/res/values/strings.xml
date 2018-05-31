@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">LoKO HaCk</string>
+    <string name="accessibility_desc">Our aim privacy first ,All usage of accessibility service privileges is exclusively for the purpose of getting Question and Options from screen when these are appear to users.\n\nThis APP does not store or send any thing .\n\n
+    </string>
+    <string name="desc">This app is developed by Shubham Tyagi.\nOnly works with Loco Version 2.1.9 or prior version so install any one of them,\n because after this version Loco app developer disabled accessibility\nWhen you see question on your screen press Get Answer button</string>
+
+</resources>
