@@ -6,4 +6,6 @@
 
 - https://youtu.be/H0LvFNW_svA
 
-# some error on certain phone but on Redmi 4 it is running
+# Install apk file
+  
+- https://github.com/SubhamTyagi/loco-answers/releases/tag/v1.4
