@@ -1,11 +1,11 @@
-## Install loco versions 2.1.9 or prior version 
-- only work on these version
+
+## only for educational purposes
 
 
 # See video 
-
+- Video is based on demo game provided by loco[©®™]
 - https://youtu.be/H0LvFNW_svA
 
 # Install apk file
   
-- https://github.com/SubhamTyagi/loco-answers/releases/tag/v1.4
+- https://github.com/SubhamTyagi/loco-answers/releases
