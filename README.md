@@ -9,3 +9,5 @@
 # Install apk file
   
 - https://github.com/SubhamTyagi/loco-answers/releases
+
+##  Due to some other work i will not add the new features to this app, anybody who is interested in full source code for this app can contact me in issues
