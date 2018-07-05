@@ -1,4 +1,4 @@
-# Welcome to Loko hack  <a target="_blank" href="paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+# Welcome to Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 * A free,open source, ad free trivia helper app that respect user sentiments
 ## Why Loko Hack
@@ -8,7 +8,7 @@
 * Ad Free 👍 
 * Most supported Trivia Games 👍 
 * Open Source :)
-## Download <a target="_blank" href="paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 
 * ### [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers)
