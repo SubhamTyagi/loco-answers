@@ -32,4 +32,4 @@
 
 * *Available in beta app only
 ***
-> Due to some short of time i will not update the app if someone is interested in full source code of APP can contact me in issue section 
+> Due to some short of time i will not update the app if someone is interested in full source code of APP can fill this form https://goo.gl/forms/1tSIAfNX9F2uAzgh2
