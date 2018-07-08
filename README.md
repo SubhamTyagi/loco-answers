@@ -30,7 +30,7 @@
 13. Total Trivia*
 14. Hang Time*
 
-* * Not available for public
+* \* Not available for public
 ***
 ### >P.S. I does not guarantee that app will get updated i am neither liable nor responsible for apps update.
 this is totally depends upon me wether i update this app or not.
