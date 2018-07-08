@@ -32,6 +32,6 @@
 
 * * Not available for public
 ***
-###>P.S. I does not guarantee that app will get updated i am neither liable nor responsible for apps update.
+### >P.S. I does not guarantee that app will get updated i am neither liable nor responsible for apps update.
 this is totally depends upon me wether i update this app or not.
 >if someone is interested in full source code of APP can fill this form https://goo.gl/forms/1tSIAfNX9F2uAzgh2
