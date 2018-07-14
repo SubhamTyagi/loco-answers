@@ -50,4 +50,5 @@ abstract class Base extends Which {
     public boolean isError() {
         return error;
     }
+    //SOME CODE HERE
 }
