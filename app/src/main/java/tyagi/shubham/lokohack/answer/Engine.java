@@ -25,6 +25,19 @@ public class Engine extends Base {
 
     public Engine(Question questionObj) {
         super(questionObj);
+        startGoogle()
+        startArtificialEngine();
+        startShophiaEngine();
+        startWikiPediaInBackground();
+        startBingInBackGround();
+        startPeerForExtraOrdanaryAnswer();
+        //TODO: Impliment code for unit testing
+        //startCustomBlockChainForAnswer();  
+        getAnswerFromMicrosoftCortana();
+        getAnswerFromGoogleAssistant();
+        getAnserFromAmazonAlexa();
+        //TODO: Impliment code for unit testing
+        //getAnswerFromBlockChainClinet()
     }
     //OTHERS CODE ARE HERE FILL FORM
     }
