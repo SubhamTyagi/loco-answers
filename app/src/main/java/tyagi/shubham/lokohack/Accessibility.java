@@ -63,25 +63,6 @@ public class AccessibilityDispatcher extends AccessibilityService {
 
 
 
-    private void printChild(AccessibilityNodeInfo source) {
-        if (source==null) return;
-
-        int count = source.getChildCount();
-        int p = source.getParent().getChildCount();
-
-
-        Log.i(TAG, "printChild: child count::::<<<<" + count + "    >>>>all are in tis " + p);
-        if (count == 0) {
-            Log.i(TAG, "printChild: this are the child " + source.getText() + " class name   <<<" + source.getClassName());
-
-            return;
-        }
-        for (int i = 0; i < count; i++) {
-            printChild(source.getChild(i));
-            printChild(source.getTraversalAfter());
-        }
-    }
-
     @Override
     public void onInterrupt() {
 
@@ -89,101 +70,6 @@ public class AccessibilityDispatcher extends AccessibilityService {
 
     @Override
     protected void onServiceConnected() {
-
-        final WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        mLayout = new FrameLayout(this);
-        final WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                PixelFormat.TRANSLUCENT);
-        lp.gravity = Gravity.LEFT | Gravity.TOP;
-        lp.x = 0;
-        lp.y = 100;
-
-        lp.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
-        lp.format = PixelFormat.TRANSLUCENT;
-        lp.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.gravity = Gravity.TOP;
-        LayoutInflater inflater = LayoutInflater.from(this);
-        final View mview = inflater.inflate(R.layout.floatingwindow, mLayout);
-        wm.addView(mLayout, lp);
-        mLayout.findViewById(R.id.head).setOnTouchListener(new View.OnTouchListener() {
-            private int lastAction;
-            private int initialX;
-            private int initialY;
-            private float initialTouchX;
-            private float initialTouchY;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-                        //remember the initial position.
-                        initialX = lp.x;
-                        initialY = lp.y;
-
-                        //get the touch location
-                        initialTouchX = event.getRawX();
-                        initialTouchY = event.getRawY();
-
-                        lastAction = event.getAction();
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        //As we implemented on touch listener with ACTION_MOVE,
-                        //we have to check if the previous action was ACTION_DOWN
-                        //to identify if the user clicked the view or not.
-                        if (lastAction == MotionEvent.ACTION_DOWN) {
-                            //Open the chat conversation click.
-                            Intent intent = new Intent(AccessibilityDispatcher.this, AccessibilityDispatcher.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-
-                            //close the service and remove the chat heads
-                            stopSelf();
-                        }
-                        lastAction = event.getAction();
-                        return true;
-                    case MotionEvent.ACTION_MOVE:
-                        //Calculate the X and Y coordinates of the view.
-                        lp.x = initialX + (int) (event.getRawX() - initialTouchX);
-                        lp.y = initialY + (int) (event.getRawY() - initialTouchY);
-
-                        //Update the layout with new X & Y coordinate
-                        wm.updateViewLayout(mview, lp);
-                        lastAction = event.getAction();
-                        return true;
-                }
-                return false;
-            }
-        });
-
-        setupWidget();
-
-    }
-
-    private void setupWidget() {
-        optionA = mLayout.findViewById(R.id.optionA);
-        optionB = mLayout.findViewById(R.id.optionB);
-        optionC = mLayout.findViewById(R.id.optionC);
-        probableAnswer = mLayout.findViewById(R.id.answer);
-
-        getAnswer = mLayout.findViewById(R.id.getanswer);
-
-        getAnswer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(AccessibilityDispatcher.this, "get answered clicked", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "onClick: get answered clicked");
-                findAnswer();
-
-            }
-        });
-
     }
 
     private void findAnswer() {
@@ -196,21 +82,13 @@ public class AccessibilityDispatcher extends AccessibilityService {
             B = (options.get(1));
             C = (options.get(2));
         }
-/*
-        FindAnswers obj = new FindAnswers(question, A, B, C);
-        obj.googleSearch();
+        
+        Engine  obj = new FindAnswers(new Question(question, A, B, C));
+        obj.startDeepLearnigToGetAnswer();
 
         String prob = obj.getAnswer();
-        probableAnswer.setText(prob);
-
-        A = obj.getAcount() + ": " + A;
-        B = obj.getBcount() + ": " + B;
-        C = obj.getCcount() + ": " + C;*/
-
-        optionA.setText(A);
-        optionB.setText(B);
-        optionC.setText(C);
-
+        
+        setAnswerForUser();
 
     }
 
