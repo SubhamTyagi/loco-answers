@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/supportme"
+        android:title="Support Me"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_test"
+        android:title="Test"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/about"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="About"
+        app:showAsAction="never"/>
+</menu>
