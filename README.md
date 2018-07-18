@@ -31,6 +31,8 @@
 14. Hang Time*
 
 * \* Not available for public
+## Contributor
+* I not have great skill in Photoshop. So app Logo is not attractive but I included best search engine for getting answer . Contribution are always accepted. Could anyone make a attractive logo for this app . I will mention contribution here and also in app
 ***
 ### >P.S. I does not guarantee that app will get updated i am neither liable nor responsible for apps update.
 this is totally depends upon me wether i update this app or not.
