@@ -24,7 +24,7 @@
 6. The Question `2.0.6 or older`
 8. We Show 
 9. Mob Show
-10. Swag IQ
+10. Swag IQ ` 1.2.5 or older`
 11. KO Trivia*
 12. Cash Show*
 13. Total Trivia*
