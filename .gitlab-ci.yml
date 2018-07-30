@@ -1,0 +1,40 @@
+image: jangrewe/gitlab-ci-android
+
+before_script:
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
+  - export BUILD_NUMBER=$(git rev-list --count ${CI_BUILD_REF})
+  - export BUILD_COMMIT_SHA=${CI_COMMIT_SHA}
+  - chmod +x ./gradlew
+
+cache:
+  key: ${CI_PROJECT_ID}
+  paths:
+    - .gradle/
+
+stages:
+  - test
+  - build
+
+unitTests:
+  stage: test
+  script:
+    - ./gradlew test
+  only:
+    - release
+    - master
+
+build:
+  stage: build
+  script:
+    - ./gradlew build
+  artifacts:
+    name: "${CI_PROJECT_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}"
+    paths:
+    - app/build/outputs/
+  only:
+    - develop
+    - release
+    - master
+
+
+

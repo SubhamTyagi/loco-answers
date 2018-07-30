@@ -12,6 +12,10 @@
         android:title="Test"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/supportedapps"
+        android:title="Suported Apps"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/about"
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="About"

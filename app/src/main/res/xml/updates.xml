@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>latest</key>
+        <value>8</value>
+    </entry>
+</defaultsMap>

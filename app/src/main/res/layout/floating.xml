@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/head"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="2dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,6 +21,7 @@
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="bold"/>
+
         <TextView
             android:id="@+id/optionA"
             android:layout_width="0dp"
@@ -87,28 +90,65 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/wiki"
-            android:layout_width="match_parent"
+        <ai.myfancy.button.iml.ActionProcessButton
+            android:id="@+id/getanswer1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="1dp"
             android:layout_weight="1"
-            android:background="@android:color/holo_red_dark"
-            android:text="@string/advance"
-            android:textColor="@android:color/background_light"/>
-
-        <Button
-            android:id="@+id/getanswer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="1dp"
-            android:layout_weight="1"
-            android:background="@android:color/holo_green_light"
-            android:padding="3dp"
-            android:text="@string/simple"
+            android:text="@string/get_answer"
             android:textAlignment="center"
             android:textColor="@android:color/background_light"
-            android:textSize="16sp"/>
+            android:textSize="18sp"
+            app:pb_colorNormal="@android:color/holo_red_light"
+            app:pb_colorPressed="@android:color/holo_blue_light"
+            app:pb_colorProgress="@android:color/holo_red_dark"
+            app:pb_textComplete="@string/get_answer"
+            app:pb_textError="Error"
+            app:pb_textProgress="Finding Answer..."
+            />
+
+        <!-- <ai.myfancy.button.iml.ActionProcessButton
+            android:id="@+id/wiki1"
+
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_weight="1"
+            android:padding="3dp"
+            android:text="@string/advance"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"
+            app:pb_colorNormal="@android:color/holo_red_dark"
+            app:pb_colorPressed="@android:color/holo_blue_light"
+            app:pb_textComplete="@string/advance"
+            app:pb_textError="Error"
+            app:pb_textProgress="Finding.."
+            />-->
+
+        <!--
+                <Button
+                    android:id="@+id/wiki"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:text="@string/advance"
+                    android:textColor="@android:color/background_light"/>
+
+                <Button
+                    android:id="@+id/getanswer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_green_light"
+                    android:padding="3dp"
+                    android:text="@string/simple"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="16sp"/>-->
+
 
     </LinearLayout>
 

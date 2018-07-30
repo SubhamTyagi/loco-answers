@@ -2,7 +2,7 @@
     <string name="app_name">LoKo HacK</string>
     <string name="accessibility_desc">The usage of accessibility service for reading Question and Options from the app screen when these are appear to users.\n
     </string>
-    <string name="desc">Works with Version LOCO 2.1.9 or older version ,Qureka latest version, HQ 1.6.2,<b>The Question</b>, WE Show, BrainBazzi ,MobShow, JusPlay , Swoo, SWAG IQ, KO Trivia \nGive necessary permission to this app and then Press "START" Button\n<b>Click on ADVANCE button to do Wiki search\nIf simple search is fails it do WIKI search automatically </b></string>
+    <string name="desc">Works with Version LOCO 2.1.9 or older version ,Qureka latest version, HQ 1.6.2,<b>The Question</b>,SwagIQ 1.2.5 or older WE Show, BrainBazzi ,MobShow, JusPlay , Swoo \nGive necessary permission to this app and then Press "START" Button\nAdd this app to Ignore Optimization and to AUTO START for better result,without this ,accessibility service might be killed</string>
     <string name="title_activity_settings">Settings</string>
     <string name="fallback">Fallback</string>
     <string name="fallback_desc">When primary search fails then app will use  alternative way to find answer</string>
@@ -17,6 +17,11 @@
     <string name="enter_question">Enter Question</string>
     <string name="start">START</string>
     <string name="stop">STOP</string>
+    <string name="get_answer">GET ANSWER</string>
+    <string name="ocr_btn_txt">Start OCR With Speech Synthesis</string>
+    <string name="ocr_btn_txt_stop">STOP OCR With Speech Synthesis</string>
+
+    <string name="supported_apps">Loco,Qureka,Hq,TheQuestion,SwagIQ(version 1.2.5),We Show,Brainbazzi,MobShow,JusPlay,Swoo</string>
 
 
 </resources>
