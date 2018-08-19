@@ -11,7 +11,7 @@
 ## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 
-* ### [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers)
+* ### [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers/releases)
 
 ## See Demo on YouYube
 * ### [Here](https://youtu.be/H0LvFNW_svA)
