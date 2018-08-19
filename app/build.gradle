@@ -3,12 +3,12 @@ apply plugin: 'io.fabric'
 
 android {
     signingConfigs {
-        debug {
-            keyAlias 'debug'
-            keyPassword '123456'
-            storeFile file('./../debug-key.jks')
-            storePassword '123456'
-        }
+       // debug {
+            //keyAlias 'debug'
+            //keyPassword '123456'
+            //storeFile file('./../debug-key.jks')
+            //storePassword '123456'
+       // }
     }
     compileSdkVersion 28
     buildToolsVersion "28.0.1"
