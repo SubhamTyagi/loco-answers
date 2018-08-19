@@ -10,8 +10,8 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> -->
     <application
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
@@ -20,8 +20,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
-        <activity android:name="ai.loko.hk.ui.MainActivity"
-                  android:theme="@style/AppTheme">
+        <activity
+            android:name="ai.loko.hk.ui.MainActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -51,7 +52,7 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibilty"/>
         </service>
-        <service android:name="ai.loko.hk.ui.notification.Notification">
+        <service android:name="ai.loko.hk.ui.notification.MyNotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
@@ -61,14 +62,18 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-
-
         <service android:name="ai.loko.hk.ui.ocr.OCRFloating"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="87d0d959fa9b880a5f2cfed1a1707f4a6c41504e"/>
 
+       <!-- <activity
+            android:name="ai.loko.hk.ui.GetLicence"
+            android:label="@string/title_activity_get_licence">
+        </activity>
+        <activity android:name="ai.loko.hk.ui.SetLicenceDetails">
+        </activity>-->
     </application>
 
 </manifest>

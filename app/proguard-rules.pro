@@ -19,3 +19,20 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-optimizationpasses 5
+#-dontusemixedcaseclassnames
+#-dontskipnonpubliclibraryclasses
+-dontpreverify
+-verbose
+-libraryjars libs
+
+#-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*,!code/allocation/variable
+-allowaccessmodification
+-repackageclasses ''
+
+#-keep class com.google.ads.**
+-dontwarn com.google.**
+#-keepattributes SourceFile,LineNumberTable
+
+-keepattributes InnerClasses
+-keepattributes InnerClasses,EnclosingMethod
