@@ -26,8 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.facebook.ads.AbstractAdListener;
-import com.facebook.ads.Ad;
+
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -46,6 +46,7 @@ import com.nightonke.boommenu.ButtonEnum;
 import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import ai.loko.hk.ui.ocr.OCRFloating;
+import ai.loko.hk.ui.utils.CustomToast;
 import ai.myfancy.dialog.Animation;
 import ai.myfancy.dialog.FancyAlertDialog;
 import ai.myfancy.dialog.FancyAlertDialogListener;
@@ -60,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_RESULT_CODE = "resultCode";
     public static final String EXTRA_RESULT_INTENT = "resultIntent";
     //TODO:
-    private final static int VERSION = 14;
+    private final static int VERSION = 15;
     private static final boolean DEBUG = BuildConfig.DEBUG;
+
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     private static final int CODE_FOR_SCREEN_CAPTURE = 13493;
 
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     MediaProjectionManager mgr;
     FirebaseAnalytics mFirebaseAnalytics;
     Intent floatingIntent;
-    com.facebook.ads.InterstitialAd mFacebookInterstitialAd;
+
     private Intent screenshotIntent;
     private Button overlayPermmission, accessibilityPermission, startStopBtn, ocr;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         Fabric.with(this, new Crashlytics());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Logger.initialize(this);
         floatingIntent = new Intent(MainActivity.this, Floating.class);
         isFirst = true;
         isFirstFacebook = true;
@@ -99,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         accessibilityPermission = findViewById(R.id.accpermission1);
         startStopBtn = findViewById(R.id.start);
         ocr = findViewById(R.id.ocr_btn);
+
+        preferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
 
         overlayPermmission.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ocr.setVisibility(View.GONE);
         }
+       /* ocr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,GetLicence.class));
+            }
+        });*/
     }
 
     public void startFloatingWindow() {
@@ -144,13 +155,21 @@ public class MainActivity extends AppCompatActivity {
         } else {
             if (canOverdraw()) {
                 if (isAccessibilityEnabled1()) {
-                    //DO SOMETHING
-                   
+                    //increase counter
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putInt("counter", openCount + 1);
+                    editor.apply();
+                    //increase counters ends
                     startStopBtn.setText(R.string.stop);
                     startStopBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
                     // showNotification();
                     startService(floatingIntent);
-                   
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 500);
                 } else {
                     giveAccessibilityPermission();
                 }
@@ -175,12 +194,19 @@ public class MainActivity extends AppCompatActivity {
         mActionBar.setDisplayShowCustomEnabled(true);
         ((Toolbar) actionBar.getParent()).setContentInsetsAbsolute(0, 0);
 
-        BoomMenuButton rightBmb = (BoomMenuButton) actionBar.findViewById(R.id.action_bar_right_bmb);
+        // BoomMenuButton leftBmb = (BoomMenuButton) actionBar.findViewById(R.id.action_bar_left_bmb);
+        BoomMenuButton rightBmb = actionBar.findViewById(R.id.action_bar_right_bmb);
+
+        //leftBmb.setButtonEnum(ButtonEnum.TextOutsideCircle);
+        //leftBmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_9_1);
+        //leftBmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_9_1);
+        //for (int i = 0; i < leftBmb.getPiecePlaceEnum().pieceNumber(); i++)
+        // leftBmb.addBuilder(BuilderManager.getTextOutsideCircleButtonBuilder());
 
         rightBmb.setButtonEnum(ButtonEnum.Ham);
         rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
         rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
-        
+        //for (int i = 0; i < rightBmb.getPiecePlaceEnum().pieceNumber(); i++)
         rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_attach_money_black_24dp).subNormalText("Your contribution is need to make this app great").normalText("Support Me").listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
@@ -209,22 +235,191 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupSupport() {
-       
+
+        openCount = preferences.getInt("counter", 1);
+
+        if (openCount % 5 == 0) {
+            new FancyAlertDialog.Builder(this).setAnimation(Animation.SLIDE)
+                    .setTitle("Do you Love Loko Hack")
+                    //.setMessage("This app is Developed by Shubham Tyagi(shubham2tyagi7@gmail.com)\nApp is in Development\nVersion:0.1")
+                    .setMessage("Want to support developer, Your support is needed for make the app 100% correct answer always")
+                    .setPositiveBtnBackground(Color.parseColor("#388d3b"))
+                    .setBackgroundColor(Color.parseColor("#d1245e"))
+                    .setPositiveBtnText("Yes")
+                    .isCancellable(false)
+                    .setNegativeBtnText("Later")
+                    .setNegativeBtnBackground(Color.parseColor("#FFCC0000"))
+                    .OnPositiveClicked(new FancyAlertDialogListener() {
+                        @Override
+                        public void OnClick() {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://paypal.me/shubhamtyagi1")));
+                        }
+                    })
+                    .OnNegativeClicked(new FancyAlertDialogListener() {
+                        @Override
+                        public void OnClick() {
+                            //
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert, Icon.Visible).build();
+        }
     }
 
     private void getUpdate() {
 
-           }
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings;
+        if (DEBUG) {
+            configSettings = new FirebaseRemoteConfigSettings.Builder()
+                    .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                    .build();
+        } else {
+            configSettings = new FirebaseRemoteConfigSettings.Builder()
+                    .build();
+        }
+        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+        mFirebaseRemoteConfig.setDefaults(R.xml.updates);
+        long cacheExpiration = 6 * 60 * 60;
+        if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
+            cacheExpiration = 0;
+        }
+
+        //Log.d(TAG, "getUpdate: "+cacheExpiration);
+        mFirebaseRemoteConfig.fetch(cacheExpiration).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful())
+                    mFirebaseRemoteConfig.activateFetched();
+                /// Log.d(TAG, "onComplete: ");
+            }
+        });
+
+        int latest = Integer.valueOf(mFirebaseRemoteConfig.getString(LATEST));
+
+        //Log.i(TAG, "getUpdate: "+latest);
+
+        if (latest - VERSION > 1) {
+            new FancyAlertDialog.Builder(this).setAnimation(Animation.SLIDE)
+                    .setTitle("Update is Available")
+                    //.setMessage("This app is Developed by Shubham Tyagi(shubham2tyagi7@gmail.com)\nApp is in Development\nVersion:0.1")
+                    .setMessage("Kindly update the app, Some problems are fixed and accuracy is extremely improved and much more.. ")
+                    .setPositiveBtnBackground(Color.parseColor("#388d3b"))
+                    .setBackgroundColor(Color.parseColor("#d1245e"))
+                    .setPositiveBtnText("Update Now")
+                    .isCancellable(false)
+                    .OnPositiveClicked(new FancyAlertDialogListener() {
+                        @Override
+                        public void OnClick() {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/releases/")));
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert, Icon.Visible).build();
+        } else if (latest > VERSION) {
+            new FancyAlertDialog.Builder(this).setAnimation(Animation.SLIDE)
+                    .setTitle("Update is Available")
+                    //.setMessage("This app is Developed by Shubham Tyagi(shubham2tyagi7@gmail.com)\nApp is in Development\nVersion:0.1")
+                    .setMessage("Kindly update the app, Some problems are fixed and accuracy is extremely improved and much more.. ")
+                    .setPositiveBtnBackground(Color.parseColor("#388d3b"))
+                    .setBackgroundColor(Color.parseColor("#d1245e"))
+                    .setPositiveBtnText("Update Now")
+                    .isCancellable(false)
+                    .setNegativeBtnText("Later")
+                    .setNegativeBtnBackground(Color.parseColor("#FFCC0000"))
+                    .OnPositiveClicked(new FancyAlertDialogListener() {
+                        @Override
+                        public void OnClick() {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/releases/")));
+
+                        }
+                    })
+                    .OnNegativeClicked(new FancyAlertDialogListener() {
+                        @Override
+                        public void OnClick() {
+                            //
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert, Icon.Visible).build();
+
+        }
+    }
 
     private void setupAds() {
 
+        String appId = "ca-app-pub-4301584724850632~9402202755";
+        String adIntersitial = "ca-app-pub-4301584724850632/1930906844 ";
+        //  String adBanner = "ca-app-pub-4301584724850632/8429171472";
+
+        String testId = "ca-app-pub-3940256099942544/5224354917";
+        //String testIDbanner = "ca-app-pub-3940256099942544/6300978111";
+
+        //ca-app-pub-4301584724850632/8429171472
+
+        MobileAds.initialize(getApplicationContext(), DEBUG ? testId : appId);
+
+        AdView mAdView = findViewById(R.id.adView);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(DEBUG ? testId : adIntersitial);
+        loadInterstitialAds();
+        showInterstitialAds();
+
+
+
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                if (isFirst) {
+                    showInterstitialAds();
+                    isFirst = false;
+                }
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+                ///loadInterstitialAds();
+
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when the ad is displayed.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the interstitial ad is closed.
+                loadInterstitialAds();
+
+            }
+
+        });
 
     }
 
     private void loadInterstitialAds() {
+        if (!mInterstitialAd.isLoaded())
+            if (DEBUG)
+                mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("A6967EDFD302F200CB79E422827FFD16").build());
+            else
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     private void showInterstitialAds() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            //loadInterstitialAds();
+        }
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {
@@ -340,8 +535,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
-
-//THESE CODES ARE UNNECESSARY I DOES NOT USING THIS CURRENTLY
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
@@ -372,7 +565,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void about() {
         new FancyAlertDialog.Builder(this).setAnimation(Animation.SLIDE)
-                .setTitle("Loko Hack version 1.7.4")
+                .setTitle("Loko Hack version 1.7.5")
                 .setMessage("\nWant to support development of this app")
                 .setPositiveBtnBackground(Color.parseColor("#388d3b"))
                 .setBackgroundColor(Color.parseColor("#d1245e"))
@@ -442,15 +635,45 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startOCR() {
-              startActivityForResult(mgr.createScreenCaptureIntent(), CODE_FOR_SCREEN_CAPTURE);
+        //TODO: support development
+        new CustomToast(this, "YOUR SUPPORT IS NEEDED FOR THIS..").setDuration(Toast.LENGTH_LONG).show();
+
+        //startActivityForResult(mgr.createScreenCaptureIntent(), CODE_FOR_SCREEN_CAPTURE);
     }
 
-    
-    @Override
-    protected void onDestroy() {
-        if (mFacebookInterstitialAd!=null){
-            mFacebookInterstitialAd.destroy();
-        }
-            super.onDestroy();
-    }
+      /*
+    private void setupMenuButton() {
+        final ArrayList<Pair> piecesAndButtons = new ArrayList<>();
+        final BoomMenuButton bmb = (BoomMenuButton) findViewById(R.id.bmb_menu);
+        assert bmb != null;
+        bmb.setButtonEnum(ButtonEnum.TextInsideCircle);
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_4_1);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_4_1);
+        bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Support me"));
+        bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Test"));
+        bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Supported Apps"));
+        bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("About "));
+
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        assert listView != null;
+        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, Utils.getCircleButtonData(piecesAndButtons)));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                bmb.setPiecePlaceEnum((PiecePlaceEnum) piecesAndButtons.get(position).first);
+                bmb.setButtonPlaceEnum((ButtonPlaceEnum) piecesAndButtons.get(position).second);
+                bmb.clearBuilders();
+
+                bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Support me"));
+                bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Test"));
+                bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Supported Apps"));
+                bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("About."));
+            }
+        });
+
+
+    }*/
+
+
 }

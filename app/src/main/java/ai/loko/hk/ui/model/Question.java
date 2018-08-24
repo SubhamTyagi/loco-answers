@@ -20,7 +20,13 @@ public class Question {
     }
 
     public Question(String questionText, String optionA, String optionB, String optionC) {
-       "set all option"
+        if (questionText.contains("?")) {
+            this.questionText = questionText.substring(0, questionText.length() - 1).toLowerCase();
+        } else
+            this.questionText = questionText.toLowerCase();
+        this.optionA = optionA.toLowerCase();
+        this.optionB = optionB.toLowerCase();
+        this.optionC = optionC.toLowerCase();
     }
 
     public String getQuestionText() {

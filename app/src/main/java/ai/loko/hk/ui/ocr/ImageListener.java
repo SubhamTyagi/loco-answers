@@ -26,20 +26,60 @@ class ImageListener implements ImageReader.OnImageAvailableListener {
         this.svc = svc;
         Display display = svc.getWindowManager().getDefaultDisplay();
         Point size = new Point();
-///SOME CODE HERE
+
         display.getSize(size);
         int width = size.x;
         int height = size.y;
-       ///SOME CODE HERE
+        while (width * height > (2 << 19)) {
+            width = width >> 1;
+            height = height >> 1;
+        }
+        this.width = width;
+        this.height = height;
+        imageReader = ImageReader.newInstance(width, height,
+                PixelFormat.RGBA_8888, 2);
         imageReader.setOnImageAvailableListener(this, svc.getHandler());
     }
 
     @Override
     public void onImageAvailable(ImageReader reader) {
         final Image image = imageReader.acquireLatestImage();
-///SOME CODE HERE
-///SOME CODE HERE
-        
+
+        if (image != null) {
+            Image.Plane[] planes = image.getPlanes();
+            ByteBuffer buffer = planes[0].getBuffer();
+            int pixelStride = planes[0].getPixelStride();
+            int rowStride = planes[0].getRowStride();
+            int rowPadding = rowStride - pixelStride * width;
+            int bitmapWidth = width + rowPadding / pixelStride;
+
+            if (latestBitmap == null ||
+                    latestBitmap.getWidth() != bitmapWidth ||
+                    latestBitmap.getHeight() != height) {
+                if (latestBitmap != null) {
+                    latestBitmap.recycle();
+                }
+
+                latestBitmap = Bitmap.createBitmap(bitmapWidth,
+                        height, Bitmap.Config.ARGB_8888);
+            }
+
+            latestBitmap.copyPixelsFromBuffer(buffer);
+
+
+                image.close();
+
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Bitmap cropped = Bitmap.createBitmap(latestBitmap, 0, 0,
+                    width, height);
+
+            //cropped.compress(Bitmap.CompressFormat.PNG, 100, baos);
+
+           // byte[] newPng = baos.toByteArray();
+
+            svc.processImage(cropped);
+        }
     }
 
     Surface getSurface() {

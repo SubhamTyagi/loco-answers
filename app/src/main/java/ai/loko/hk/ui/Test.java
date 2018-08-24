@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ import ai.myfancy.button.iml.ActionProcessButton;
 import ui.R;
 
 public class Test extends AppCompatActivity {
-   // String TAG = "TEST";
+    // String TAG = "TEST";
 
     String qu = "Who wrote the poem \"O Captain! My Captain!\"?";
     String o1 = "William Shakespeare";
@@ -27,8 +26,8 @@ public class Test extends AppCompatActivity {
     TextView a1, b2, c3;
     EditText q, a, b, c;
 
-   // Button wiki, google;
-    ActionProcessButton wiki,google;
+    // Button wiki, google;
+    ActionProcessButton wiki, google;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,6 @@ public class Test extends AppCompatActivity {
         google = findViewById(R.id.getanswer1);
         google.setMode(ActionProcessButton.Mode.ENDLESS);
         wiki.setMode(ActionProcessButton.Mode.ENDLESS);
-	setupAI();
 
 
         new CustomToast(this, "In future this will be used for AI learning").setDuration(1).show();
@@ -60,6 +58,11 @@ public class Test extends AppCompatActivity {
             public void onClick(View v) {
                 Which.itIsGoogle = false;
                 wiki.setProgress(1);
+
+                a1.setText("");
+                b2.setText("");
+                c3.setText("");
+
                 if (q.getText().toString().length() > 0) {
                     qu = q.getText().toString();
                 }
@@ -72,7 +75,7 @@ public class Test extends AppCompatActivity {
                 if (c.getText().toString().length() > 0) {
                     o3 = c.getText().toString();
                 }
-                new Update().execute("nothing is send by me here");
+                new Update().execute("save this to AI database");
             }
         });
 
@@ -81,6 +84,11 @@ public class Test extends AppCompatActivity {
             public void onClick(View v) {
                 Which.itIsGoogle = true;
                 google.setProgress(1);
+
+                a1.setText("");
+                b2.setText("");
+                c3.setText("");
+
                 if (q.getText().toString().length() > 0) {
                     qu = q.getText().toString();
                 }
@@ -93,16 +101,12 @@ public class Test extends AppCompatActivity {
                 if (c.getText().toString().length() > 0) {
                     o3 = c.getText().toString();
                 }
-                new Update().execute("nothing is send by me here");
+                new Update().execute("checking AI>Who are you");
             }
         });
 
 
     }
-	 protected void setupAI(){
-//some code here
-         }
-	
 
     private class Update extends AsyncTask<String, Void, String> {
         FindAnswers obj;
@@ -111,10 +115,11 @@ public class Test extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //ans.setText(s);
+
             a1.setText(obj.getAcount());
             b2.setText(obj.getBcount());
             c3.setText(obj.getCcount());
-            setValuesInAIbase(obj)
+
             wiki.setProgress(0);
             google.setProgress(0);
             switch (s) {

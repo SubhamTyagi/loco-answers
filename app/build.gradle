@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    signingConfigs {
+   // signingConfigs {
        // debug {
-            //keyAlias 'debug'
-            //keyPassword '123456'
-            //storeFile file('./../debug-key.jks')
-            //storePassword '123456'
+       //     keyAlias 'debug'
+       //     keyPassword '123456'
+       //     storeFile file('./../debug-key.jks')
+       //     storePassword '123456'
        // }
-    }
+    //}
     compileSdkVersion 28
     buildToolsVersion "28.0.1"
     defaultConfig {

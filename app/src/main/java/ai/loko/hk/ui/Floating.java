@@ -155,6 +155,7 @@ public class Floating extends Service {
 
     }
 
+    //GENERATE
     private void setAnswers() {
         Intent i = new Intent(getApplicationContext(), Forground.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
