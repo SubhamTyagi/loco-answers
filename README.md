@@ -25,12 +25,7 @@
 8. We Show 
 9. Mob Show
 10. Swag IQ
-11. KO Trivia*
-12. Cash Show*
-13. Total Trivia*
-14. Hang Time*
 
-* \* Not available for public
 ***
 ## Open Source License
 
