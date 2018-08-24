@@ -1,13 +1,13 @@
 # Say Hello to Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
-* A free,open source, ad free trivia helper app that respect user sentiments
+* A free, 100 % open source, ad free trivia helper app that respect user sentiments
 ## Why Loko Hack
 * FREE ?? 
 * 90%+ Accuracy ?? 
 * Fast Speed ?? 
 * Ad Free ?? 
 * Most supported Trivia Games ?? 
-* Open Source :)
+* 100 % Open Source :)
 ## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 
@@ -49,4 +49,4 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   
-### if someone is interested in source code of my own app you can fill [this form](https://goo.gl/forms/1tSIAfNX9F2uAzgh2)
+
