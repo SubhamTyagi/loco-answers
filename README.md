@@ -2,11 +2,11 @@
 
 * A free, 100 % open source, ad free trivia helper app that respect user sentiments
 ## Why Loko Hack
-* FREE ?? 
-* 90%+ Accuracy ?? 
-* Fast Speed ?? 
-* Ad Free ?? 
-* Most supported Trivia Games ?? 
+* FREE 
+* 90%+ Accuracy  
+* Fast Speed 
+* Ad Free  
+* Most supported Trivia Games 
 * 100 % Open Source :)
 ## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
