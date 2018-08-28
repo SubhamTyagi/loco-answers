@@ -30,7 +30,7 @@
 ## Open Source License
 
     Copyright 2018 SHUBHAM TYAGI
-    Licensed under the FOLLOWING TERMS
+    Licensed under the FOLLOWING TERMS and as per GPL V3
     you may not use this file except in compliance with the License.
   
         you may do good and not evil.
