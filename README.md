@@ -1,11 +1,10 @@
-# Say Hello to Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+# Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 * A free, 100 % open source, ad free trivia helper app that respect user sentiments
-## Why Loko Hack
+## Features
 * FREE 
 * 90%+ Accuracy  
-* Fast Speed 
-* Ad Free  
+* Fast Speed   
 * Most supported Trivia Games 
 * 100 % Open Source :)
 ## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
@@ -25,6 +24,9 @@
 8. We Show 
 9. Mob Show
 10. Swag IQ
+
+## Contributor
+* Contributions accepted(always)
 
 ***
 ## Open Source License
