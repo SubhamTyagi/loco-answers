@@ -1,3 +1,9 @@
+
+[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) 
+![build](https://img.shields.io/badge/Build-pass-green.svg)
+![version](https://img.shields.io/badge/Version-1.7.5-red.svg)
+
+
 # Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 * A free, 100 % open source, ad free trivia helper app that respect user sentiments
