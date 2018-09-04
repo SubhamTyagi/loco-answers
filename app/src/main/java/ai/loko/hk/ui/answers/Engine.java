@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.model.Question;
 
-import static ai.loko.hk.ui.data.Data.USER_AGENT;
+//import static ai.loko.hk.ui.data.Data.USER_AGENT;
 import static ai.loko.hk.ui.data.Data.delete;
+import static ai.loko.hk.ui.data.Data.getRandomUserAgent;
 import static ai.loko.hk.ui.utils.Utils.count;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedQuestion;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedString;
@@ -171,7 +172,7 @@ public class Engine extends Base {
 
             }
 
-            Document doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(USER_AGENT).get();
+            Document doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(getRandomUserAgent()).get();
             String text = doc.body().text().toLowerCase();
 
             String optionAsplit[] = optionA.split(" ");
@@ -334,7 +335,7 @@ public class Engine extends Base {
 
     @NonNull
     private String getResponseFromGoogle(String simplifiedQuestion, String sub) throws IOException {
-        return Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=10").userAgent(USER_AGENT).get().body().text().toLowerCase();
+        return Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=10").userAgent(getRandomUserAgent()).get().body().text().toLowerCase();
     }
 }
 

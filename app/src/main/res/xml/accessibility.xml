@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-                       android:description="@string/accessibility_desc"
-                       android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeAllMask"
-                       android:accessibilityFeedbackType="feedbackGeneric|feedbackAllMask"
-                       android:notificationTimeout="0"
-                       android:packageNames="com.showtimeapp"
-                       android:accessibilityFlags="flagReportViewIds"
-                       android:canRetrieveWindowContent="true"/>

@@ -1,1 +1,1 @@
-include ':app', ':dialog', ':button'
+include ':app', ':dialog', ':button', ':boommenu'

@@ -120,7 +120,7 @@ public class FindAnswers extends Which {
             //  Log.d(TAG, "option3 prefix==" + sub3);
 
 
-            Document doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(sub1 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.USER_AGENT).get();
+            Document doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(sub1 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
             String text1 = doc.body().text().toLowerCase();
 
             A1.append(sub1).append("-");
@@ -142,7 +142,7 @@ public class FindAnswers extends Which {
                 }
             }
 
-            doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(sub2 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.USER_AGENT).get();
+            doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(sub2 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
             String text2 = doc.body().text().toLowerCase();
 
             sub2 = B.substring(B.indexOf("-") + 1);
@@ -166,7 +166,7 @@ public class FindAnswers extends Which {
             String optionC[] = sub3.split(" ");
             cSize = optionC.length;
 
-            doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(sub3 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.USER_AGENT).get();
+            doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(sub3 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
             String text3 = doc.body().text().toLowerCase();
 
             for (String words : optionC) {
@@ -286,7 +286,7 @@ public class FindAnswers extends Which {
                 return wikiBot(isNeg);
             }
 
-            Document doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(Data.USER_AGENT).get();
+            Document doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(Data.getRandomUserAgent()).get();
 
             String text = doc.body().text().toLowerCase();
             String optionA[] = A.split(" ");

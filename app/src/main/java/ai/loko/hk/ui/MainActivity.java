@@ -26,8 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -351,7 +349,6 @@ public class MainActivity extends AppCompatActivity {
 
         String testId = "ca-app-pub-3940256099942544/5224354917";
         //String testIDbanner = "ca-app-pub-3940256099942544/6300978111";
-
         //ca-app-pub-4301584724850632/8429171472
 
         MobileAds.initialize(getApplicationContext(), DEBUG ? testId : appId);
@@ -366,9 +363,6 @@ public class MainActivity extends AppCompatActivity {
         loadInterstitialAds();
         showInterstitialAds();
 
-
-
-
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -382,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 // Code to be executed when an ad request fails.
-                ///loadInterstitialAds();
+                loadInterstitialAds();
 
             }
 
