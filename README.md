@@ -6,7 +6,7 @@
 
 # Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
-* A free, 100 % open source, ad free trivia helper app that respect user sentiments
+* A free, 100 % open source, ad free trivia helper app that respect user sentiments.
 ## Features
 * FREE 
 * 90%+ Accuracy  
