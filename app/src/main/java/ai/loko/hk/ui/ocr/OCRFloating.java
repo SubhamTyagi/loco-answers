@@ -169,8 +169,9 @@ public class OCRFloating extends Service {
                 OCRFloating.isGoogle = true;
                 isUserForcedToCheckAnswer = true;
                 getAnswer.setProgress(1);
-                // setAnswers();
-                showSupportDialog();
+                setAnswers();
+
+                //showSupportDialog();
             }
         });
 /*
@@ -187,9 +188,7 @@ public class OCRFloating extends Service {
 */
     }
 
-    private void showSupportDialog() {
-        new CustomToast(this, "Kindly support the developer,This will be working in next version").setDuration(Toast.LENGTH_LONG).show();
-    }
+
 
     private void notification() {
         Intent i = new Intent(this, OCRFloating.class);
@@ -197,7 +196,7 @@ public class OCRFloating extends Service {
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
-        mBuilder.setContentText("Currently this service is not enabled by developer, kindly Support developer")
+        mBuilder.setContentText("Currently this service is not fully developed, Launching soon:>")
                 .setContentTitle("Tap to remove overlay screen")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pi)
@@ -210,7 +209,7 @@ public class OCRFloating extends Service {
     }
 
     private void setAnswers() {
-        //TODO: here we capture screen and parse its text
+        //TODO: here we capture screen
 
         setUpMediaProjection();
         ImageListener it = new ImageListener(this);
@@ -317,6 +316,8 @@ public class OCRFloating extends Service {
         return (mWindowManager);
     }
 
+
+    // here we process screen images to extract question and answer
     public void processImage(Bitmap bitmap) {
 
         if (detecter.isOperational() && isUserForcedToCheckAnswer) {

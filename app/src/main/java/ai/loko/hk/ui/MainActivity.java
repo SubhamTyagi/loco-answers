@@ -3,7 +3,6 @@ package ai.loko.hk.ui;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
@@ -44,7 +43,6 @@ import com.nightonke.boommenu.ButtonEnum;
 import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import ai.loko.hk.ui.ocr.OCRFloating;
-import ai.loko.hk.ui.utils.CustomToast;
 import ai.myfancy.dialog.Animation;
 import ai.myfancy.dialog.FancyAlertDialog;
 import ai.myfancy.dialog.FancyAlertDialogListener;
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_RESULT_CODE = "resultCode";
     public static final String EXTRA_RESULT_INTENT = "resultIntent";
     //TODO:
-    private final static int VERSION = 15;
+    private final static int VERSION = 17;
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private Intent screenshotIntent;
     private Button overlayPermmission, accessibilityPermission, startStopBtn, ocr;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
-    private SharedPreferences preferences;
+
     private int openCount;
 
     @Override
@@ -101,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         startStopBtn = findViewById(R.id.start);
         ocr = findViewById(R.id.ocr_btn);
 
-        preferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
 
         overlayPermmission.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: Enable Ads
         setupAds();
-        setupSupport();
+
         getUpdate();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -152,12 +149,8 @@ public class MainActivity extends AppCompatActivity {
             stopService(floatingIntent);
         } else {
             if (canOverdraw()) {
-                if (isAccessibilityEnabled1()) {
-                    //increase counter
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt("counter", openCount + 1);
-                    editor.apply();
-                    //increase counters ends
+                if (isAccessibilityEnabled()) {
+
                     startStopBtn.setText(R.string.stop);
                     startStopBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
                     // showNotification();
@@ -205,10 +198,10 @@ public class MainActivity extends AppCompatActivity {
         rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
         rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
         //for (int i = 0; i < rightBmb.getPiecePlaceEnum().pieceNumber(); i++)
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_attach_money_black_24dp).subNormalText("Your contribution is need to make this app great").normalText("Support Me").listener(new OnBMClickListener() {
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_attach_money_black_24dp).subNormalText("Your contribution is need to make this app great").normalText("Repository").listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://paypal.me/shubhamtyagi1")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/subhamtyagi/loco-answers")));
 
             }
         }));
@@ -230,37 +223,6 @@ public class MainActivity extends AppCompatActivity {
                 about();
             }
         }));
-    }
-
-    private void setupSupport() {
-
-        openCount = preferences.getInt("counter", 1);
-
-        if (openCount % 5 == 0) {
-            new FancyAlertDialog.Builder(this).setAnimation(Animation.SLIDE)
-                    .setTitle("Do you Love Loko Hack")
-                    //.setMessage("This app is Developed by Shubham Tyagi(shubham2tyagi7@gmail.com)\nApp is in Development\nVersion:0.1")
-                    .setMessage("Want to support developer, Your support is needed for make the app 100% correct answer always")
-                    .setPositiveBtnBackground(Color.parseColor("#388d3b"))
-                    .setBackgroundColor(Color.parseColor("#d1245e"))
-                    .setPositiveBtnText("Yes")
-                    .isCancellable(false)
-                    .setNegativeBtnText("Later")
-                    .setNegativeBtnBackground(Color.parseColor("#FFCC0000"))
-                    .OnPositiveClicked(new FancyAlertDialogListener() {
-                        @Override
-                        public void OnClick() {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://paypal.me/shubhamtyagi1")));
-                        }
-                    })
-                    .OnNegativeClicked(new FancyAlertDialogListener() {
-                        @Override
-                        public void OnClick() {
-                            //
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert, Icon.Visible).build();
-        }
     }
 
     private void getUpdate() {
@@ -345,11 +307,12 @@ public class MainActivity extends AppCompatActivity {
 
         String appId = "ca-app-pub-4301584724850632~9402202755";
         String adIntersitial = "ca-app-pub-4301584724850632/1930906844 ";
+
         //  String adBanner = "ca-app-pub-4301584724850632/8429171472";
 
         String testId = "ca-app-pub-3940256099942544/5224354917";
         //String testIDbanner = "ca-app-pub-3940256099942544/6300978111";
-        //ca-app-pub-4301584724850632/8429171472
+
 
         MobileAds.initialize(getApplicationContext(), DEBUG ? testId : appId);
 
@@ -358,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd = new InterstitialAd(getApplicationContext());
         mInterstitialAd.setAdUnitId(DEBUG ? testId : adIntersitial);
         loadInterstitialAds();
         showInterstitialAds();
@@ -427,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public boolean isAccessibilityEnabled1() {
+    public boolean isAccessibilityEnabled() {
         int accessibilityEnabled = 0;
         final String ACCESSIBILITY_SERVICE = "ai.loko.hk.ui/ai.loko.hk.ui.Accessibilty";
         try {
@@ -485,7 +448,8 @@ public class MainActivity extends AppCompatActivity {
                     //Intent i = new Intent(this, ScreenshotService.class).putExtra(ScreenshotService.EXTRA_RESULT_CODE, resultCode).putExtra(ScreenshotService.EXTRA_RESULT_INTENT, data);
                     screenshotIntent = new Intent(this, OCRFloating.class).putExtra(EXTRA_RESULT_CODE, resultCode).putExtra(EXTRA_RESULT_INTENT, data);
                     startService(screenshotIntent);
-                    finish();
+                    ///finish();
+
                 }
                 break;
             default:
@@ -505,7 +469,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             overlayPermmission.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
-        if (isAccessibilityEnabled1()) {
+        if (isAccessibilityEnabled()) {
             accessibilityPermission.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         } else {
             accessibilityPermission.setBackgroundColor(getResources().getColor(R.color.btnred));
@@ -559,13 +523,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void about() {
         new FancyAlertDialog.Builder(this).setAnimation(Animation.SLIDE)
-                .setTitle("Loko Hack version 1.7.5")
-                .setMessage("\nWant to support development of this app")
+                .setTitle("LOKO HACK VERSION 1.7.6")
+                .setMessage("Do you want to support ")
                 .setPositiveBtnBackground(Color.parseColor("#388d3b"))
                 .setBackgroundColor(Color.parseColor("#d1245e"))
                 .setPositiveBtnText("Yes")
                 .setNegativeBtnBackground(Color.parseColor("#FFCC0000"))
-                .isCancellable(false)
+                .isCancellable(true)
                 .setNegativeBtnText("Later")
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
@@ -589,7 +553,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveBtnBackground(Color.parseColor("#388d3b"))
                 .setBackgroundColor(Color.parseColor("#d1245e"))
                 .setPositiveBtnText("Close")
-                .setNegativeBtnText("Support Me")
+                .setNegativeBtnText("Support")
                 .setNegativeBtnBackground(Color.parseColor("#FFCC0000"))
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
@@ -629,45 +593,8 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startOCR() {
-        //TODO: support development
-        new CustomToast(this, "YOUR SUPPORT IS NEEDED FOR THIS..").setDuration(Toast.LENGTH_LONG).show();
 
-        //startActivityForResult(mgr.createScreenCaptureIntent(), CODE_FOR_SCREEN_CAPTURE);
+        startActivityForResult(mgr.createScreenCaptureIntent(), CODE_FOR_SCREEN_CAPTURE);
     }
-
-      /*
-    private void setupMenuButton() {
-        final ArrayList<Pair> piecesAndButtons = new ArrayList<>();
-        final BoomMenuButton bmb = (BoomMenuButton) findViewById(R.id.bmb_menu);
-        assert bmb != null;
-        bmb.setButtonEnum(ButtonEnum.TextInsideCircle);
-        bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_4_1);
-        bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_4_1);
-        bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Support me"));
-        bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Test"));
-        bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Supported Apps"));
-        bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("About "));
-
-        ListView listView = (ListView) findViewById(R.id.list_view);
-        assert listView != null;
-        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, Utils.getCircleButtonData(piecesAndButtons)));
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                bmb.setPiecePlaceEnum((PiecePlaceEnum) piecesAndButtons.get(position).first);
-                bmb.setButtonPlaceEnum((ButtonPlaceEnum) piecesAndButtons.get(position).second);
-                bmb.clearBuilders();
-
-                bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Support me"));
-                bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Test"));
-                bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("Supported Apps"));
-                bmb.addBuilder(new TextInsideCircleButton.Builder().normalText("About."));
-            }
-        });
-
-
-    }*/
-
 
 }
