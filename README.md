@@ -17,6 +17,7 @@
 
 
 * ### [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers/releases)
+* ### A new answer app for loco will be available [here](https://github.com/SubhamTyagi/loco-socket)
 
 ## See Demo on YouYube
 * ### [Here](https://youtu.be/H0LvFNW_svA)
