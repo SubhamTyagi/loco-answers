@@ -1,17 +1,22 @@
-# Say Hello to Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
-* A free,open source, ad free trivia helper app that respect user sentiments
-## Why Loko Hack
-* FREE ?? 
-* 90%+ Accuracy ?? 
-* Fast Speed ?? 
-* Ad Free ?? 
-* Most supported Trivia Games ?? 
-* Open Source :)
+[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) 
+![build](https://img.shields.io/badge/Build-pass-green.svg)
+![version](https://img.shields.io/badge/Version-1.7.5-red.svg)
+
+
+# Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+
+* A free, 100 % open source, ad free trivia helper app that respect user sentiments.
+## Features
+* FREE 
+* 90%+ Accuracy  
+* Fast Speed   
+* Most supported Trivia Games 
+* 100 % Open Source :)
 ## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 
-* ### [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers)
+* ### [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers/releases)
 
 ## See Demo on YouYube
 * ### [Here](https://youtu.be/H0LvFNW_svA)
@@ -25,17 +30,15 @@
 8. We Show 
 9. Mob Show
 10. Swag IQ
-11. KO Trivia*
-12. Cash Show*
-13. Total Trivia*
-14. Hang Time*
 
-* \* Not available for public
+## Contributor
+* Contributions accepted(always)
+
 ***
 ## Open Source License
 
     Copyright 2018 SHUBHAM TYAGI
-    Licensed under the FOLLOWING TERMS
+    Licensed under the FOLLOWING TERMS and as per GPL V3
     you may not use this file except in compliance with the License.
   
         you may do good and not evil.
@@ -49,4 +52,4 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   
-### if someone is interested in source code of my own app you can fill [this form](https://goo.gl/forms/1tSIAfNX9F2uAzgh2)
+
