@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.data.Which;
 
-import static ai.loko.hk.ui.data.Data.delete;
+import static ai.loko.hk.ui.data.Data.skip;
 import static ai.loko.hk.ui.utils.Utils.count;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedQuestion;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedString;
 import static ai.loko.hk.ui.utils.Utils.stringToArrayList;
 
 
+@Deprecated
 public class FindAnswers extends Which {
 
     // private static String TAG = "FindAnswers";
@@ -23,7 +24,7 @@ public class FindAnswers extends Which {
     private final String A;
     final private String B;
     final private String C;
-    //Question current;
+    //Answer current;
     //private boolean checkForNegative;
     //private boolean wikiDone;
     //static boolean isOcr;
@@ -35,7 +36,7 @@ public class FindAnswers extends Which {
 
     private int aSize, bSize, cSize;
 
-
+    @Deprecated
     public FindAnswers(String question, String optionA, String optionB, String optionC) {
         A = optionA.toLowerCase();
         B = optionB.toLowerCase();
@@ -120,7 +121,7 @@ public class FindAnswers extends Which {
             //  Log.d(TAG, "option3 prefix==" + sub3);
 
 
-            Document doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(sub1 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
+            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(sub1 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
             String text1 = doc.body().text().toLowerCase();
 
             A1.append(sub1).append("-");
@@ -133,7 +134,7 @@ public class FindAnswers extends Which {
             aSize = optionA.length;
 
             for (String words : optionA) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     p = count(words, text1);
                     a += p;
                     A1.append(words).append("(").append(p).append(") ");
@@ -142,7 +143,7 @@ public class FindAnswers extends Which {
                 }
             }
 
-            doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(sub2 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
+            doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(sub2 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
             String text2 = doc.body().text().toLowerCase();
 
             sub2 = B.substring(B.indexOf("-") + 1);
@@ -151,7 +152,7 @@ public class FindAnswers extends Which {
             bSize = optionB.length;
 
             for (String words : optionB) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     q = count(words, text2);
                     b += q;
                     B2.append(words).append("(").append(q).append(") ");
@@ -166,11 +167,11 @@ public class FindAnswers extends Which {
             String optionC[] = sub3.split(" ");
             cSize = optionC.length;
 
-            doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(sub3 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
+            doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(sub3 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
             String text3 = doc.body().text().toLowerCase();
 
             for (String words : optionC) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     r = count(words, text3);
                     c += r;
                     C3.append(words).append("(").append(r).append(") ");
@@ -286,14 +287,14 @@ public class FindAnswers extends Which {
                 return wikiBot(isNeg);
             }
 
-            Document doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(Data.getRandomUserAgent()).get();
+            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(Data.getRandomUserAgent()).get();
 
             String text = doc.body().text().toLowerCase();
             String optionA[] = A.split(" ");
             aSize = optionA.length;
 
             for (String words : optionA) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     p = count(words, text);
                     a += p;
                     A1.append(words).append("(").append(p).append(") ");
@@ -306,7 +307,7 @@ public class FindAnswers extends Which {
             bSize = optionB.length;
 
             for (String words : optionB) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     q = count(words, text);
                     b += q;
                     B2.append(words).append("(").append(q).append(") ");
@@ -319,7 +320,7 @@ public class FindAnswers extends Which {
             cSize = optionC.length;
 
             for (String words : optionC) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     r = count(words, text);
                     c += r;
                     C3.append(words).append("(").append(r).append(") ");

@@ -1,4 +1,4 @@
-package ai.loko.hk.ui;
+package ai.loko.hk.ui.services;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ai.loko.hk.ui.MainActivity;
+import ai.loko.hk.ui.activities.Forground;
 import ai.loko.hk.ui.data.Which;
 import ai.myfancy.button.iml.ActionProcessButton;
 import ui.R;
@@ -49,8 +51,6 @@ public class Floating extends Service {
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating, linearLayout);
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-
         //Add the view to the window.
 
         notification();
@@ -165,7 +165,7 @@ public class Floating extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String action =null;
+        String action = null;
 
         if (intent != null)
             action = intent.getAction();
@@ -173,15 +173,16 @@ public class Floating extends Service {
             String option11 = intent.getStringExtra("option1");
             String option22 = intent.getStringExtra("option2");
             String option33 = intent.getStringExtra("option3");
-            String s = intent.getStringExtra("optionRed");
 
-            //answer.setText(answer1);
+
+            String s = intent.getStringExtra("optionRed");
             option1.setText(option11);
             option2.setText(option22);
             option3.setText(option33);
 
+
             Which.itIsGoogle = true;
-           // wiki.setProgress(0);
+            // wiki.setProgress(0);
             getAnswer.setProgress(0);
             switch (s) {
                 case "a":

@@ -1,4 +1,4 @@
-package ai.loko.hk.ui;
+package ai.loko.hk.ui.utils;
 
 import android.content.Context;
 import android.os.Bundle;

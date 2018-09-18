@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ai.loko.hk.ui.MainActivity;
-import ai.loko.hk.ui.Test;
+import ai.loko.hk.ui.activities.Test;
 import ai.loko.hk.ui.model.NotificationD;
 import ui.R;
 

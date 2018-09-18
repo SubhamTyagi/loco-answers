@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:id="@+id/head"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#bee1e2e6"
-              android:orientation="vertical">
-
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#bee1e2e6"
+    android:id="@+id/head"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:padding="2dp">
 
         <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:padding="3dp"
             android:text="@string/a"
             android:textColor="@android:color/black"
@@ -26,9 +26,9 @@
 
         <TextView
             android:id="@+id/optionAtest"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_width="0dp"
             android:padding="3dp"
             android:text="@string/option_a"
             android:textColor="@android:color/black"
@@ -36,14 +36,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:padding="3dp">
 
         <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:padding="3dp"
             android:text="@string/b"
             android:textColor="@android:color/black"
@@ -52,9 +52,9 @@
 
         <TextView
             android:id="@+id/optionBtest"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_width="0dp"
             android:padding="3dp"
             android:text="@string/option_b"
             android:textColor="@android:color/black"
@@ -62,14 +62,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:padding="3dp">
 
         <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:padding="3dp"
             android:text="@string/c"
             android:textColor="@android:color/black"
@@ -78,9 +78,9 @@
 
         <TextView
             android:id="@+id/optionCtest"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_width="0dp"
             android:padding="3dp"
             android:text="@string/option_c"
             android:textColor="@android:color/black"
@@ -88,129 +88,132 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal">
-<!--
+        <!--
 
-        <Button
-            android:id="@+id/wiki"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="1dp"
-            android:layout_weight="1"
-            android:background="@android:color/holo_red_dark"
-            android:text="@string/advance"
-            android:textColor="@android:color/background_light"/>
+                <Button
+                    android:id="@+id/wiki"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_red_dark"
+                    android:text="@string/advance"
+                    android:textColor="@android:color/background_light"/>
 
-        <Button
-            android:id="@+id/getanswer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                <Button
+                    android:id="@+id/getanswer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-            android:layout_marginStart="1dp"
-            android:layout_weight="1"
-            android:background="@android:color/holo_green_light"
-            android:padding="3dp"
-            android:text="@string/simple"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="16sp"/>
--->
+                    android:layout_marginStart="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_green_light"
+                    android:padding="3dp"
+                    android:text="@string/simple"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="16sp"/>
+        -->
 
 
         <ai.myfancy.button.iml.ActionProcessButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/wiki1"
-            android:textColor="@android:color/background_light"
-            android:text="@string/advance"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:text="@string/advance"
+            android:textColor="@android:color/background_light"
 
-            app:pb_colorNormal="@android:color/holo_red_dark"
-            app:pb_textComplete="@string/advance"
-            app:pb_textProgress="Finding.."
-            app:pb_textError="Error"
             android:textSize="16sp"
+            app:pb_colorNormal="@android:color/holo_red_dark"
             app:pb_colorPressed="@android:color/holo_blue_light"
+            app:pb_textComplete="@string/advance"
+            app:pb_textError="Error"
+            app:pb_textProgress="Finding.."
             />
 
 
         <ai.myfancy.button.iml.ActionProcessButton
-            android:layout_width="match_parent"
+            android:id="@+id/getanswer1"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:id="@+id/getanswer1"
-            android:text="@string/simple"
-            android:textSize="16sp"
-            android:textColor="@android:color/background_light"
             android:layout_weight="1"
+            android:layout_width="match_parent"
             android:padding="3dp"
+            android:text="@string/simple"
             android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+
+            android:textSize="16sp"
             app:pb_colorNormal="@android:color/holo_green_light"
-            app:pb_textComplete="@string/simple"
-            app:pb_textProgress="Finding.."
-            app:pb_colorProgress="@android:color/holo_green_dark"
-            app:pb_textError="Error"
             app:pb_colorPressed="@android:color/holo_blue_light"
+            app:pb_colorProgress="@android:color/holo_green_dark"
+            app:pb_textComplete="@string/simple"
+            app:pb_textError="Error"
+
+            app:pb_textProgress="Finding.."
 
             />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_width="match_parent"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            android:layout_width="match_parent">
 
             <android.support.design.widget.TextInputEditText
+                android:hint="@string/enter_question"
                 android:id="@+id/q_test"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/enter_question"/>
+                android:layout_width="match_parent"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            android:layout_width="match_parent">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/a_test"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:hint="@string/option_a"
+                android:id="@+id/a_test"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
                 tools:ignore="HardcodedText"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            android:layout_width="match_parent">
 
             <android.support.design.widget.TextInputEditText
+                android:hint="@string/option_b"
+
                 android:id="@+id/b_test"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/option_b"/>
+                android:layout_width="match_parent"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             >
 
             <android.support.design.widget.TextInputEditText
+                android:hint="@string/option_c"
                 android:id="@+id/c_test"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/option_c"/>
+                android:layout_width="match_parent"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 

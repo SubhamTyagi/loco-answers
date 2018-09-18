@@ -1,10 +1,15 @@
-package ai.loko.hk.ui;
+package ai.loko.hk.ui.activities;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Bundle;
 
+import ai.loko.hk.ui.Accessibility;
+
+/**
+ * The type Forground.
+ */
 public class Forground extends Activity {
 
     @Override
@@ -15,7 +20,7 @@ public class Forground extends Activity {
     }
 
     private boolean isServiceRunning() {
-        Class<?> serviceClass = Accessibilty.class;
+        Class<?> serviceClass = Accessibility.class;
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {

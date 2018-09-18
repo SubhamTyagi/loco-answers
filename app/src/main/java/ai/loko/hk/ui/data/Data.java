@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-/**
- * Some data..
- */
-public class Data {
-    public static final String GOOGLE_URL = "https://www.google.com/search?q=";
 
-    public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64)";
-    public static String delete = "the of a an ? & and , in -";
+public class Data {
+    public static  String BASE_SEARCH_URL = "https://www.google.com/search?q=";
+        //public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64)";
+    public static String skip = "the of a an ? & and , in - ";
     private static final String[] remove = {"name",
             "does", "do", "is", "am", "are", "have", "has", "been", "did", "was", "not", "least", "never", "don't", "haven't", "didn't", "wasn't", "except", "wouldn't", "itsn't",
             "were", "had", "will", "would", "shall", "can", "should", "could", "may", "might", "need", "come", "comes", "means",
@@ -59,8 +56,8 @@ public class Data {
 
     //RETURN RANDOM USER AGENT:
     public static String getRandomUserAgent(){
-        Random random=new Random(System.currentTimeMillis());
-        return USER_AGENT_1[random.nextInt(USER_AGENT_1.length-1)];
+        Random random=new Random();
+        return USER_AGENT_1[random.nextInt(USER_AGENT_1.length)];
     }
 
 }

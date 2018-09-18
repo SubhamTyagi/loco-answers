@@ -1,7 +1,5 @@
 package ai.loko.hk.ui.answers;
 
-import android.os.AsyncTask;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -31,7 +29,7 @@ class WikiSearch extends Thread{
     @Override
     public void run() {
         try {
-            Document option1wiki = Jsoup.connect(Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(simplifiedQuestion + " " + option + " wiki", "UTF-8") + "&num=2").userAgent(Data.getRandomUserAgent()).get().select(".g>.r>a").get(0).absUrl("href")).userAgent(Data.getRandomUserAgent()).get();
+            Document option1wiki = Jsoup.connect(Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + option + " wiki", "UTF-8") + "&num=2").userAgent(Data.getRandomUserAgent()).get().select(".g>.r>a").get(0).absUrl("href")).userAgent(Data.getRandomUserAgent()).get();
             String t1 = option1wiki.body().text().toLowerCase();
             String text11 = getSimplifiedString(t1, null);
             for (String word : simplifiedQuestionList) {

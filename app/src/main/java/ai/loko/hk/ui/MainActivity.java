@@ -1,24 +1,27 @@
 package ai.loko.hk.ui;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,7 +30,6 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,7 +44,17 @@ import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.ButtonEnum;
 import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
-import ai.loko.hk.ui.ocr.OCRFloating;
+import java.io.File;
+
+import ai.loko.hk.ui.activities.ProfileActivity;
+import ai.loko.hk.ui.activities.Test;
+import ai.loko.hk.ui.constants.Constant;
+import ai.loko.hk.ui.data.Data;
+import ai.loko.hk.ui.ocr.MediaProjectionHelper;
+import ai.loko.hk.ui.services.Floating;
+import ai.loko.hk.ui.services.OCRFloating;
+import ai.loko.hk.ui.activities.SettingsActivity;
+import ai.loko.hk.ui.utils.Logger;
 import ai.myfancy.dialog.Animation;
 import ai.myfancy.dialog.FancyAlertDialog;
 import ai.myfancy.dialog.FancyAlertDialogListener;
@@ -54,66 +66,37 @@ import ui.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String EXTRA_RESULT_CODE = "resultCode";
-    public static final String EXTRA_RESULT_INTENT = "resultIntent";
-    //TODO:
-    private final static int VERSION = 17;
-    private static final boolean DEBUG = BuildConfig.DEBUG;
-
-    private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
-    private static final int CODE_FOR_SCREEN_CAPTURE = 13493;
-
-    private static final String LATEST = "latest";
-
-    final Handler mHandler = new Handler();
-
-    InterstitialAd mInterstitialAd;
-
-    boolean isFirst, isFirstFacebook;
-    MediaProjectionManager mgr;
-    FirebaseAnalytics mFirebaseAnalytics;
-    Intent floatingIntent;
-
-    private Intent screenshotIntent;
-    private Button overlayPermmission, accessibilityPermission, startStopBtn, ocr;
+    private final Handler mHandler = new Handler();
+    SharedPreferences sharedPref;
+    private InterstitialAd mInterstitialAd;
+    //private boolean isFirst;
+    private MediaProjectionManager mMediaProjectionManager;
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private Intent mFloatingIntent;
+    private Intent mScreenshotIntent;
+    private Button mOverlayPermmissionBtn, mAccessibilityPermissionBtn, startStopBtn, ocrBtn;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
-
-    private int openCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Fabric.with(this, new Crashlytics());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Logger.initialize(this);
-        floatingIntent = new Intent(MainActivity.this, Floating.class);
-        isFirst = true;
-        isFirstFacebook = true;
+        mFloatingIntent = new Intent(MainActivity.this, Floating.class);
+        mScreenshotIntent = new Intent(this, OCRFloating.class);
 
+//        isFirst = false;
+        takeStoragePermission();
         setupActionBar();
-        // setupMenuButton();
-        overlayPermmission = findViewById(R.id.olpermission);
-        accessibilityPermission = findViewById(R.id.accpermission1);
+        //setupAds();
+
+        mOverlayPermmissionBtn = findViewById(R.id.olpermission);
+        mAccessibilityPermissionBtn = findViewById(R.id.accpermission1);
         startStopBtn = findViewById(R.id.start);
-        ocr = findViewById(R.id.ocr_btn);
-
-
-        overlayPermmission.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                giveOverlayPermission();
-            }
-        });
-
-        accessibilityPermission.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                giveAccessibilityPermission();
-            }
-        });
-
+        ocrBtn = findViewById(R.id.ocr_btn);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         startStopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,23 +104,44 @@ public class MainActivity extends AppCompatActivity {
                 startFloatingWindow();
             }
         });
-
-        //TODO: Enable Ads
-        setupAds();
-
-        getUpdate();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setupOCR();
         } else {
-            ocr.setVisibility(View.GONE);
+            ocrBtn.setVisibility(View.GONE);
         }
-       /* ocr.setOnClickListener(new View.OnClickListener() {
+
+        givePermission();
+        getUpdate();
+        File directory = new File(Constant.path);
+        directory.mkdirs();
+    }
+
+    private void takeStoragePermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.SYSTEM_ALERT_WINDOW,
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.GET_TASKS
+                },
+                2);
+    }
+
+    private void givePermission() {
+        mOverlayPermmissionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,GetLicence.class));
+            public void onClick(View v) {
+                giveOverlayPermission();
             }
-        });*/
+        });
+
+        mAccessibilityPermissionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                giveAccessibilityPermission();
+            }
+        });
     }
 
     public void startFloatingWindow() {
@@ -146,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             startStopBtn.setText(R.string.start);
             startStopBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
             //closeNotification();
-            stopService(floatingIntent);
+            stopService(mFloatingIntent);
         } else {
             if (canOverdraw()) {
                 if (isAccessibilityEnabled()) {
@@ -154,7 +158,9 @@ public class MainActivity extends AppCompatActivity {
                     startStopBtn.setText(R.string.stop);
                     startStopBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
                     // showNotification();
-                    startService(floatingIntent);
+                    startService(mFloatingIntent);
+                    //isFirst = true;
+                    showInterstitialAds();
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -179,29 +185,22 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater mInflater = LayoutInflater.from(this);
 
         View actionBar = mInflater.inflate(R.layout.actionbar, null);
-        TextView mTitleTextView = (TextView) actionBar.findViewById(R.id.title_text);
+        TextView mTitleTextView = actionBar.findViewById(R.id.title_text);
         mTitleTextView.setText(R.string.app_name);
         mActionBar.setCustomView(actionBar);
         mActionBar.setDisplayShowCustomEnabled(true);
         ((Toolbar) actionBar.getParent()).setContentInsetsAbsolute(0, 0);
 
-        // BoomMenuButton leftBmb = (BoomMenuButton) actionBar.findViewById(R.id.action_bar_left_bmb);
         BoomMenuButton rightBmb = actionBar.findViewById(R.id.action_bar_right_bmb);
-
-        //leftBmb.setButtonEnum(ButtonEnum.TextOutsideCircle);
-        //leftBmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_9_1);
-        //leftBmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_9_1);
-        //for (int i = 0; i < leftBmb.getPiecePlaceEnum().pieceNumber(); i++)
-        // leftBmb.addBuilder(BuilderManager.getTextOutsideCircleButtonBuilder());
 
         rightBmb.setButtonEnum(ButtonEnum.Ham);
         rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
         rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
-        //for (int i = 0; i < rightBmb.getPiecePlaceEnum().pieceNumber(); i++)
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_attach_money_black_24dp).subNormalText("Your contribution is need to make this app great").normalText("Repository").listener(new OnBMClickListener() {
+
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_settings_black_24dp).subNormalText("Common Settings related to App,Search Engine").normalText("Settings").listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/subhamtyagi/loco-answers")));
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
             }
         }));
@@ -229,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings;
-        if (DEBUG) {
+        if (Constant.DEBUG) {
             configSettings = new FirebaseRemoteConfigSettings.Builder()
                     .setDeveloperModeEnabled(BuildConfig.DEBUG)
                     .build();
@@ -254,11 +253,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        int latest = Integer.valueOf(mFirebaseRemoteConfig.getString(LATEST));
+        int latest = Integer.valueOf(mFirebaseRemoteConfig.getString(Constant.LATEST));
 
         //Log.i(TAG, "getUpdate: "+latest);
 
-        if (latest - VERSION > 1) {
+        if (latest - Constant.VERSION > 1) {
             new FancyAlertDialog.Builder(this).setAnimation(Animation.SLIDE)
                     .setTitle("Update is Available")
                     //.setMessage("This app is Developed by Shubham Tyagi(shubham2tyagi7@gmail.com)\nApp is in Development\nVersion:0.1")
@@ -274,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert, Icon.Visible).build();
-        } else if (latest > VERSION) {
+        } else if (latest > Constant.VERSION) {
             new FancyAlertDialog.Builder(this).setAnimation(Animation.SLIDE)
                     .setTitle("Update is Available")
                     //.setMessage("This app is Developed by Shubham Tyagi(shubham2tyagi7@gmail.com)\nApp is in Development\nVersion:0.1")
@@ -306,23 +305,19 @@ public class MainActivity extends AppCompatActivity {
     private void setupAds() {
 
         String appId = "ca-app-pub-4301584724850632~9402202755";
-        String adIntersitial = "ca-app-pub-4301584724850632/1930906844 ";
+        //String adInterstitial = "ca-app-pub-4301584724850632/1930906844 ";
+        String adInterstitial2 = "ca-app-pub-4301584724850632/5990069101";
 
         //  String adBanner = "ca-app-pub-4301584724850632/8429171472";
-
         String testId = "ca-app-pub-3940256099942544/5224354917";
-        //String testIDbanner = "ca-app-pub-3940256099942544/6300978111";
+        MobileAds.initialize(this, Constant.DEBUG ? testId : appId);
 
+        //AdView mAdView = findViewById(R.id.adView);
+        //AdRequest adRequest = new AdRequest.Builder().build();
+        //mAdView.loadAd(adRequest);
 
-        MobileAds.initialize(getApplicationContext(), DEBUG ? testId : appId);
-
-        AdView mAdView = findViewById(R.id.adView);
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-        mInterstitialAd = new InterstitialAd(getApplicationContext());
-        mInterstitialAd.setAdUnitId(DEBUG ? testId : adIntersitial);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(Constant.DEBUG ? testId : adInterstitial2);
         loadInterstitialAds();
         showInterstitialAds();
 
@@ -330,53 +325,41 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
-                if (isFirst) {
-                    showInterstitialAds();
-                    isFirst = false;
-                }
+                // if (isFirst) {
+                //    showInterstitialAds();
+                //    isFirst = false;
+                // }
+                Log.d("ADS", "onAdLoaded: add loaded");
             }
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 // Code to be executed when an ad request fails.
+                Log.d("ADS", "onAdFailedToLoad: errorCode" + errorCode);
                 loadInterstitialAds();
 
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when the ad is displayed.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
             }
 
             @Override
             public void onAdClosed() {
-                // Code to be executed when when the interstitial ad is closed.
                 loadInterstitialAds();
-
             }
-
         });
-
     }
 
     private void loadInterstitialAds() {
         if (!mInterstitialAd.isLoaded())
-            if (DEBUG)
+            if (Constant.DEBUG)
                 mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("A6967EDFD302F200CB79E422827FFD16").build());
             else
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
     }
 
     private void showInterstitialAds() {
-        if (mInterstitialAd.isLoaded()) {
+        if (mInterstitialAd.isLoaded())
             mInterstitialAd.show();
-            //loadInterstitialAds();
-        }
+        loadInterstitialAds();
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {
@@ -392,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isAccessibilityEnabled() {
         int accessibilityEnabled = 0;
-        final String ACCESSIBILITY_SERVICE = "ai.loko.hk.ui/ai.loko.hk.ui.Accessibilty";
+        final String ACCESSIBILITY_SERVICE = "ai.loko.hk.ui/ai.loko.hk.ui.Accessibility";
         try {
             accessibilityEnabled = Settings.Secure.getInt(this.getContentResolver(), android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
         } catch (Settings.SettingNotFoundException e) {
@@ -427,9 +410,9 @@ public class MainActivity extends AppCompatActivity {
         //&& !SearchSettings.canDrawOverlays(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+            startActivityForResult(intent, Constant.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
-            overlayPermmission.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
             Toast.makeText(this, "You do not need it", Toast.LENGTH_SHORT).show();
         }
     }
@@ -437,18 +420,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case CODE_DRAW_OVER_OTHER_APP_PERMISSION:
+            case Constant.CODE_DRAW_OVER_OTHER_APP_PERMISSION:
                 //Check if the permission is granted or not.
                 if (resultCode == RESULT_OK) {
-                    overlayPermmission.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+                    mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
                 }
                 break;
-            case CODE_FOR_SCREEN_CAPTURE:
+            case Constant.CODE_FOR_SCREEN_CAPTURE:
                 if (resultCode == RESULT_OK) {
-                    //Intent i = new Intent(this, ScreenshotService.class).putExtra(ScreenshotService.EXTRA_RESULT_CODE, resultCode).putExtra(ScreenshotService.EXTRA_RESULT_INTENT, data);
-                    screenshotIntent = new Intent(this, OCRFloating.class).putExtra(EXTRA_RESULT_CODE, resultCode).putExtra(EXTRA_RESULT_INTENT, data);
-                    startService(screenshotIntent);
-                    ///finish();
+                    MediaProjectionHelper.setMediaProjectionManager(mMediaProjectionManager);
+                    MediaProjectionHelper.setScreenshotPermission(data);
+                    startService(mScreenshotIntent);
+                    finish();
 
                 }
                 break;
@@ -461,18 +444,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
 
+        if (sharedPref.getBoolean(getString(R.string.custom_search_engine), false))
+            Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.custom_search_engine_url), "https://www.google.com/search?q=");
+        else
+            Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.search_engine_key), "https://www.google.com/search?q=");
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
-            overlayPermmission.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         } else {
-            overlayPermmission.setBackgroundColor(getResources().getColor(R.color.btnred));
+            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            overlayPermmission.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
         if (isAccessibilityEnabled()) {
-            accessibilityPermission.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            mAccessibilityPermissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         } else {
-            accessibilityPermission.setBackgroundColor(getResources().getColor(R.color.btnred));
+            mAccessibilityPermissionBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
         }
 
         if (isServiceRunning(Floating.class)) {
@@ -483,47 +471,18 @@ public class MainActivity extends AppCompatActivity {
             startStopBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
         if (isServiceRunning(OCRFloating.class)) {
-            ocr.setText(R.string.ocr_btn_txt_stop);
-            ocr.setBackgroundColor(getResources().getColor(R.color.btnred));
+            ocrBtn.setText(R.string.ocr_btn_txt_stop);
+            ocrBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
         } else {
-            ocr.setText(R.string.ocr_btn_txt);
-            ocr.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            ocrBtn.setText(R.string.ocr_btn_txt);
+            ocrBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
-        //storePresfs();
         super.onResume();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.about: {
-                about();
-                break;
-            }
-            case R.id.menu_test: {
-                startActivity(new Intent(this, Test.class));
-                break;
-            }
-            case R.id.supportme: {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://paypal.me/shubhamtyagi1")));
-                break;
-            }
-            case R.id.supportedapps: {
-                supportedApps();
-                break;
-            }
-        }
-        return true;
     }
 
     private void about() {
         new FancyAlertDialog.Builder(this).setAnimation(Animation.SLIDE)
-                .setTitle("LOKO HACK VERSION 1.7.6")
+                .setTitle("LOKO HACK VERSION 1.7.7")
                 .setMessage("Do you want to support ")
                 .setPositiveBtnBackground(Color.parseColor("#388d3b"))
                 .setBackgroundColor(Color.parseColor("#d1245e"))
@@ -569,22 +528,26 @@ public class MainActivity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_info, Icon.Visible).build();
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setupOCR() {
-        mgr = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
-        ocr.setOnClickListener(new View.OnClickListener() {
+        mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+
+        ocrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isServiceRunning(OCRFloating.class)) {
-                    ocr.setText(R.string.ocr_btn_txt_stop);
-                    ocr.setBackgroundColor(getResources().getColor(R.color.btnred));
-                    startOCR();
+                if (canOverdraw()) {
+                    if (!isServiceRunning(OCRFloating.class)) {
+                        ocrBtn.setText(R.string.ocr_btn_txt_stop);
+                        ocrBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
+                        startOCR();
+                    } else {
+                        ocrBtn.setText(R.string.ocr_btn_txt);
+                        ocrBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+                        //closeNotification();
+                        stopService(mScreenshotIntent);
+                    }
                 } else {
-                    ocr.setText(R.string.ocr_btn_txt);
-                    ocr.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-                    //closeNotification();
-                    stopService(screenshotIntent);
+                    giveOverlayPermission();
                 }
             }
         });
@@ -593,8 +556,10 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startOCR() {
+        //showInterstitialAds();
+        //startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), Constant.CODE_FOR_SCREEN_CAPTURE);
 
-        startActivityForResult(mgr.createScreenCaptureIntent(), CODE_FOR_SCREEN_CAPTURE);
+        startActivity(new Intent(this, ProfileActivity.class));
     }
 
 }

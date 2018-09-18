@@ -2,16 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="ui">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
-
-    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> -->
     <application
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
@@ -22,24 +19,29 @@
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         <activity
             android:name="ai.loko.hk.ui.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="ai.loko.hk.ui.Forground"/>
-        <activity android:name="ai.loko.hk.ui.Test">
+        <activity android:name="ai.loko.hk.ui.activities.Forground"/>
+        <activity android:name="ai.loko.hk.ui.activities.Test">
         </activity>
 
         <service
-            android:name="ai.loko.hk.ui.Floating"
+            android:name="ai.loko.hk.ui.services.Floating"
             android:enabled="true"
             android:exported="true">
         </service>
         <service
-            android:name="ai.loko.hk.ui.Accessibilty"
+            android:name="ai.loko.hk.ui.services.OCRFloating"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+        <service
+            android:name="ai.loko.hk.ui.Accessibility"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
@@ -62,18 +64,24 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-        <service android:name="ai.loko.hk.ui.ocr.OCRFloating"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="87d0d959fa9b880a5f2cfed1a1707f4a6c41504e"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4301584724850632~9402202755"/>
 
-       <!-- <activity
-            android:name="ai.loko.hk.ui.GetLicence"
-            android:label="@string/title_activity_get_licence">
+        <activity
+            android:name="ai.loko.hk.ui.activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme">
         </activity>
-        <activity android:name="ai.loko.hk.ui.SetLicenceDetails">
-        </activity>-->
+        <activity
+            android:name="ai.loko.hk.ui.activities.ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/NoActionBar">
+        </activity>
     </application>
 
 </manifest>

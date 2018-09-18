@@ -13,14 +13,12 @@ import java.util.ArrayList;
 import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.model.Question;
 
-//import static ai.loko.hk.ui.data.Data.USER_AGENT;
-import static ai.loko.hk.ui.data.Data.delete;
+import static ai.loko.hk.ui.data.Data.skip;
 import static ai.loko.hk.ui.data.Data.getRandomUserAgent;
 import static ai.loko.hk.ui.utils.Utils.count;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedQuestion;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedString;
 import static ai.loko.hk.ui.utils.Utils.stringToArrayList;
-
 
 public class Engine extends Base {
     private final String TAG = "Engine";
@@ -70,7 +68,7 @@ public class Engine extends Base {
             aSize = optionA.length;
 
             for (String words : optionA) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     p = count(words, text1);
                     a += p;
                     A1.append(words).append("(").append(p).append(") ");
@@ -87,7 +85,7 @@ public class Engine extends Base {
             bSize = optionB.length;
 
             for (String words : optionB) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     q = count(words, text2);
                     b += q;
                     B2.append(words).append("(").append(q).append(") ");
@@ -103,7 +101,7 @@ public class Engine extends Base {
             String text3 = getResponseFromGoogle(simplifiedQuestion, sub3);
 
             for (String words : optionC) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     r = count(words, text3);
                     c += r;
                     C3.append(words).append("(").append(r).append(") ");
@@ -172,14 +170,14 @@ public class Engine extends Base {
 
             }
 
-            Document doc = Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(getRandomUserAgent()).get();
+            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(getRandomUserAgent()).get();
             String text = doc.body().text().toLowerCase();
 
             String optionAsplit[] = optionA.split(" ");
             aSize = optionAsplit.length;
 
             for (String words : optionAsplit) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     p = count(words, text);
                     a += p;
                     A1.append(words).append("(").append(p).append(") ");
@@ -192,7 +190,7 @@ public class Engine extends Base {
             bSize = optionBsplit.length;
 
             for (String words : optionBsplit) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     q = count(words, text);
                     b += q;
                     B2.append(words).append("(").append(q).append(") ");
@@ -205,7 +203,7 @@ public class Engine extends Base {
             cSize = optionCsplit.length;
 
             for (String words : optionCsplit) {
-                if (!delete.contains(words)) {
+                if (!skip.contains(words)) {
                     r = count(words, text);
                     c += r;
                     C3.append(words).append("(").append(r).append(") ");
@@ -267,7 +265,7 @@ public class Engine extends Base {
 
         first.start();
         second.start();
-       third.start();
+        third.start();
         try {
             third.join();
             second.join();
@@ -330,12 +328,13 @@ public class Engine extends Base {
                 optionRed = "c";
             }
         }
+
         return optionRed;
     }
 
     @NonNull
     private String getResponseFromGoogle(String simplifiedQuestion, String sub) throws IOException {
-        return Jsoup.connect(Data.GOOGLE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=10").userAgent(getRandomUserAgent()).get().body().text().toLowerCase();
+        return Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=10").userAgent(getRandomUserAgent()).get().body().text().toLowerCase();
     }
 }
 
