@@ -10,6 +10,7 @@
 ## Features
 * FREE 
 * 90%+ Accuracy  
+* No ads
 * Fast Speed   
 * Most supported Trivia Games 
 * 100 % Open Source :)
