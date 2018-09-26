@@ -45,7 +45,7 @@
 10. Swag IQ
 
 ## Contributor
-* Shubham Tyagi
+* [Shubham Tyagi](subhamtyagi.github.io)
 * Contributions accepted(always)
 
 ***
