@@ -1,7 +1,8 @@
 
+
 [![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) 
 ![build](https://img.shields.io/badge/Build-pass-green.svg)
-![version](https://img.shields.io/badge/Version-1.7.7-red.svg)
+![version](https://img.shields.io/badge/Version-2.0-red.svg)
 
 
 # Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
@@ -10,18 +11,29 @@
 ## Features
 * FREE 
 * 90%+ Accuracy  
-* No ads
-* Fast Speed   
+* Fast Speed
+* Ads free
 * Most supported Trivia Games 
 * 100 % Open Source :)
 ## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 
 * ### [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers/releases)
+## Screens
+
+
+<p align="center">
+  <img src="https://github.com/SubhamTyagi/loco-answers/blob/master/screenshots/home.jpg" width="320" height="480" title="Home">
+   <img src="https://github.com/SubhamTyagi/loco-answers/blob/master/screenshots/profile.jpg" width="320" height="480" title="profile">
+    <img src="https://github.com/SubhamTyagi/loco-answers/blob/master/screenshots/settings.jpg" width="320" height="480" title="settings">
+     <img src="https://github.com/SubhamTyagi/loco-answers/blob/master/screenshots/search.jpg" width="320" height="480" title="Search">
+      <img src="https://github.com/SubhamTyagi/loco-answers/blob/master/screenshots/language.jpg" width="320" height="480" title="language">
+</p>
 
 ## See Demo on YouYube
 * ### [Here](https://youtu.be/H0LvFNW_svA)
 ## Supported Apps
+* By using OCR you can use this app in all trivia games, Following apps are also supported by Accessibility. 
 1. Loco `version 2.1.9 or older`
 2. Brainbazzi `2.0.4 or older`
 3. Qureka `latest 1.0.30 or older`
@@ -33,6 +45,7 @@
 10. Swag IQ
 
 ## Contributor
+* Shubham Tyagi
 * Contributions accepted(always)
 
 ***
