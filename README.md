@@ -45,8 +45,6 @@
 | Settings |Search| 
 |:-:|:-:|
 |![Settings](/.github/assets/settings.jpg?raw=true "Settings") | ![profile](/.github/assets/search.jpg?raw=true "Search")|
-
-| Language |
 | ![Language](/.github/assets/language.jpg?raw=true "Language")|
 
 ## External Credits
