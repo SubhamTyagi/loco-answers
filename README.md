@@ -33,8 +33,13 @@
 9. Mob Show
 10. Swag IQ
 
+<<<<<<< HEAD
 ## Contribution
 * [Shubham Tyagi](https://subhamtyagi.github.io/) and his supporter
+=======
+## Contributor
+* [Shubham Tyagi](https://subhamtyagi.github.io)
+>>>>>>> 812243b15fa170d85b2e880b0f70888a7056c486
 * Contributions accepted(always)
 
 ## Screenshots
