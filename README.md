@@ -1,6 +1,3 @@
-
-
-
 [![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) 
 ![version](https://img.shields.io/badge/Version-2.0-green.svg)
 
@@ -45,6 +42,7 @@
 | Settings |Search| 
 |:-:|:-:|
 |![Settings](/.github/assets/settings.jpg?raw=true "Settings") | ![profile](/.github/assets/search.jpg?raw=true "Search")|
+|Language|
 | ![Language](/.github/assets/language.jpg?raw=true "Language")|
 
 ## External Credits
