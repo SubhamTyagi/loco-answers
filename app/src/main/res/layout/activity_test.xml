@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#bee1e2e6"
     android:id="@+id/head"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#bee1e2e6"
     android:orientation="vertical">
 
     <LinearLayout
@@ -119,12 +119,12 @@
         -->
 
 
-        <ai.myfancy.button.iml.ActionProcessButton
+        <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/wiki1"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:layout_marginEnd="2dp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
             android:text="@string/advance"
             android:textColor="@android:color/background_light"
 
@@ -137,7 +137,7 @@
             />
 
 
-        <ai.myfancy.button.iml.ActionProcessButton
+        <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/getanswer1"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
@@ -167,40 +167,40 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_weight="0">
 
             <android.support.design.widget.TextInputEditText
-                android:hint="@string/enter_question"
+                android:layout_width="match_parent"
                 android:id="@+id/q_test"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"/>
+                android:hint="@string/enter_question"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_weight="0">
 
             <android.support.design.widget.TextInputEditText
-                android:hint="@string/option_a"
-                android:id="@+id/a_test"
                 android:layout_height="wrap_content"
+                android:id="@+id/a_test"
+                android:hint="@string/option_a"
                 android:layout_width="match_parent"
                 tools:ignore="HardcodedText"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_weight="0">
 
             <android.support.design.widget.TextInputEditText
-                android:hint="@string/option_b"
+                android:layout_width="match_parent"
 
                 android:id="@+id/b_test"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"/>
+                android:hint="@string/option_b"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -210,10 +210,10 @@
             >
 
             <android.support.design.widget.TextInputEditText
-                android:hint="@string/option_c"
+                android:layout_width="match_parent"
                 android:id="@+id/c_test"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"/>
+                android:hint="@string/option_c"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 

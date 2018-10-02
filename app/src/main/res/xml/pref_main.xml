@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~   Copyright (C) 2018 SHUBHAM TYAGI
+  ~
+  ~    This file is part of LoKo HacK.
+  ~     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+  ~     use this file except in compliance with the License. You may obtain a copy of
+  ~     the License at
+  ~
+  ~     https://www.gnu.org/licenses/gpl-3.0
+  ~
+  ~    LoKo hacK is free software: you can redistribute it and/or modify
+  ~    it under the terms of the GNU General Public License as published by
+  ~    the Free Software Foundation, either version 3 of the License, or
+  ~    (at your option) any later version.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  ~     Unless required by applicable law or agreed to in writing, software
+  ~     distributed under the License is distributed on an "AS IS" BASIS,
+  ~     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~     See the License for the specific language governing permissions and
+  ~     limitations under the License.
+  ~
+  ~
+  -->
+
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         android:title="Search Engine">
-
     </PreferenceCategory>
     <ListPreference
-        android:defaultValue="1"
+        android:defaultValue="https://www.google.com/search?q="
         android:entries="@array/list_preference_search_engine"
         android:entryValues="@array/list_preference_url_list"
         android:key="@string/search_engine_key"
@@ -18,17 +45,36 @@
         android:summary="Set full qualified url in below box "
         android:title="Custom Search Engine"/>
     <EditTextPreference
-        android:defaultValue="Default value"
+        android:defaultValue="https://www.google.com/search?q="
+        android:dependency="@string/custom_search_engine"
         android:key="@string/custom_search_engine_url"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:summary="Fill fully Qualified URL(if this is wrong than loko hack will not work)"
+        android:summary="Fill fully Qualified URL(if this is wrong than LoKo HacK will not work)"
         android:title="Custom Search Engine URL"/>
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/tesseract"
+        android:summary="@string/tesseract_detaill"
+        android:title="@string/tesseract_title"/>
+    <ListPreference
+        android:defaultValue="en"
+        android:dependency="@string/tesseract"
+        android:entries="@array/ocr_engine_lanuage"
+        android:entryValues="@array/ocr_engine_language_value"
+        android:key="@string/language_for_tesseract"
+        android:summary="@string/language"
+        android:title="@string/tess_language_title"/>
+    <!--<SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/grayscale_image_ocr"
+        android:summary="@string/gray_scale_detail"
+        android:title="@string/use_gray_scale_image_for_ocr"/>-->
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/save_image_and_file_to_storage_key"
+        android:summary="@string/image_storage_details"
+        android:title="@string/image_storage_titile"/>
 
-    <!--<Preference android:title="Check Custom URL">
-    <intent
-        android:action="android.intent.action.VIEW"
-        android:data="" />
-    </Preference>
--->
+
 </PreferenceScreen>

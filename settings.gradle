@@ -1,1 +1,2 @@
-include ':app', ':dialog', ':button', ':boommenu'
+include ':app', ':crashreporter'
+//, ':dialog', ':button', ':boommenu', ':crashreporter'

@@ -49,7 +49,7 @@
 
  1. [Weiping Huang](https://nightonke.outlook.io) for [BoomMenu](https://github.com/Nightonke/BoomMenu).
  2. [Danylyk Dmytro](https://dmytrodanylyk.com/) for  [Process Button](https://github.com/dmytrodanylyk/android-process-button).
- 3. [Shashank Singhal](Shashank02051997.github.io) for [Fancy Alert Dialog](https://github.com/Shashank02051997/FancyAlertDialog-Android).
+ 3. [Anton]( https://vk.com/f0ris) for [Sweet Alert dialog](https://github.com/F0RIS/sweet-alert-dialog).
  4. [Bal Sikandar](balsikandar.github.io) for [CrashReporter](https://github.com/MindorksOpenSource/CrashReporter).
  5. [Robert Theis](http://www.rmtheis.com/) for [Tesseract Tools for Android](https://github.com/rmtheis/tess-two).
  6. [Kamran](http://kamranzafar.github.com/) for [Jtar](https://github.com/kamranzafar/jtar).

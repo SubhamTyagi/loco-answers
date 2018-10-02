@@ -1,3 +1,31 @@
+/*
+ *   Copyright (C) 2018 SHUBHAM TYAGI
+ *
+ *    This file is part of LoKo HacK.
+ *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+ *     use this file except in compliance with the License. You may obtain a copy of
+ *     the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0
+ *
+ *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ *
+ */
+
 package ai.loko.hk.ui.services;
 
 import android.annotation.SuppressLint;
@@ -19,10 +47,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dd.processbutton.iml.ActionProcessButton;
+
 import ai.loko.hk.ui.MainActivity;
-import ai.loko.hk.ui.activities.Forground;
+import ai.loko.hk.ui.activities.ForegroundActivity;
 import ai.loko.hk.ui.data.Which;
-import ai.myfancy.button.iml.ActionProcessButton;
+
 import ui.R;
 
 
@@ -157,10 +187,10 @@ public class Floating extends Service {
 
     //GENERATE
     private void setAnswers() {
-        Intent i = new Intent(getApplicationContext(), Forground.class);
+        Intent i = new Intent(getApplicationContext(), ForegroundActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
-        //getApplicationContext().startActivity(new Intent(getApplicationContext(),Forground.class));
+        //getApplicationContext().startActivity(new Intent(getApplicationContext(),ForegroundActivity.class));
     }
 
     @Override
@@ -201,7 +231,7 @@ public class Floating extends Service {
                     option2.setTextColor(Color.BLACK);
                     break;
                 default:
-                    Toast.makeText(this, "I am soryy could not find any answer", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "You are also genius:Some error occurred", Toast.LENGTH_SHORT).show();
                     break;
             }
         } else if (action != null && action.equalsIgnoreCase("stop")) {

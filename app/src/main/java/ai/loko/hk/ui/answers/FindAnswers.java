@@ -1,4 +1,34 @@
+/*
+ *   Copyright (C) 2018 SHUBHAM TYAGI
+ *
+ *    This file is part of LoKo HacK.
+ *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+ *     use this file except in compliance with the License. You may obtain a copy of
+ *     the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0
+ *
+ *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ *
+ */
+
 package ai.loko.hk.ui.answers;
+
+import com.balsikandar.crashreporter.CrashReporter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,6 +46,9 @@ import static ai.loko.hk.ui.utils.Utils.getSimplifiedString;
 import static ai.loko.hk.ui.utils.Utils.stringToArrayList;
 
 
+/**
+ * The type Find answers.
+ */
 @Deprecated
 public class FindAnswers extends Which {
 
@@ -36,6 +69,14 @@ public class FindAnswers extends Which {
 
     private int aSize, bSize, cSize;
 
+    /**
+     * Instantiates a new Find answers.
+     *
+     * @param question the question
+     * @param optionA  the option a
+     * @param optionB  the option b
+     * @param optionC  the option c
+     */
     @Deprecated
     public FindAnswers(String question, String optionA, String optionB, String optionC) {
         A = optionA.toLowerCase();
@@ -59,28 +100,58 @@ public class FindAnswers extends Which {
         C3 = new StringBuilder();
     }
 
+    /**
+     * Gets option red.
+     *
+     * @return the option red
+     */
     public String getOptionRed() {
         return optionRed;
     }
 
+    /**
+     * Is error boolean.
+     *
+     * @return the boolean
+     */
     public boolean isError() {
         return error;
     }
 
+    /**
+     * Gets acount.
+     *
+     * @return the acount
+     */
     public String getAcount() {
         return A1.toString();
 
     }
 
+    /**
+     * Gets bcount.
+     *
+     * @return the bcount
+     */
     public String getBcount() {
         return B2.toString();
     }
 
+    /**
+     * Gets ccount.
+     *
+     * @return the ccount
+     */
     public String getCcount() {
         return C3.toString();
 
     }
 
+    /**
+     * Search string.
+     *
+     * @return the string
+     */
     public String search() {
         if (A.contains("-")) {
             if (B.contains("-") && C.contains("-")) {
@@ -121,7 +192,7 @@ public class FindAnswers extends Which {
             //  Log.d(TAG, "option3 prefix==" + sub3);
 
 
-            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(sub1 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
+            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(sub1 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.USER_AGENT).get();
             String text1 = doc.body().text().toLowerCase();
 
             A1.append(sub1).append("-");
@@ -143,7 +214,7 @@ public class FindAnswers extends Which {
                 }
             }
 
-            doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(sub2 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
+            doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(sub2 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.USER_AGENT).get();
             String text2 = doc.body().text().toLowerCase();
 
             sub2 = B.substring(B.indexOf("-") + 1);
@@ -167,7 +238,7 @@ public class FindAnswers extends Which {
             String optionC[] = sub3.split(" ");
             cSize = optionC.length;
 
-            doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(sub3 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.getRandomUserAgent()).get();
+            doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(sub3 + " " + simplifiedQuestion, "UTF-8") + "&num=10").userAgent(Data.USER_AGENT).get();
             String text3 = doc.body().text().toLowerCase();
 
             for (String words : optionC) {
@@ -252,6 +323,7 @@ public class FindAnswers extends Which {
 
         } catch (Exception ioe) {
             ioe.printStackTrace();
+            CrashReporter.logException(ioe);
             //  Crashlytics.log(ioe.getMessage());
             error = true;
             optionRed = "b";
@@ -287,7 +359,7 @@ public class FindAnswers extends Which {
                 return wikiBot(isNeg);
             }
 
-            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(Data.getRandomUserAgent()).get();
+            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(Data.USER_AGENT).get();
 
             String text = doc.body().text().toLowerCase();
             String optionA[] = A.split(" ");
@@ -415,6 +487,7 @@ public class FindAnswers extends Which {
 
         } catch (Exception ioe) {
             ioe.printStackTrace();
+            CrashReporter.logException(ioe);
             //Crashlytics.log(ioe.getMessage());
             error = true;
             optionRed = "b";
@@ -449,7 +522,7 @@ public class FindAnswers extends Which {
             first.join();
 
         } catch (Exception e) {
-
+            CrashReporter.logException(e);
         }
 
 

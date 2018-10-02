@@ -42,9 +42,9 @@ android {
     buildToolsVersion "28.0.2"
     defaultConfig {
         applicationId "ai.loko.hk.ui"
-        minSdkVersion 18
+        minSdkVersion 23 //19
         targetSdkVersion 28
-        versionCode 19
+        versionCode 20
         versionName '2.0'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -71,12 +71,9 @@ android {
             zipAlignEnabled true
         }
     }
-
-
 }
 
 dependencies {
-    def room_version = "1.1.1"
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //Multidex support for older version than lollipop
     implementation 'com.android.support:multidex:1.0.3'
@@ -85,6 +82,7 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:28.0.0'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.google.android.gms:play-services-vision:15.0.2'
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-crash:16.2.0'
@@ -93,15 +91,16 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
         transitive = true;
     }
-    implementation 'org.jsoup:jsoup:1.11.3'
-    implementation project(path: ':boommenu')
-    implementation project(path: ':dialog')
-    implementation project(path: ':button')
-    implementation project(path: ':crashreporter')
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    def room_version = "1.1.1"
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
-    implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
-}
+    implementation 'org.jsoup:jsoup:1.11.3'
 
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
+    implementation 'com.nightonke:boommenu:2.1.1'
+    implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
+    implementation 'com.github.f0ris.sweetalert:library:1.5.6'
+    implementation 'com.rmtheis:tess-two:9.0.0'
+    implementation project(path: ':crashreporter')
+}
 apply plugin: 'com.google.gms.google-services'

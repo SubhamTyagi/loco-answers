@@ -1,4 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~   Copyright (C) 2018 SHUBHAM TYAGI
+  ~
+  ~    This file is part of LoKo HacK.
+  ~     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+  ~     use this file except in compliance with the License. You may obtain a copy of
+  ~     the License at
+  ~
+  ~     https://www.gnu.org/licenses/gpl-3.0
+  ~
+  ~    LoKo hacK is free software: you can redistribute it and/or modify
+  ~    it under the terms of the GNU General Public License as published by
+  ~    the Free Software Foundation, either version 3 of the License, or
+  ~    (at your option) any later version.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  ~     Unless required by applicable law or agreed to in writing, software
+  ~     distributed under the License is distributed on an "AS IS" BASIS,
+  ~     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~     See the License for the specific language governing permissions and
+  ~     limitations under the License.
+  ~
+  ~
+  -->
+
 <resources>
     <color name="colorPrimaryDark">#3d3d3d</color>
     <color name="colorAccent">#FF4081</color>
@@ -6,4 +34,29 @@
     <color name="primary_material_dark">#bfbcbc</color>
     <color name="background_material_light">#757575</color>
     <color name="bg_row_background">#fa315b</color>
+
+
+    <color name="colorPrimary">#E6295F</color>
+    <color name="colorPrimaryDark2">#D61B50</color>
+    <color name="colorAccent2">#FF4081</color>
+    <color name="red">#F15050</color>
+    <color name="red_dark">#d43c3c</color>
+    <color name="yellow">#EED45A</color>
+    <color name="yellow_dark">#d4bb46</color>
+    <color name="lime">#BCE24A</color>
+    <color name="lime_dark">#9dbf35</color>
+    <color name="green">#48D26B</color>
+    <color name="green_dark">#36b957</color>
+    <color name="blue">#48DFE1</color>
+    <color name="blue_dark">#37c4c6</color>
+    <color name="darkblue">#5A9CEE</color>
+    <color name="darkblue_dark">#417eca</color>
+    <color name="darkviolet">#7E50F1</color>
+    <color name="darkviolet_dark">#683dd4</color>
+    <color name="violet">#D65AEE</color>
+    <color name="violet_dark">#b33ec9</color>
+    <color name="white">#ffffff</color>
+    <color name="background_yellow100">#fff9c4</color>
+    <color name="grey_mat">#e0e0e0</color>
+    <color name="view_connect">#6d4c41</color>
 </resources>

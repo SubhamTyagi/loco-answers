@@ -1,3 +1,31 @@
+/*
+ *   Copyright (C) 2018 SHUBHAM TYAGI
+ *
+ *    This file is part of LoKo HacK.
+ *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+ *     use this file except in compliance with the License. You may obtain a copy of
+ *     the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0
+ *
+ *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ *
+ */
+
 package ai.loko.hk.ui.activities;
 
 import android.annotation.TargetApi;
@@ -12,13 +40,12 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
-
 
 import ai.loko.hk.ui.MainActivity;
 import ui.R;
@@ -37,7 +64,6 @@ import ui.R;
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,39 +72,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
 
-
-
-    /**
-     * This fragment shows general preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public  static class MainPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_main);
-            setHasOptionsMenu(true);
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.search_engine_key)));
-            //bindPreferenceSummaryToValue(findPreference(getString(R.string.custom_search_engine)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.custom_search_engine_url)));
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), MainActivity.class));
-
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
     }
 
     /**
@@ -164,7 +161,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
 
-
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
@@ -204,15 +200,42 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        finish();
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         finish();
+    }
+
+    /**
+     * This fragment shows general preferences only. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class MainPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_main);
+            setHasOptionsMenu(true);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.search_engine_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.custom_search_engine_url)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.language_for_tesseract)));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
     }
 
 }

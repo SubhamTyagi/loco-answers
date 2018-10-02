@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~   Copyright (C) 2018 SHUBHAM TYAGI
+  ~
+  ~    This file is part of LoKo HacK.
+  ~     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+  ~     use this file except in compliance with the License. You may obtain a copy of
+  ~     the License at
+  ~
+  ~     https://www.gnu.org/licenses/gpl-3.0
+  ~
+  ~    LoKo hacK is free software: you can redistribute it and/or modify
+  ~    it under the terms of the GNU General Public License as published by
+  ~    the Free Software Foundation, either version 3 of the License, or
+  ~    (at your option) any later version.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~
+  ~     Unless required by applicable law or agreed to in writing, software
+  ~     distributed under the License is distributed on an "AS IS" BASIS,
+  ~     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~     See the License for the specific language governing permissions and
+  ~     limitations under the License.
+  ~
+  ~
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="ui">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -8,26 +37,33 @@
     <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:name="android.support.multidex.MultiDexApplication"
+        android:name="ai.loko.hk.ui.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon"
+        tools:ignore="GoogleAppIndexingWarning">
+
         <activity
             android:name="ai.loko.hk.ui.MainActivity"
-            android:theme="@style/AppTheme.Launcher">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="ai.loko.hk.ui.activities.Forground"/>
-        <activity android:name="ai.loko.hk.ui.activities.Test">
+
+        <activity android:name="ai.loko.hk.ui.activities.ForegroundActivity"/>
+
+        <activity android:name="ai.loko.hk.ui.activities.TestActivity">
+
         </activity>
 
         <service
@@ -68,9 +104,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="87d0d959fa9b880a5f2cfed1a1707f4a6c41504e"/>
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-4301584724850632~9402202755"/>
 
         <activity
             android:name="ai.loko.hk.ui.activities.SettingsActivity"
@@ -80,7 +113,14 @@
         <activity
             android:name="ai.loko.hk.ui.activities.ProfileActivity"
             android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme">
+        </activity>
+
+        <activity
+            android:name="ai.loko.hk.ui.activities.CropActivity"
+            android:label="@string/title_activity_crop"
             android:theme="@style/NoActionBar">
+
         </activity>
     </application>
 

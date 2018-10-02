@@ -1,7 +1,37 @@
+/*
+ *   Copyright (C) 2018 SHUBHAM TYAGI
+ *
+ *    This file is part of LoKo HacK.
+ *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+ *     use this file except in compliance with the License. You may obtain a copy of
+ *     the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0
+ *
+ *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ *
+ */
+
 package ai.loko.hk.ui.answers;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
+import com.balsikandar.crashreporter.CrashReporter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,19 +44,31 @@ import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.model.Question;
 
 import static ai.loko.hk.ui.data.Data.skip;
-import static ai.loko.hk.ui.data.Data.getRandomUserAgent;
 import static ai.loko.hk.ui.utils.Utils.count;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedQuestion;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedString;
 import static ai.loko.hk.ui.utils.Utils.stringToArrayList;
 
+/**
+ * The Search Engine.
+ */
 public class Engine extends Base {
     private final String TAG = "Engine";
 
+    /**
+     * Instantiates a new Engine.
+     *
+     * @param questionObj the question obj
+     */
     public Engine(Question questionObj) {
         super(questionObj);
     }
 
+    /**
+     * Search and return result .
+     *
+     * @return the string
+     */
     public String search() {
         if (optionA.contains("-") && optionB.contains("-") && optionC.contains("-")) {
             return googlePairSearch();
@@ -134,9 +176,7 @@ public class Engine extends Base {
             return setAnswer(isNeg);
 
         } catch (Exception ioe) {
-            ioe.printStackTrace();
-            //Crashlytics.log(ioe.getMessage());
-
+           CrashReporter.logException(ioe);
             error = true;
             optionRed = "b";
             return "error";
@@ -170,7 +210,7 @@ public class Engine extends Base {
 
             }
 
-            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(getRandomUserAgent()).get();
+            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(Data.USER_AGENT).get();
             String text = doc.body().text().toLowerCase();
 
             String optionAsplit[] = optionA.split(" ");
@@ -245,8 +285,7 @@ public class Engine extends Base {
             return setAnswer(isNeg);
 
         } catch (Exception ioe) {
-            ioe.printStackTrace();
-            //Crashlytics.log(ioe.getMessage());
+            CrashReporter.logException(ioe);
             error = true;
             optionRed = "b";
             return "error";
@@ -272,7 +311,7 @@ public class Engine extends Base {
             first.join();
 
         } catch (Exception e) {
-
+            CrashReporter.logException(e);
         }
         checkForNegative = false;
         isWikiDone = true;
@@ -334,7 +373,7 @@ public class Engine extends Base {
 
     @NonNull
     private String getResponseFromGoogle(String simplifiedQuestion, String sub) throws IOException {
-        return Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=10").userAgent(getRandomUserAgent()).get().body().text().toLowerCase();
+        return Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=10").userAgent(Data.USER_AGENT).get().body().text().toLowerCase();
     }
 }
 

@@ -31,6 +31,8 @@
 -repackageclasses ''
 
 #-keep class com.google.ads.**
+-keep class android.support.v7.widget.** { *; }
+-keep class cn.pedant.SweetAlert.Rotate3dAnimation { public <init>(...); }
 -dontwarn com.google.**
 #-keepattributes SourceFile,LineNumberTable
 

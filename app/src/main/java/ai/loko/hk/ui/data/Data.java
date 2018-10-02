@@ -1,3 +1,31 @@
+/*
+ *   Copyright (C) 2018 SHUBHAM TYAGI
+ *
+ *    This file is part of LoKo HacK.
+ *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+ *     use this file except in compliance with the License. You may obtain a copy of
+ *     the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0
+ *
+ *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ *
+ */
+
 package ai.loko.hk.ui.data;
 
 import java.util.ArrayList;
@@ -6,9 +34,7 @@ import java.util.Random;
 
 
 public class Data {
-    public static  String BASE_SEARCH_URL = "https://www.google.com/search?q=";
-        //public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64)";
-    public static String skip = "the of a an ? & and , in - ";
+    public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64)";
     private static final String[] remove = {"name",
             "does", "do", "is", "am", "are", "have", "has", "been", "did", "was", "not", "least", "never", "don't", "haven't", "didn't", "wasn't", "except", "wouldn't", "itsn't",
             "were", "had", "will", "would", "shall", "can", "should", "could", "may", "might", "need", "come", "comes", "means",
@@ -16,15 +42,10 @@ public class Data {
             "of", "on", "these", "that", "this", "those", "there", "their", "at", "between", "from", "since", "for",
             "they", "and", "the", "a", "an", "with", "as", "by", "in", "to", "into", "also", "but",
             "i", "my", "me", "we", "our", "you", "your", "he", "his", "him", "himself", "them", "themselves", "it", "its", "myself", "she", "her", "yourselves",
-            "&", ".", "?", ",","matched","paired","pair"
+            "&", ".", "?", ",", "matched", "paired", "pair"
     };
-
     public static final ArrayList<String> removeWords = new ArrayList<>(Arrays.asList(remove));
-
-    private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none","cannot","can't","didn't"};
-    public static final ArrayList<String> removeNegativeWords =new ArrayList<>(Arrays.asList(negativeWords));
-
-    private static final String [] USER_AGENT_1={
+    private static final String[] USER_AGENTS_LIST = {
             "Mozilla/5.0 (Windows NT 6.1; Win64; x64)",
             "Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Mobile Safari/537.36",
             "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 6P Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.83 Mobile Safari/537.36",
@@ -53,11 +74,17 @@ public class Data {
             "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/60.1",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
     };
+    public static String BASE_SEARCH_URL = "https://www.google.com/search?q=";
+    public static String skip = "the of a an ? & and , in - ";
+    private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none", "cannot", "can't", "didn't"};
+    public static final ArrayList<String> removeNegativeWords = new ArrayList<>(Arrays.asList(negativeWords));
 
-    //RETURN RANDOM USER AGENT:
+    //RETURN RANDOM USER
     public static String getRandomUserAgent(){
-        Random random=new Random();
-        return USER_AGENT_1[random.nextInt(USER_AGENT_1.length)];
+        Random random = new Random();
+        return USER_AGENTS_LIST[random.nextInt(USER_AGENTS_LIST.length)];
     }
+    //public static boolean GRAYSCALE_IAMGE_FOR_OCR=false;
+    public static boolean IMAGE_LOGS_STORAGE=true;
 
 }

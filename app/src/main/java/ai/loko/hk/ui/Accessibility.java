@@ -1,3 +1,31 @@
+/*
+ *   Copyright (C) 2018 SHUBHAM TYAGI
+ *
+ *    This file is part of LoKo HacK.
+ *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+ *     use this file except in compliance with the License. You may obtain a copy of
+ *     the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0
+ *
+ *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ *
+ */
+
 package ai.loko.hk.ui;
 
 import android.accessibilityservice.AccessibilityService;
@@ -7,8 +35,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
-
 import java.util.List;
 
 import ai.loko.hk.ui.answers.Engine;
@@ -17,11 +43,14 @@ import ai.loko.hk.ui.model.Question;
 import ai.loko.hk.ui.services.Floating;
 import ai.loko.hk.ui.utils.CustomToast;
 
+/**
+ * This accessibility may be discontinue in future;
+ */
 public class Accessibility extends AccessibilityService {
 
     static String option1 = "",
-    option2 = "",
-    option3 = "";
+            option2 = "",
+            option3 = "";
     static String question = "";
 
     @Override
@@ -363,8 +392,10 @@ public class Accessibility extends AccessibilityService {
         }
     }
 
-    private void findAnswer(String question, String option1, String option2, String option3) {
-        new Update().execute(question, option1, option2, option3);
+    synchronized private void findAnswer(String question, String option1, String option2, String option3) {
+        synchronized (this) {
+            new Update().execute(question, option1, option2, option3);
+        }
     }
 
     public void showCustomAlert(String msg) {
@@ -379,11 +410,7 @@ public class Accessibility extends AccessibilityService {
     protected void onServiceConnected() {
     }
 
-    private final void setAnswer(Engine engine) {
-
-    }
-
-    private  class Update extends AsyncTask<String, Void, String> {
+    private class Update extends AsyncTask<String, Void, String> {
         //FindAnswers obj;
 
         Engine engine;
@@ -413,24 +440,21 @@ public class Accessibility extends AccessibilityService {
 
         @Override
         protected String doInBackground(String... strings) {
-            try {
-                //obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
-                //obj.search();
 
+            //obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
+            //obj.search();
+
+            engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
+            engine.search();
+
+            if (!engine.isError()) {
+                return engine.getAnswer();
+            } else {
                 engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
-                engine.search();
-
-                if (!engine.isError()) {
-                    return engine.getAnswer();
-                } else {
-                    engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
-                    // obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
-                    return engine.search();
-                }
-            } catch (Exception e) {
-                Crashlytics.log(e.getMessage());
-                return "error";
+                // obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
+                return engine.search();
             }
+
 
         }
     }

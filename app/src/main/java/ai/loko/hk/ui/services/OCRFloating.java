@@ -1,5 +1,34 @@
+/*
+ *   Copyright (C) 2018 SHUBHAM TYAGI
+ *
+ *    This file is part of LoKo HacK.
+ *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+ *     use this file except in compliance with the License. You may obtain a copy of
+ *     the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0
+ *
+ *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ *
+ */
+
 package ai.loko.hk.ui.services;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,6 +37,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
@@ -19,29 +49,28 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.balsikandar.crashreporter.CrashReporter;
+import com.dd.processbutton.iml.ActionProcessButton;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import ai.loko.hk.ui.MainActivity;
+import ai.loko.hk.ui.answers.Engine;
 import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.data.Data;
+import ai.loko.hk.ui.model.Question;
 import ai.loko.hk.ui.ocr.ImageTextReader;
+import ai.loko.hk.ui.ocr.Points;
 import ai.loko.hk.ui.ocr.Screenshotter;
-import ai.loko.hk.ui.data.SharedPreferencesHelper;
-import ai.loko.hk.ui.view.BoxListener;
-import ai.loko.hk.ui.view.BoxView;
-import ai.myfancy.button.iml.ActionProcessButton;
 import ui.R;
+
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class OCRFloating extends Service {
@@ -50,33 +79,20 @@ public class OCRFloating extends Service {
     public static boolean isGoogle = true;
     ActionProcessButton getAnswer;
 
+    int[] coordinate = new int[4];
 
     private NotificationManager notificationManager;
-
     private WindowManager mWindowManager;
 
-    private View mWebViewContainer;
-    private View mBoxView;
     private View mFloatingView;
-    private BoxView mClipBoxView;
-    private WebView webView;
+
     private TextView option1, option2, option3;
-    private WindowManager.LayoutParams webViewParams, params;//, boxParams;
-    private BoxListener mBoxViewListener;
+    private WindowManager.LayoutParams params;
     private ImageTextReader imageTextReader;
+
     private int width, height;
 
-    private boolean webViewVisible = false;
-    private boolean isClipMode;
-
-    private int LAYOUT_FLAG;
-
-
     private Bitmap mBitmap;
-
-    float[] clipBox = new float[4];
-    float[] clipBox1 = new float[4];
-    int[] clipRegion2 = new int[4];
 
 
     public OCRFloating() {
@@ -95,30 +111,9 @@ public class OCRFloating extends Service {
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating, new LinearLayout(this));
-        mWebViewContainer = LayoutInflater.from(this).inflate(R.layout.web_view, new LinearLayout(this));
-        mBoxView = LayoutInflater.from(this).inflate(R.layout.box_view, new LinearLayout(this));
-
-        mClipBoxView = mBoxView.findViewById(R.id.clip_box);
-        mBoxViewListener = new BoxListener(this);
-        mClipBoxView.setOnTouchListener(new BoxListener(this));
-        clipBox= SharedPreferencesHelper.getInstance().setContext(getApplicationContext()).getClipBounds();
-
-
-        ///////////////////////////////////////////////////////////////////////////////
-        webView = mWebViewContainer.findViewById(R.id.webview);                      //
-        webView.setWebViewClient(new WebViewClient() {                               //
-            @Override                                                                //
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {      //
-                return false;                                                        //
-            }                                                                        //
-        });                                                                          //
-                                                                                     //
-        webView.getSettings().setJavaScriptEnabled(true);                            //
-        webView.setVerticalScrollBarEnabled(true);                                   //
-        webView.setHorizontalScrollBarEnabled(true);                                 //
-        //////////////////////////////////////////////////////////////////////////// //
 
         notification();
+        int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
@@ -136,21 +131,6 @@ public class OCRFloating extends Service {
         params.x = 0;
         params.y = 100;
 
-        ///////////////////////////Web view screen ///////////////////////////////////
-
-        webViewParams = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                (int) getResources().getDimension(R.dimen.webview_height),
-                LAYOUT_FLAG,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT
-        );
-
-        webViewParams.x = 0;
-        webViewParams.y = 0;
-        webViewParams.gravity = Gravity.TOP | Gravity.CENTER;
-        ///////////////////////////////////////////////////
-
         if (mWindowManager != null) {
             mWindowManager.addView(mFloatingView, params);
             //
@@ -162,13 +142,13 @@ public class OCRFloating extends Service {
             private float initialTouchX;
             private float initialTouchY;
 
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         initialX = params.x;
                         initialY = params.y;
-                        //get the touch location
                         initialTouchX = event.getRawX();
                         initialTouchY = event.getRawY();
                         return true;
@@ -191,6 +171,7 @@ public class OCRFloating extends Service {
         option1 = mFloatingView.findViewById(R.id.optionA);
         option2 = mFloatingView.findViewById(R.id.optionB);
         option3 = mFloatingView.findViewById(R.id.optionC);
+
         imageTextReader = new ImageTextReader(getApplicationContext());
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -202,108 +183,126 @@ public class OCRFloating extends Service {
         getAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (webViewVisible) {
-                    removeWebView();
-                } else {
-                    OCRFloating.isGoogle = true;
-                    getAnswer.setProgress(1);
-                    Log.d(TAG, "onClick: getanswers clicked");
-                    captureScreenshot();
-                }
-
+                OCRFloating.isGoogle = true;
+                getAnswer.setProgress(1);
+                Log.d(TAG, "onClick: getanswers clicked");
+                captureScreenshot();
             }
         });
+        coordinate[0] = (int) Math.ceil((double) Points.X1);
+        coordinate[1] = (int) Math.ceil((double) Points.Y1);
+        coordinate[2] = (int) Math.ceil((double) Points.X2);
+        coordinate[3] = (int) Math.ceil((double) Points.Y2);
     }
 
     private void captureScreenshot() {
-        showBox();
+
         Screenshotter.getInstance(getApplicationContext()).setSize(width, height).takeScreenshot(new Screenshotter.ScreenshotCallback() {
             @Override
             public void onScreenshot(Bitmap bitmap) {
-                mBitmap=bitmap;
-                processImage(clipRegion2);
+                mBitmap = bitmap;
+                processImage();
             }
         });
 
     }
 
     // here we process screen images to extract question and answer
-    public void processImage(int[]coordinate) {
-        //now we have to process bitmap
+    public void processImage() {
         Log.d(TAG, "processImage: ");
-        if(coordinate[2]==0||coordinate[3]==0){
-            coordinate[2]=width;
-            coordinate[3]=height;
+        if (coordinate[2] == 0 || coordinate[3] == 0) {
+            coordinate[2] = width;
+            coordinate[3] = height;
         }
-        Bitmap cropped = Bitmap.createBitmap(mBitmap,coordinate[0],coordinate[1],coordinate[2],coordinate[3]);
-        String textOnScreen = imageTextReader.fromImage(cropped);
-        createImage(cropped);
-        Log.d(TAG, "processImage: text on screen is==:" + textOnScreen);
-        getAnswer.setProgress(0);
+        final Bitmap croppedGrayscaleImage;
+        //if (Data.GRAYSCALE_IAMGE_FOR_OCR)
+        //    croppedGrayscaleImage = Utils.getGrayscaleImage(Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]));
+        //else
+        croppedGrayscaleImage = Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
+
+        final String questionAndOption[] = imageTextReader.getTextFromBitmap2(croppedGrayscaleImage);
+        Log.d(TAG, "processImage: " + 15651);
+
+        if (questionAndOption.length == 4) {
+            new Update().execute(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]);
+        } else if (questionAndOption.length > 0) {
+            Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
+        }
+
+        if (Data.IMAGE_LOGS_STORAGE) {
+            new Thread() {
+                @Override
+                public void run() {
+                    writeToStorage(croppedGrayscaleImage);
+                    writeToStorage(questionAndOption);
+                }
+            }.start();
+        }
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        String action = "";
+        if (intent != null)
+            action = intent.getAction();
+        if (action != null && action.equalsIgnoreCase("stop")) {
+            stopSelf();
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void notification() {
+        Intent i = new Intent(this, OCRFloating.class);
+        i.setAction("stop");
+        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
+        mBuilder.setContentText("LoKo HacK: Committed to speed and performance :)")
+                .setContentTitle("Tap to remove overlay screen")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pi)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setOngoing(true).setAutoCancel(true)
+                .addAction(android.R.drawable.ic_menu_more, "Open Loko hack", pendingIntent);
+
+        notificationManager.notify(1545, mBuilder.build());
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mFloatingView != null) mWindowManager.removeView(mFloatingView);
+        notificationManager.cancelAll();
+
+    }
+
+    WindowManager getWindowManager() {
+        return (mWindowManager);
+    }
+
+    private void writeToStorage(String[] questionAndOption) {
+        File picFile = new File(Constant.path, "QaOption_" + Long.toString(System.currentTimeMillis()) + ".txt");
+        String value = "";
+        for (String s : questionAndOption) {
+            value += s + "\n";
+        }
         try {
-            webView.loadUrl(Data.BASE_SEARCH_URL + URLEncoder.encode(textOnScreen, "UTF-8"));
-            addWebView();
-            removeBox();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            picFile.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(picFile);
+            outputStream.write(value.getBytes());
+            outputStream.close();
+        } catch (IOException e) {
+
+            CrashReporter.logException(e);
         }
 
-
     }
 
-
-    private void showBox() {
-        mClipBoxView.updateRegion(this.clipBox[0], this.clipBox[1], this.clipBox[2], this.clipBox[3]);
-        mWindowManager.addView(mBoxView, getLayoutParamsForBox());
-    }
-
-    public void finishClipMode(int[] iBox1, float[] fBox2) {
-        this.isClipMode = false;
-        SharedPreferencesHelper.getInstance().setContext(getApplicationContext()).setClipBounds(fBox2);
-        if (iBox1[2] >= 50) {
-            if (iBox1[3] >= 50) {
-                this.clipBox1 = this.clipBox.clone();
-                this.clipBox = fBox2.clone();
-                ///take screenshot using bounds in iBox1;
-                //Save iBox1
-                processImage(iBox1);
-                return;
-            }
-        }
-        this.clipRegion2[2] = (int) Math.ceil((double) (this.clipBox1[2] - this.clipBox1[0]));
-        this.clipRegion2[3] = (int) Math.ceil((double) (this.clipBox1[3] - this.clipBox1[1]));
-        this.clipRegion2[0] = (int) Math.ceil((double) this.clipBox1[0]);
-        this.clipRegion2[1] = (int) Math.ceil((double) this.clipBox1[1]);
-        processImage(clipRegion2);
-
-        //take screenshot using clipRegion2
-        //save clipRegion2
-
-    }
-
-    private void addWebView() {
-        if (!webViewVisible) {
-            mWindowManager.addView(mWebViewContainer, webViewParams);
-            webViewVisible = true;
-            getAnswer.setText("Remove window");
-        }
-    }
-
-    private void removeWebView() {
-        if (webViewVisible) {
-            mWindowManager.removeView(mWebViewContainer);
-            webViewVisible = false;
-            getAnswer.setText("Get Answer");
-        }
-    }
-
-    private void removeBox(){
-        mWindowManager.removeView(mBoxView);
-    }
-
-    private void createImage(Bitmap bmp) {
+    private void writeToStorage(Bitmap bmp) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        File picFile = new File(Constant.path, Long.toString(System.currentTimeMillis()) + ".jpg");
+        File picFile = new File(Constant.path, "SCR_" + Long.toString(System.currentTimeMillis()) + ".jpg");
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
         try {
             Log.d(TAG, "Writing images");
@@ -312,28 +311,24 @@ public class OCRFloating extends Service {
             outputStream.write(bytes.toByteArray());
             outputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            CrashReporter.logException(e);
         }
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        String action = intent.getAction();
-        if (action != null && action.equalsIgnoreCase("search")) {
+    private class Update extends AsyncTask<String, Void, String>  {
+        private Engine engine;
 
-            String option11 = intent.getStringExtra("option1");
-            String option22 = intent.getStringExtra("option2");
-            String option33 = intent.getStringExtra("option3");
-            String s = intent.getStringExtra("optionRed");
+        @Override
+        protected void onPostExecute(String s) {
+            // Log.d(TAG, "Option 1==>" + engine.getA1());
+            // Log.d(TAG, "Option 2==>" + engine.getB2());
+            // Log.d(TAG, "Option 3==>" + engine.getC3());
 
-            option1.setText(option11);
-            option2.setText(option22);
-            option3.setText(option33);
+            option1.setText(engine.getA1());
+            option2.setText(engine.getB2());
+            option3.setText(engine.getC3());
 
-            OCRFloating.isGoogle = true;
-            // wiki.setProgress(0);
             getAnswer.setProgress(0);
-
             switch (s) {
                 case "a":
                     option1.setTextColor(Color.RED);
@@ -350,75 +345,26 @@ public class OCRFloating extends Service {
                     option1.setTextColor(Color.BLACK);
                     option2.setTextColor(Color.BLACK);
                     break;
-                default:
-                    Toast.makeText(this, "wtf", Toast.LENGTH_SHORT).show();
-                    break;
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            //engine = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
+            //obj.search();
+            engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
+            engine.search();
+
+            if (!engine.isError()) {
+                return engine.getAnswer();
+            } else {
+                engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
+                // obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
+                return engine.search();
             }
 
-        } else if (action != null && action.equalsIgnoreCase("stop")) {
-            stopSelf();
         }
-
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    private void notification() {
-        Intent i = new Intent(this, OCRFloating.class);
-        i.setAction("stop");
-        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
-        mBuilder.setContentText("Currently this service is not fully developed, Launching soon:>")
-                .setContentTitle("Tap to remove overlay screen")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pi)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setOngoing(true).setAutoCancel(true)
-                .addAction(android.R.drawable.ic_menu_more, "Open Loko hack", pendingIntent);
-
-        notificationManager.notify(1545, mBuilder.build());
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mFloatingView != null) mWindowManager.removeView(mFloatingView);
-
-        notificationManager.cancelAll();
-
-    }
-
-    WindowManager getWindowManager() {
-        return (mWindowManager);
     }
 
 
-
-
-    WindowManager.LayoutParams getLayoutParamsForBox() {
-        Display defaultDisplay = getWindowManager().getDefaultDisplay();
-        Point point = new Point();
-        defaultDisplay.getRealSize(point);
-        Point point2 = new Point();
-        defaultDisplay.getSize(point2);
-        int diff;
-        if (point2.x == point.x) {
-            diff = point.y - point2.y;
-        } else {
-            diff = point.x - point2.x;
-        }
-        int screenWidth = point.x + diff;
-        int screenHeight = point.y + diff;
-
-        return new WindowManager.LayoutParams(
-                screenWidth,
-                screenHeight,
-                LAYOUT_FLAG,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT
-        );
-
-
-    }
 }

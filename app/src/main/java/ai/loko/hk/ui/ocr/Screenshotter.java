@@ -1,3 +1,31 @@
+/*
+ *   Copyright (C) 2018 SHUBHAM TYAGI
+ *
+ *    This file is part of LoKo HacK.
+ *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
+ *     use this file except in compliance with the License. You may obtain a copy of
+ *     the License at
+ *
+ *     https://www.gnu.org/licenses/gpl-3.0
+ *
+ *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *
+ *
+ */
+
 package ai.loko.hk.ui.ocr;
 
 import android.annotation.TargetApi;
@@ -12,9 +40,9 @@ import android.media.projection.MediaProjection;
 import android.os.Build;
 import android.util.Log;
 
-import java.nio.Buffer;
+import com.balsikandar.crashreporter.CrashReporter;
 
-import ai.loko.hk.ui.utils.CustomToast;
+import java.nio.Buffer;
 
 
 /**
@@ -59,14 +87,12 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
      */
     public void takeScreenshot(final ScreenshotCallback cb) {
         this.cb = cb;
-        mImageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 2);
+        mImageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 1);
         if (mMediaProjection == null) {
             mMediaProjection = MediaProjectionHelper.getMediaProjection(context);
-            Log.d(TAG, "takeScreenshot: mediaprojection =="+mMediaProjection);
             if (mMediaProjection == null) {
                 Log.e(TAG, "MediaProjection null. Cannot take the screenshot.");
             }
-
 
 
         }
@@ -74,12 +100,13 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
             virtualDisplay = mMediaProjection.createVirtualDisplay("Screenshotter", width, height, 50,
                     DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
                     mImageReader.getSurface(), null, null);
-            Log.d(TAG, "takeScreenshot: virtual display=="+virtualDisplay);
+
             mImageReader.setOnImageAvailableListener(Screenshotter.this, null);
-            Log.d(TAG, "takeScreenshot: after");
+
 
         } catch (Exception e) {
             e.printStackTrace();
+            CrashReporter.logException(e);
 
 
         }
@@ -102,7 +129,7 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
     @Override
     public void onImageAvailable(ImageReader reader) {
         Image image;
-        Log.d(TAG, "onImageAvailable: start");
+        // Log.d(TAG, "onImageAvailable: start");
        /*synchronized (this) {
             ++imageAvailable;
             if (imageAvailable != 2) {
