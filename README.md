@@ -13,7 +13,7 @@
 * Feature on demand.
 ## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
-* Support this app by just pressing Star and share this App freely
+* Before downloading please give this app a :star: by pressing ![Star](/.github/assets/star.PNG) it means a lot to me it boost me to build more features and help you guys.
 * [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers/releases)
 * **Why this app not on play store:** Because i support **Open-source software advocacy** and i hate Google Play store. This app will be available on open-source market such as F-Droid (i am working for comply with the [F-Droid's inclusion policy](https://f-droid.org/docs/Inclusion_Policy/?title=Inclusion_Policy))
 ## See Demo on YouTube
