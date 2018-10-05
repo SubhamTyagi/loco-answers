@@ -90,29 +90,115 @@
 
     <string-array name="ocr_engine_lanuage">
         <item>English</item>
-        <item>Hindi</item>
-        <item>Malayalam</item>
-        <item>Tamil</item>
-        <item>Telgu</item>
-        <item>Bengla</item>
-        <item>Math/Equation</item>
+        <item>Chinese (Traditional)</item>
+        <item>Chinese (Simplified)</item>
+        <item>Arabic</item>
+        <item>Czech</item>,
+        <item>Danish</item>,
+        <item>German</item>,
+        <item>Greek</item>,
+        <item>Middle English</item>,
+        <item>Esperanto</item>,
+        <item>Math/Equation</item>,
+        <item>Estonian</item>,
+        <item>Finnish</item>,
+        <item>French</item>,
+        <item>Ancient Greek</item>,
+        <item>Hebrew</item>,
+        <item>Hindi</item>,
+        <item>Croatian</item>,
+        <item>Hungarian</item>,
+        <item>Indonesian</item>,
+        <item>Icelandic</item>,
+        <item>Italian</item>,
+        <item>Japanese</item>,
+        <item>Korean</item>,
+        <item>Latvian</item>,
+        <item>Lithuanian</item>,
+        <item>Malayalam</item>,
+        <item>Macedonian</item>,
+        <item>Maltese</item>,
+        <item>Malay</item>,
+        <item>Dutch</item>,
+        <item>Norwegian</item>,
+        <item>Polish</item>,
+        <item>Portuguese</item>,
+        <item>Romanian</item>,
+        <item>Russian</item>,
+        <item>Slovakian</item>,
+        <item>Slovenian</item>,
+        <item>Spanish</item>,
+        <item>Albanian</item>,
+        <item>Serbian</item>,
+        <item>Swahili</item>,
+        <item>Swedish</item>,
+        <item>Tamil</item>,
+        <item>Telugu</item>,
+        <item>Tagalog</item>,
+        <item>Thai</item>,
+        <item>Turkish</item>,
+        <item>Ukrainian</item>,
+        <item>Vietnamese</item>
     </string-array>
 
     <string-array name="ocr_engine_language_value">
-        <item>English</item>
-        <item>Hindi</item>
-        <item>Malayalam</item>
-        <item>Tamil</item>
-        <item>Telgu</item>
-        <item>Bengla</item>
-        <item>Math/Equation</item>
+        <item>eng</item>
+        <item>chi_tra</item>
+        <item>chi_sim</item>
+        <item>ara</item>
+        <item>ces</item>
+        <item>dan</item>
+        <item>deu</item>
+        <item>ell</item>
+        <item>enm</item>
+        <item>epo</item>
+        <item>equ</item>
+        <item>est</item>
+        <item>fin</item>
+        <item>fra</item>
+        <item>grc</item>
+        <item>heb</item>
+        <item>hin</item>
+        <item>hrv</item>
+        <item>hun</item>
+        <item>ind</item>
+        <item>isl</item>
+        <item>ita</item>
+        <item>jpn</item>
+        <item>kor</item>
+        <item>lav</item>
+        <item>lit</item>
+        <item>mal</item>
+        <item>mkd</item>
+        <item>mlt</item>
+        <item>msa</item>
+        <item>nld</item>
+        <item>nor</item>
+        <item>pol</item>
+        <item>por</item>
+        <item>ron</item>
+        <item>rus</item>
+        <item>slk</item>
+        <item>slv</item>
+        <item>spa</item>
+        <item>sqi</item>
+        <item>srp</item>
+        <item>swa</item>
+        <item>swe</item>
+        <item>tam</item>
+        <item>tel</item>
+        <item>tgl</item>
+        <item>tha</item>
+        <item>tur</item>
+        <item>ukr</item>
+        <item>vie</item>
     </string-array>
 
     <string name="language_for_tesseract">language_for_tesseract</string>
     <string name="tess_language_title">Select language for Tesseract</string>
-    <string name="tesseract">tesseract</string>
+    <string name="tesseract_key">tesseract_key</string>
     <string name="tesseract_title">Use Tesseract</string>
-    <string name="tesseract_detaill">When this option is on then LoKo HacK will use Tesseract OCR rather than Google Vision(Not working yet)</string>
+    <string name="tesseract_detaill">When this option is on, LoKo HacK will use Tesseract OCR rather than Google Vision</string>
     <string name="language">Language</string>
     <string name="grayscale_image_ocr">grayscale_image_ocr</string>
     <string name="use_gray_scale_image_for_ocr">Use Grayscale for OCR</string>
@@ -120,4 +206,17 @@
     <string name="save_image_and_file_to_storage_key">save_images_and_file_to_storage_key</string>
     <string name="image_storage_titile">Save ScreenShot and logs</string>
     <string name="image_storage_details">Store question and option to Storage</string>
+
+    <string name="training_data_tgz_url_template">http://downloads.sourceforge.net/project/tesseract-ocr-alt/tesseract-ocr-3.02.%s.tar.gz</string>
+    <string name="training_data_tgz_file_name_template">tesseract-ocr-3.02.%s.tar.gz</string>
+    <string name="download_language_data_please_wait">Downloding OCR data files. Please wait &#8230;</string>
+
+    <string name="installing_please_wait">Installing OCR data files.  Please wait...</string>
+    <string name="language_not_exists">Training data for language %s  does not exist; cannot do recognition</string>
+    
+    <string name="fast_mode_key">fast_mode_key</string>
+    <string name="fast_mode_title">Fast mode for OCR</string>
+    <string name="fast_mode_summary">When this option is on Loko Hack Will find Answer fast but there may be misbehave by LoKo Hack</string>
+
+
 </resources>

@@ -28,8 +28,6 @@
 
 package ai.loko.hk.ui.answers;
 
-import com.balsikandar.crashreporter.CrashReporter;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -37,6 +35,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import ai.loko.hk.ui.data.Data;
+import ai.loko.hk.ui.utils.Logger;
 
 import static ai.loko.hk.ui.utils.Utils.count;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedString;
@@ -71,7 +70,7 @@ class WikiSearch extends Thread {
     @Override
     public void run() {
         try {
-            Document option1wiki = Jsoup.connect(Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + option + " wiki", "UTF-8") + "&num=5").userAgent(Data.USER_AGENT).get().select(".g>.r>a").get(0).absUrl("href")).userAgent(Data.USER_AGENT).get();
+            Document option1wiki = Jsoup.connect(Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + option + /* i could use inurl:wikipedia.com or site:wikipedia.com but this will easily tends to human verification */" wikipedia ", "UTF-8") + "&num=2").userAgent(Data.USER_AGENT).get().select(".g>.r>a").get(0).absUrl("href")).userAgent(Data.USER_AGENT).get();
             String t1 = option1wiki.body().text().toLowerCase();
             String text11 = getSimplifiedString(t1, null);
             for (String word : simplifiedQuestionList) {
@@ -82,7 +81,7 @@ class WikiSearch extends Thread {
                 }
             }
         } catch (Exception e) {
-            CrashReporter.logException(e);
+            Logger.logException(e);
         }
     }
 

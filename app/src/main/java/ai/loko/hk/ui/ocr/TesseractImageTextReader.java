@@ -28,43 +28,67 @@
 
 package ai.loko.hk.ui.ocr;
 
-import android.graphics.Bitmap;
-import android.graphics.Rect;
 
-import com.googlecode.leptonica.android.Pixa;
-import com.googlecode.tesseract.android.ResultIterator;
+import android.graphics.Bitmap;
+
+
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.util.ArrayList;
 
 import ai.loko.hk.ui.constants.Constant;
-
+import ai.loko.hk.ui.utils.Logger;
 
 public class TesseractImageTextReader {
-    public String[] getTextFromBitmap(Bitmap src,String language){
-        TessBaseAPI api=new TessBaseAPI();
-        api.init(Constant.pathToTesseract,language);
+
+    public static String[] getTextFromBitmap(Bitmap src, String language) {
+        TessBaseAPI api = new TessBaseAPI();
+        api.init(Constant.tesseractPath, language);
         api.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO_OSD);
         api.setImage(src);
+        String textOnImage;
 
-        String textOnImage=api.getUTF8Text();
-
-        ResultIterator iterator=api.getResultIterator();
-        iterator.begin();
-
-        Pixa pixa=api.getWords();
-        ArrayList<Rect> rects=pixa.getBoxRects();
-        String text="";
-        for (int i=0;i<rects.size();i++){
-            text+=iterator.getUTF8Text(TessBaseAPI.PageIteratorLevel.RIL_WORD);
-            iterator.next(TessBaseAPI.PageIteratorLevel.RIL_WORD);
+        //StringBuilder text=new StringBuilder();
+        try {
+            textOnImage = api.getUTF8Text();
+            api.end();
+        } catch (Exception e) {
+            Logger.logException(e);
+            return new String[]{"Scan Failed:  Could not set up the detector!"};
         }
 
-        pixa.recycle();
-        api.end();
+        if (textOnImage == null) {
+            return new String[]{"Scan Failed:  Could not set up the detector!"};
+        }
 
-        return textOnImage.split("\n");
+        String[] textOnScreenArray = textOnImage.split("\n");
+        ArrayList<String> textOnScreen = new ArrayList<>();
+
+        for (String s : textOnScreenArray) {
+            if (!s.equals("")) {
+                textOnScreen.add(s);
+            }
+        }
+        int lineCount = textOnScreen.size();
+        if (lineCount > 3) {
+            StringBuilder question = new StringBuilder();
+            for (int i = 0; i < lineCount - 3; i++) {
+                question.append(textOnScreen.get(i));
+            }
+            return new String[]{question.toString(), textOnScreen.get(lineCount - 3), textOnScreen.get(lineCount - 2), textOnScreen.get(lineCount - 1), textOnImage};
+        }
+        return new String[]{"Scan Failed: Could not read options"};
     }
 }
 
 
+   /* ResultIterator iterator=api.getResultIterator();
+            iterator.begin();
+                    Pixa pixa=api.getWords();
+                    rects=pixa.getBoxRects();
+                    for (int i=0;i<rects.size();i++){
+        text+=iterator.getUTF8Text(TessBaseAPI.PageIteratorLevel.RIL_TEXTLINE)+" \n";
+        iterator.next(TessBaseAPI.PageIteratorLevel.RIL_WORD);
+        }
+
+        pixa.recycle();*/

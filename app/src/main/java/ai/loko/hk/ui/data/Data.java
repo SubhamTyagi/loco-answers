@@ -74,7 +74,7 @@ public class Data {
             "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/60.1",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
     };
-    public static String BASE_SEARCH_URL = "https://www.google.com/search?q=";
+    public static final String BASE_SEARCH_URL = "https://www.google.com/search?q=";
     public static String skip = "the of a an ? & and , in - ";
     private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none", "cannot", "can't", "didn't"};
     public static final ArrayList<String> removeNegativeWords = new ArrayList<>(Arrays.asList(negativeWords));
@@ -86,5 +86,8 @@ public class Data {
     }
     //public static boolean GRAYSCALE_IAMGE_FOR_OCR=false;
     public static boolean IMAGE_LOGS_STORAGE=true;
+    public static boolean IS_TESSERACT_OCR_USE=false;
+    public static String TESSERACT_LANGUAGE="";
+    public static boolean FAST_MODE_FOR_OCR=false;
 
 }

@@ -32,51 +32,53 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
+
+
+import org.kamranzafar.jtar.TarEntry;
+import org.kamranzafar.jtar.TarInputStream;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.zip.GZIPInputStream;
+
 import ai.loko.hk.ui.MainActivity;
+import ai.loko.hk.ui.constants.Constant;
+import ai.loko.hk.ui.utils.Logger;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import ui.R;
 
-/**
- * A {@link PreferenceActivity} that presents a set of application settings. On
- * handset devices, settings are presented as a single list. On tablets,
- * settings are split by category, with category headers shown to the left of
- * the list of settings.
- * <p>
- * See <a href="http://developer.android.com/design/patterns/settings.html">
- * Android Design: Settings</a> for design guidelines and the <a
- * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
- * API Guide</a> for more information on developing a Settings UI.
- */
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setupActionBar();
-        getFragmentManager().beginTransaction().replace(android.R.id.content,new MainPreferenceFragment()).commit();
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        finish();
-    }
+    static final int BUFFER = 1024 * 10;
+    private static final String TAG = "SettingsActivity";
+    private static SweetAlertDialog mSweetAlertDialogForProgressBar;
+   // private static DownloadTrainingTask downloadTask;
+    private static Resources res;
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -88,25 +90,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             String stringValue = value.toString();
 
             if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
+                String entry = index >= 0 ? (listPreference.getEntries()[index]).toString() : null;
+                preference.setSummary(entry);
 
-                // Set the summary to reflect the new value.
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
+                if (preference.getKey().equals("language_for_tesseract")) {
+                    String lang = listPreference.getEntryValues()[index >= 0 ? index : 0].toString();
+                    if (!isLanguageDataExists(lang)) {
+
+                        //download traing data for entry value
+                        mSweetAlertDialogForProgressBar.show();
+                        new DownloadTrainingTask().execute(lang);
+
+                    } else {
+                        //do nothing
+                    }
+
+                }
 
             } else if (preference instanceof RingtonePreference) {
-                // For ringtone preferences, look up the correct display value
-                // using RingtoneManager.
-                if (TextUtils.isEmpty(stringValue)) {
-                    // Empty values correspond to 'silent' (no ringtone).
-                    //preference.setSummary(R.string.pref_ringtone_silent);
-
-                } else {
+                if (!TextUtils.isEmpty(stringValue)) {
                     Ringtone ringtone = RingtoneManager.getRingtone(
                             preference.getContext(), Uri.parse(stringValue));
 
@@ -129,6 +133,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return true;
         }
     };
+
+    private static boolean isLanguageDataExists(String lang) {
+        File t = new File(Constant.pathToTesseract + lang + ".traineddata");
+        boolean r = t.exists();
+        Log.v(TAG, "training data for " + lang + " exists? " + r);
+        return r;
+    }
 
     /**
      * Helper method to determine if the device has an extra-large screen. For
@@ -155,15 +166,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         // Trigger the listener immediately with the preference's
         // current value.
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
+                PreferenceManager.getDefaultSharedPreferences(preference.getContext())
                         .getString(preference.getKey(), ""));
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupActionBar();
+        mSweetAlertDialogForProgressBar = new SweetAlertDialog(SettingsActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        mSweetAlertDialogForProgressBar.setTitleText(getString(R.string.download_language_data_please_wait)).setCancelable(false);
+        res=getResources();
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
+    }
 
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
+
+
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -172,27 +195,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean onIsMultiPane() {
         return isXLargeTablet(this);
     }
 
-    /**
-     * {@inheritDoc}
-     *//*
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers, target);
-    }*/
 
-    /**
-     * This method stops fragment injection in malicious applications.
-     * Make sure to deny any unknown fragments here.
-     */
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || MainPreferenceFragment.class.getName().equals(fragmentName);
@@ -203,6 +211,44 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onStop() {
         super.onStop();
         finish();
+    }
+
+    public static void untarTGzFile(String tar_gz_file, String dest_path) throws IOException {
+
+        File zf = new File(tar_gz_file);
+        TarInputStream tis = new TarInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(zf))));
+        untar(tis, dest_path);
+        tis.close();
+    }
+
+    private static void untar(TarInputStream tis, String destFolder) throws IOException {
+        BufferedOutputStream dest = null;
+        TarEntry entry;
+        while ((entry = tis.getNextEntry()) != null) {
+            Log.v(TAG, "Extracting: " + entry.getName());
+            int count;
+            byte data[] = new byte[BUFFER];
+            String file_name = entry.getName();
+            if (entry.isDirectory()) {
+                /*new File(destFolder + "/" + entry.getName()).mkdirs();*/
+                continue;
+            } else {
+                int di = entry.getName().lastIndexOf('/');
+                if (di != -1) {
+                    /*new File(destFolder + "/" + entry.getName().substring(0, di)).mkdirs();*/
+                    file_name = entry.getName().substring(di + 1, entry.getName().length());
+                }
+            }
+            Log.v(TAG, "writing to " + file_name);
+            FileOutputStream fos = new FileOutputStream(destFolder + "/" + file_name /*entry.getName()*/);
+            dest = new BufferedOutputStream(fos);
+            while ((count = tis.read(data)) != -1) {
+                dest.write(data, 0, count);
+            }
+
+            dest.flush();
+            dest.close();
+        }
     }
 
     /**
@@ -217,10 +263,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_main);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
+            // Note in Loko Hack version 2.0 i have ignored the the value set by user because i think google search engine is best for our engine
+            //other search engines are not so efficient as Google
+
             bindPreferenceSummaryToValue(findPreference(getString(R.string.search_engine_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.custom_search_engine_url)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.language_for_tesseract)));
@@ -238,4 +283,130 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
+    private static class DownloadTrainingTask extends AsyncTask<String, Integer, Boolean> {
+        int total_length = 1;
+
+        @Override
+        protected void onPostExecute(Boolean bool) {
+            // fininh downloading
+            mSweetAlertDialogForProgressBar.setTitleText("Success").setConfirmText("Ok").changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... languages) {
+            return downloadTraingData(languages[0]);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            // update progress bar
+            int percent = values[0] / total_length;
+            int ten10 = (int) Math.ceil(percent / 10);
+            switch (ten10) {
+                case 1:
+                case 10:
+                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.material_deep_teal_20));
+                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
+                    break;
+                case 9:
+                case 2:
+                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.success_stroke_color));
+                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
+                    break;
+                case 3:
+                case 8:
+                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.warning_stroke_color));
+                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
+                    break;
+                case 4:
+                case 7:
+                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.material_deep_teal_50));
+                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
+                    break;
+                case 5:
+                case 6:
+                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.blue_btn_bg_pressed_color));
+                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
+                    break;
+
+            }
+            mSweetAlertDialogForProgressBar.getProgressHelper().setProgress(percent);
+        }
+
+        private boolean downloadTraingData(String lang) {
+            boolean result = true;
+            String url_string = res.getString(R.string.training_data_tgz_url_template, lang);
+            String location;
+            String dest_file_name = Constant.pathToTesseract + res.getString(R.string.training_data_tgz_file_name_template, lang);
+            URL url, base, next;
+            HttpURLConnection conn;
+            try {
+                while (true) {  // from http://stackoverflow.com/a/26046079/3798801
+                    Log.v(TAG, "downloading " + url_string);
+                    try {
+                        url = new URL(url_string);
+                    } catch (java.net.MalformedURLException ex) {
+                        Log.e(TAG, "url " + url_string + " is bad: " + ex);
+
+                        Logger.logException(ex);
+                        return false;
+                    }
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setInstanceFollowRedirects(false);
+                    switch (conn.getResponseCode()) {
+                        case HttpURLConnection.HTTP_MOVED_PERM:
+                        case HttpURLConnection.HTTP_MOVED_TEMP:
+                            location = conn.getHeaderField("Location");
+                            base = new URL(url_string);
+                            next = new URL(base, location);  // Deal with relative URLs
+                            url_string = next.toExternalForm();
+                            continue;
+                    }
+
+                    break;
+                }
+
+                conn.connect();
+
+                total_length = conn.getContentLength();
+
+                InputStream input = new BufferedInputStream(url.openStream());
+                OutputStream output = new FileOutputStream(dest_file_name);
+
+                byte data[] = new byte[1024 * 6];
+                int total_downloaded = 0;
+                int count;
+
+                //upadte progress bar with total_length
+
+                while ((count = input.read(data)) != -1) {
+                    total_downloaded += count;
+                    output.write(data, 0, count);
+                    publishProgress(total_downloaded);
+                }
+                output.flush();
+                output.close();
+                input.close();
+            } catch (Exception e) {
+                result = false;
+                Logger.logException(e);
+                Log.e(TAG, "failed to download " + url_string + " : " + e);
+            }
+
+            if (result) {
+                Log.v(TAG, "unarchive " + dest_file_name);
+                try {
+                    untarTGzFile(dest_file_name, Constant.pathToTesseract);
+                } catch (IOException e) {
+                    result = false;
+                    Logger.logException(e);
+                    Log.e(TAG, "failed to ungzip/untar " + dest_file_name + " : " + e);
+                }
+            }
+
+            return result;
+        }
+
+
+    }
 }

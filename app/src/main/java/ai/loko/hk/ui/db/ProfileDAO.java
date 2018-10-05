@@ -47,7 +47,10 @@ public interface ProfileDAO {
     @Query("SELECT * FROM ProfileEntity")
     List<ProfileEntity> getAll();
 
-    @Query("SELECT uid FROM ProfileEntity WHERE y2=:y2")
-    int getPrimaryKey(float y2);
+    @Query("SELECT uid FROM ProfileEntity WHERE y1=:y1")
+    int getPrimaryKey(float y1);
+
+    @Query("Delete from ProfileEntity WHERE uid=:uid")
+    void deleteBY_UID(int uid);
 
 }

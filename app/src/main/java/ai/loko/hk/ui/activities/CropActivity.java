@@ -63,17 +63,15 @@ public class CropActivity extends AppCompatActivity {
         findViewById(R.id.fab_save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //perform the crop model
-                //  float[] points = mCropImageView.getCropPoints();
-                //Rect rect = mCropImageView.getCropRect();
+
                 RectF rect2 = mCropImageView.getCropWindowRect();
 
                 //float[] points = {rect.left, rect.top, rect.right, rect.bottom};
                 float[] points = {rect2.left, rect2.top, rect2.right, rect2.bottom};
 
-                Log.d("CropActivity", "onClick: point are=" + points[0] + ", " + points[1] + ", " + points[2] + ", " + points[3]);
+                //Log.d("CropActivity", "onClick: point are=" + points[0] + ", " + points[1] + ", " + points[2] + ", " + points[3]);
                 //Log.d("CropActivity", "onClick: 0:rect points are" + rect.left + " ," + rect.top + " ," + rect.right + " ," + rect.bottom);
-                Log.d("CropActivity", "onClick: 2:rect points are" + rect2.left + " ," + rect2.top + " ," + rect2.right + " ," + rect2.bottom);
+               // Log.d("CropActivity", "onClick: 2:rect points are" + rect2.left + " ," + rect2.top + " ," + rect2.right + " ," + rect2.bottom);
 
                 final Intent backData = new Intent();
                 backData.putExtra(Constant.CLIP_POINTS, points);

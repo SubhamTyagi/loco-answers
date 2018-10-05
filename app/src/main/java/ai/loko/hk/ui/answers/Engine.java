@@ -31,8 +31,6 @@ package ai.loko.hk.ui.answers;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.balsikandar.crashreporter.CrashReporter;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -42,6 +40,7 @@ import java.util.ArrayList;
 
 import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.model.Question;
+import ai.loko.hk.ui.utils.Logger;
 
 import static ai.loko.hk.ui.data.Data.skip;
 import static ai.loko.hk.ui.utils.Utils.count;
@@ -64,18 +63,7 @@ public class Engine extends Base {
         super(questionObj);
     }
 
-    /**
-     * Search and return result .
-     *
-     * @return the string
-     */
-    public String search() {
-        if (optionA.contains("-") && optionB.contains("-") && optionC.contains("-")) {
-            return googlePairSearch();
-        }
-        return googleSearch();
-    }
-
+    //currently not used but will be...
     private String googlePairSearch() {
         boolean isNeg;
         a = b = c = 0;
@@ -176,14 +164,14 @@ public class Engine extends Base {
             return setAnswer(isNeg);
 
         } catch (Exception ioe) {
-           CrashReporter.logException(ioe);
+            Logger.logException(ioe);
             error = true;
             optionRed = "b";
             return "error";
         }
     }
 
-    private String googleSearch() {
+    public String search() {
         //int max = 0;
         boolean isNeg = false;
         a = b = c = 0;
@@ -201,16 +189,12 @@ public class Engine extends Base {
                 this.question = stringBuilder.toString();
             }
 
-            Log.d(TAG, "googleSearch: itIsGoogle==" + itIsGoogle);
-            Log.d(TAG, "googleSearch: isWikiDone==" + isWikiDone);
-
             if (!itIsGoogle && !isWikiDone) {
-                Log.d(TAG, "googleSearch: advance search");
+                // Log.d(TAG, "googleSearch: advance search");
                 return wikiBot(isNeg);
 
             }
-
-            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=30").userAgent(Data.USER_AGENT).get();
+            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=15").userAgent(Data.USER_AGENT).get();
             String text = doc.body().text().toLowerCase();
 
             String optionAsplit[] = optionA.split(" ");
@@ -285,7 +269,8 @@ public class Engine extends Base {
             return setAnswer(isNeg);
 
         } catch (Exception ioe) {
-            CrashReporter.logException(ioe);
+            Logger.logException(ioe);
+
             error = true;
             optionRed = "b";
             return "error";
@@ -311,7 +296,8 @@ public class Engine extends Base {
             first.join();
 
         } catch (Exception e) {
-            CrashReporter.logException(e);
+            Logger.logException(e);
+
         }
         checkForNegative = false;
         isWikiDone = true;
@@ -324,7 +310,7 @@ public class Engine extends Base {
         Log.d(TAG, "wikiBot: done");
 
         if (a == b && b == c) {
-            return googleSearch();
+            return search();
         }
 
         reset();
@@ -373,7 +359,7 @@ public class Engine extends Base {
 
     @NonNull
     private String getResponseFromGoogle(String simplifiedQuestion, String sub) throws IOException {
-        return Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=10").userAgent(Data.USER_AGENT).get().body().text().toLowerCase();
+        return Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=5").userAgent(Data.USER_AGENT).get().body().text().toLowerCase();
     }
 }
 

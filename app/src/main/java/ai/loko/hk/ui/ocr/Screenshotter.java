@@ -40,9 +40,11 @@ import android.media.projection.MediaProjection;
 import android.os.Build;
 import android.util.Log;
 
-import com.balsikandar.crashreporter.CrashReporter;
+
 
 import java.nio.Buffer;
+
+import ai.loko.hk.ui.utils.Logger;
 
 
 /**
@@ -106,7 +108,7 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
 
         } catch (Exception e) {
             e.printStackTrace();
-            CrashReporter.logException(e);
+            Logger.logException(e);
 
 
         }
@@ -159,7 +161,7 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
 
     private void tearDown() {
         virtualDisplay.release();
-        if(mMediaProjection != null) mMediaProjection.stop();
+        if (mMediaProjection != null) mMediaProjection.stop();
         mMediaProjection = null;
         mImageReader = null;
     }

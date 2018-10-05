@@ -30,7 +30,6 @@ package ai.loko.hk.ui.activities;
 
 import android.Manifest;
 import android.app.ActivityManager;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -71,6 +70,7 @@ import ai.loko.hk.ui.model.Profile;
 import ai.loko.hk.ui.ocr.MediaProjectionHelper;
 import ai.loko.hk.ui.ocr.Points;
 import ai.loko.hk.ui.services.OCRFloating;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 import ui.R;
 
@@ -79,6 +79,7 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
 
     private static final int CODE_FOR_CROP = 272;
     private static final int storageReadPermission = 412;
+    private final String TAG = "ProfileActivity";
     List<Profile> profiles = new ArrayList<>();
     private CoordinatorLayout coordinatorLayout;
     private RecyclerView mRecyclerView;
@@ -86,9 +87,6 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
     private AppDatabase db;
     private MediaProjectionManager mMediaProjectionManager;
     private Intent mScreenshotIntent;
-
-    private final String TAG = "ProfileActivity";
-    private int uid;
 
     private void takeNecessaryPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -109,14 +107,16 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
         findViewById(R.id.fab_add_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder=new AlertDialog.Builder(ProfileActivity.this);
-                builder.setTitle("Select Screenshot image").setCancelable(false).setMessage("Crop Region containing the Question and Option");
-                builder.setPositiveButton("I understood", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivityForResult(new Intent(ProfileActivity.this, CropActivity.class), CODE_FOR_CROP);
-                    }
-                }).create().show();
+                new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Select Screenshot image")
+                        .setContentText("Crop Region containing the Question and Option")
+                        .setConfirmText("I understood")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) { startActivityForResult(new Intent(ProfileActivity.this, CropActivity.class), CODE_FOR_CROP);
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        }).show();
             }
         });
 
@@ -153,7 +153,6 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
 
         db = AppDatabase.getDatabase(getApplicationContext());
         setUpDataFromDB();
-
     }
 
 
@@ -174,7 +173,9 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
             case CODE_FOR_CROP: {
                 float[] points = data.getFloatArrayExtra(Constant.CLIP_POINTS);
                 String name = data.getStringExtra(Constant.PROFILE_NAME);
+
                 insertDataToDB(new ProfileEntity(1, name, points[0], points[1], points[2], points[3]));
+                new SweetAlertDialog(ProfileActivity.this,SweetAlertDialog.SUCCESS_TYPE).setTitleText("Image Cropped").setConfirmText("Ok").show();
                 profiles.add(new Profile(name, points[0], points[1], points[2], points[3]));
                 mProfileAdapter.notifyDataSetChanged();
                 break;
@@ -266,8 +267,10 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
             @Override
             protected Void doInBackground(Void... voids) {
                 List<ProfileEntity> profileEntities = db.profileDAO().getAll();
-                for (ProfileEntity profileEntity : profileEntities)
+                for (ProfileEntity profileEntity : profileEntities) {
+                    // if (profileEntity.getUid() != 0)
                     profiles.add(getProfileForView(profileEntity));
+                }
                 return null;
             }
 
@@ -288,29 +291,16 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
     }
 
     private void deleteDataFromDB(final ProfileEntity profileEntity) {
-        int uid1 = getUidFromDB(profileEntity.getY2());
-        Log.d(TAG, "deleteDataFromDB: " + uid1);
-        profileEntity.setUid(uid1);
         new Thread() {
             @Override
             public void run() {
-                db.profileDAO().delete(profileEntity);
+                final int uid1 = db.profileDAO().getPrimaryKey(profileEntity.getY1());
+                Log.d(TAG, "deleteDataFromDB: " + uid1);
+                profileEntity.setUid(uid1);
+                db.profileDAO().deleteBY_UID(uid1);
+                //db.profileDAO().delete(profileEntity);
             }
         }.start();
     }
 
-    private int getUidFromDB(final float y2) {
-        new AsyncTask<Void, Void, Integer>() {
-            @Override
-            protected void onPostExecute(Integer integer) {
-                uid = integer;
-            }
-
-            @Override
-            protected Integer doInBackground(Void... voids) {
-                return db.profileDAO().getPrimaryKey(y2);
-            }
-        }.execute();
-        return uid;
-    }
 }

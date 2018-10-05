@@ -30,7 +30,6 @@ package ai.loko.hk.ui.ocr;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -38,6 +37,13 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import ai.loko.hk.ui.data.Data;
 
 
 /**
@@ -66,6 +72,86 @@ public class ImageTextReader {
 
     //will return String[4] 0-> question 1->option1 2->option2 3-> option3
     public String[] getTextFromBitmap(Bitmap src) {
+        if (textRecognizer.isOperational() && src != null) {
+            Frame frame = new Frame.Builder().setBitmap(src).build();
+            SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
+
+            if (textBlocks.size() == 0) {
+                return new String[]{"Scan Failed: Found nothing to scan"};
+            }
+
+            StringBuilder lines = new StringBuilder();
+
+            if (!Data.FAST_MODE_FOR_OCR) {
+                List<Text> textLines = new ArrayList<>();
+                for (int i = 0; i < textBlocks.size(); i++) {
+                    TextBlock textBlock = textBlocks.valueAt(i);
+                    // blocks.append(textBlock.getValue()).append(" \n");
+                    List<? extends Text> textComponents = textBlock.getComponents();
+                    textLines.addAll(textComponents);
+                }
+                Collections.sort(textLines, new Comparator<Text>() {
+                    @Override
+                    public int compare(Text t1, Text t2) {
+                        int diffOfTops = t1.getBoundingBox().top - t2.getBoundingBox().top;
+                        int diffOfLefts = t1.getBoundingBox().left - t2.getBoundingBox().left;
+                        if (diffOfTops != 0) {
+                            return diffOfTops;
+                        }
+                        return diffOfLefts;
+                    }
+                });
+
+                for (Text text : textLines) {
+                    if (text != null && text.getValue() != null) {
+                        lines.append(text.getValue() + " \n");
+                    }
+                }
+            } else {
+                for (int index = 0; index < textBlocks.size(); index++) {
+                    TextBlock tBlock = textBlocks.valueAt(index);
+                    for (Text line : tBlock.getComponents()) {
+                        lines.append(line.getValue()).append(" \n");
+                    }
+                }
+            }
+            String lines2 = lines.toString();
+
+
+            int indexOfQuestionMark = 0;
+            if ((indexOfQuestionMark = lines2.indexOf("?")) != -1) {
+                String question = lines2.substring(0, indexOfQuestionMark);
+                if (indexOfQuestionMark != lines2.length()) {
+                    String[] options = lines2.substring(indexOfQuestionMark + 1).split("\n");
+                    if (options.length == 3)
+                        return new String[]{question, options[0], options[1], options[2],lines2};
+                }
+            } else if ((indexOfQuestionMark = lines2.indexOf(".")) != -1) {
+                String question = lines2.substring(0, indexOfQuestionMark);
+                if (indexOfQuestionMark != lines2.length()) {
+                    String[] options = lines2.substring(indexOfQuestionMark + 1).split("\n");
+                    if (options.length == 3)
+                        return new String[]{question, options[0], options[1], options[2], lines2};
+                }
+            }
+
+            String[] textOnScreen = lines2.split("\n");
+            int lineCount = textOnScreen.length;
+            if (lineCount > 3) {
+                StringBuilder question = new StringBuilder();
+                for (int i = 0; i < lineCount - 3; i++) {
+                    question.append(textOnScreen[i]);
+                }
+                return new String[]{question.toString(), textOnScreen[lineCount - 3], textOnScreen[lineCount - 2], textOnScreen[lineCount - 1], lines2};
+            }
+            return new String[]{"Scan Failed: Could not read options"};
+
+        } else {
+            return new String[]{"Scan Failed:  Could not set up the detector!"};
+        }
+    }
+
+    public String[] getTextFromBitmap2(Bitmap src) {
         if (textRecognizer.isOperational() && src != null) {
             Frame frame = new Frame.Builder().setBitmap(src).build();
             SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
@@ -99,116 +185,6 @@ public class ImageTextReader {
         } else {
             Log.d(TAG, "getTextFromBitmap: Could not set up the detector!");
             return new String[]{"Scan Failed:  Could not set up the detector!"};
-        }
-    }
-
-    public String[] getTextFromBitmap2(Bitmap src) {
-        if (textRecognizer.isOperational() && src != null) {
-            Frame frame = new Frame.Builder().setBitmap(src).build();
-            SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
-            //String blocks = "";
-            String lines = "";
-            for (int index = 0; index < textBlocks.size(); index++) {
-                TextBlock tBlock = textBlocks.valueAt(index);
-                // blocks = blocks + tBlock.getValue() + " \n";
-                for (Text line : tBlock.getComponents()) {
-                    lines = lines + line.getValue() + " \n";
-                }
-            }
-
-            if (textBlocks.size() == 0) {
-                return new String[]{"Scan Failed: Found nothing to scan"};
-            } else {
-                if (lines.contains("?")) {
-                    int indexOfQuestionMark = lines.indexOf('?');
-                    String question = lines.substring(0, indexOfQuestionMark);
-                    if (indexOfQuestionMark != lines.length()) {
-                        String[] options = lines.substring(indexOfQuestionMark + 1).split("\n");
-                        if (options.length == 3)
-                            return new String[]{question, options[0], options[1], options[2]};
-                    }
-
-                } else if (lines.contains(".")) {
-                    int indexOfQuestionMark = lines.indexOf('.');
-                    String question = lines.substring(0, indexOfQuestionMark);
-                    if (indexOfQuestionMark != lines.length()) {
-                        String[] options = lines.substring(indexOfQuestionMark + 1).split("\n");
-                        if (options.length == 3)
-                            return new String[]{question, options[0], options[1], options[2]};
-                    }
-                }
-                String[] textOnScreen = lines.split("\n");
-                int lineCount = textOnScreen.length;
-                if (lineCount > 3) {
-                    String question = "";
-                    for (int i = 0; i < lineCount - 3; i++) {
-                        question += textOnScreen[i];
-                    }
-                    return new String[]{question, textOnScreen[lineCount - 3], textOnScreen[lineCount - 2], textOnScreen[lineCount - 1]};
-                }
-                return new String[]{"Scan Failed: Could not read options"};
-            }
-        } else {
-            return new String[]{"Scan Failed:  Could not set up the detector!"};
-        }
-    }
-
-
-    class RecognizeText extends AsyncTask<Bitmap,Void,String[]>{
-
-        @Override
-        protected void onPostExecute(String[] s) {
-            super.onPostExecute(s);
-        }
-
-        @Override
-        protected String[] doInBackground(Bitmap... bitmaps) {
-            if (textRecognizer.isOperational() && bitmaps != null) {
-                Frame frame = new Frame.Builder().setBitmap(bitmaps[0]).build();
-                SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
-                //String blocks = "";
-                String lines = "";
-                for (int index = 0; index < textBlocks.size(); index++) {
-                    TextBlock tBlock = textBlocks.valueAt(index);
-                    for (Text line : tBlock.getComponents()) {
-                        lines = lines + line.getValue() + " \n";
-                    }
-                }
-                if (textBlocks.size() == 0) {
-                    return new String[]{"Scan Failed: Found nothing to scan"};
-                } else {
-                    if (lines.contains("?")) {
-                        int indexOfQuestionMark = lines.indexOf('?');
-                        String question = lines.substring(0, indexOfQuestionMark);
-                        if (indexOfQuestionMark != lines.length()) {
-                            String[] options = lines.substring(indexOfQuestionMark + 1).split("\n");
-                            if (options.length == 3)
-                                return new String[]{question, options[0], options[1], options[2]};
-                        }
-
-                    } else if (lines.contains(".")) {
-                        int indexOfQuestionMark = lines.indexOf('.');
-                        String question = lines.substring(0, indexOfQuestionMark);
-                        if (indexOfQuestionMark != lines.length()) {
-                            String[] options = lines.substring(indexOfQuestionMark + 1).split("\n");
-                            if (options.length == 3)
-                                return new String[]{question, options[0], options[1], options[2]};
-                        }
-                    }
-                    String[] textOnScreen = lines.split("\n");
-                    int lineCount = textOnScreen.length;
-                    if (lineCount > 3) {
-                        String question = "";
-                        for (int i = 0; i < lineCount - 3; i++) {
-                            question += textOnScreen[i];
-                        }
-                        return new String[]{question, textOnScreen[lineCount - 3], textOnScreen[lineCount - 2], textOnScreen[lineCount - 1]};
-                    }
-                    return new String[]{"Scan Failed: Could not read options"};
-                }
-            } else {
-                return new String[]{"Scan Failed:  Could not set up the detector!"};
-            }
         }
     }
 }

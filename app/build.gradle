@@ -29,28 +29,32 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
-    signingConfigs {
+   /* signingConfigs {
         debug {
             keyAlias 'debug'
             keyPassword '123456'
             storeFile file('./../debug-key.jks')
             storePassword '123456'
         }
-    }
+    }*/
     compileSdkVersion 28
     buildToolsVersion "28.0.2"
     defaultConfig {
         applicationId "ai.loko.hk.ui"
-        minSdkVersion 23 //19
+        minSdkVersion 19 //19
         targetSdkVersion 28
-        versionCode 20
+        versionCode 21
         versionName '2.0'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        versionNameSuffix '-capybara.beta'
+        versionNameSuffix '-capybara'
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
+       // signingConfig signingConfigs.debug
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
@@ -61,15 +65,18 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
-            //shrinkResources true
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
             jniDebuggable false
             renderscriptDebuggable false
             zipAlignEnabled true
+            pseudoLocalesEnabled true
         }
+    }
+    productFlavors {
     }
 }
 
@@ -95,12 +102,27 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     implementation 'org.jsoup:jsoup:1.11.3'
-
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
     implementation 'com.nightonke:boommenu:2.1.1'
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     implementation 'com.github.f0ris.sweetalert:library:1.5.6'
     implementation 'com.rmtheis:tess-two:9.0.0'
-    implementation project(path: ':crashreporter')
+    //implementation project(path: ':crashreporter')
 }
+
+/*tasks setOutputName(){
+    android.applicationVariants.all{
+        variant ->
+            variant.outputs.all{
+                output->
+                    def name="LoKo-Hack-v"+variant.versionName+".apk"
+                    output.outputFileName=name
+            }
+
+    }
+}
+
+gradle.taskGraph.whenReady {
+    setOutputName
+}*/
 apply plugin: 'com.google.gms.google-services'

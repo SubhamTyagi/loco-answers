@@ -28,7 +28,7 @@
 
 package ai.loko.hk.ui.answers;
 
-import com.balsikandar.crashreporter.CrashReporter;
+
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,6 +38,7 @@ import java.util.ArrayList;
 
 import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.data.Which;
+import ai.loko.hk.ui.utils.Logger;
 
 import static ai.loko.hk.ui.data.Data.skip;
 import static ai.loko.hk.ui.utils.Utils.count;
@@ -147,21 +148,20 @@ public class FindAnswers extends Which {
 
     }
 
-    /**
-     * Search string.
-     *
-     * @return the string
-     */
+   /*
     public String search() {
-        if (A.contains("-")) {
+       *//* if (A.contains("-")) {
             if (B.contains("-") && C.contains("-")) {
+
                 // Log.d(TAG, "search: paired question");
+                // this time it is not handling properly pair question
                 return pairGoogleSearch();
 
             } else return googleSearch();
-        }
+        }*//*
         return googleSearch();
-    }
+    }*/
+
 
     private String pairGoogleSearch() {
         boolean isNeg;
@@ -323,7 +323,7 @@ public class FindAnswers extends Which {
 
         } catch (Exception ioe) {
             ioe.printStackTrace();
-            CrashReporter.logException(ioe);
+           Logger.logException(ioe);
             //  Crashlytics.log(ioe.getMessage());
             error = true;
             optionRed = "b";
@@ -335,7 +335,7 @@ public class FindAnswers extends Which {
 
     }
 
-    private String googleSearch() {
+    private String search() {
         //int max = 0;
         boolean isNeg = false;
         a = b = c = 0;
@@ -487,7 +487,7 @@ public class FindAnswers extends Which {
 
         } catch (Exception ioe) {
             ioe.printStackTrace();
-            CrashReporter.logException(ioe);
+           Logger.logException(ioe);
             //Crashlytics.log(ioe.getMessage());
             error = true;
             optionRed = "b";
@@ -522,7 +522,7 @@ public class FindAnswers extends Which {
             first.join();
 
         } catch (Exception e) {
-            CrashReporter.logException(e);
+           Logger.logException(e);
         }
 
 
@@ -534,7 +534,7 @@ public class FindAnswers extends Which {
             checkForNegative = false;
             isWikiDone = true;
             itIsGoogle = true;
-            return googleSearch();
+            return search();
         }
 
         init();

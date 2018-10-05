@@ -32,15 +32,16 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.balsikandar.crashreporter.CrashReporter;
+
 
 import ai.loko.hk.ui.constants.Constant;
+import ui.BuildConfig;
 
 public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CrashReporter.initialize(this, Constant.pathToErrors);
+        //CrashReporter.initialize(this, Constant.pathToErrors);
     }
 
     @Override

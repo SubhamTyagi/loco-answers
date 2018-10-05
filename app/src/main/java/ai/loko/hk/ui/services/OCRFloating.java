@@ -53,7 +53,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.balsikandar.crashreporter.CrashReporter;
+
 import com.dd.processbutton.iml.ActionProcessButton;
 
 import java.io.ByteArrayOutputStream;
@@ -69,6 +69,8 @@ import ai.loko.hk.ui.model.Question;
 import ai.loko.hk.ui.ocr.ImageTextReader;
 import ai.loko.hk.ui.ocr.Points;
 import ai.loko.hk.ui.ocr.Screenshotter;
+import ai.loko.hk.ui.ocr.TesseractImageTextReader;
+import ai.loko.hk.ui.utils.Logger;
 import ui.R;
 
 
@@ -80,27 +82,16 @@ public class OCRFloating extends Service {
     ActionProcessButton getAnswer;
 
     int[] coordinate = new int[4];
-
     private NotificationManager notificationManager;
     private WindowManager mWindowManager;
-
     private View mFloatingView;
-
     private TextView option1, option2, option3;
     private WindowManager.LayoutParams params;
     private ImageTextReader imageTextReader;
-
     private int width, height;
-
     private Bitmap mBitmap;
 
-
     public OCRFloating() {
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     @Override
@@ -166,7 +157,7 @@ public class OCRFloating extends Service {
         });
 
         getAnswer = mFloatingView.findViewById(R.id.getanswer1);
-        getAnswer.setMode(ActionProcessButton.Mode.ENDLESS);
+        getAnswer.setMode(ActionProcessButton.Mode.PROGRESS);
 
         option1 = mFloatingView.findViewById(R.id.optionA);
         option2 = mFloatingView.findViewById(R.id.optionB);
@@ -184,9 +175,16 @@ public class OCRFloating extends Service {
             @Override
             public void onClick(View v) {
                 OCRFloating.isGoogle = true;
-                getAnswer.setProgress(1);
-                Log.d(TAG, "onClick: getanswers clicked");
-                captureScreenshot();
+                getAnswer.setProgress(10);
+                synchronized (OCRFloating.this) {
+                    Screenshotter.getInstance(getApplicationContext()).setSize(width, height).takeScreenshot(new Screenshotter.ScreenshotCallback() {
+                        @Override
+                        public void onScreenshot(final Bitmap bitmap) {
+                            getAnswer.setProgress(25);
+                            new TakeScreenShot().execute(bitmap);
+                        }
+                    });
+                }
             }
         });
         coordinate[0] = (int) Math.ceil((double) Points.X1);
@@ -195,51 +193,44 @@ public class OCRFloating extends Service {
         coordinate[3] = (int) Math.ceil((double) Points.Y2);
     }
 
-    private void captureScreenshot() {
 
-        Screenshotter.getInstance(getApplicationContext()).setSize(width, height).takeScreenshot(new Screenshotter.ScreenshotCallback() {
-            @Override
-            public void onScreenshot(Bitmap bitmap) {
-                mBitmap = bitmap;
-                processImage();
+    private void writeToStorage(Bitmap bmp) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        File picFile = new File(Constant.path, "SCR_" + Long.toString(System.currentTimeMillis()) + ".jpg");
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+        try {
+            Log.d(TAG, "Writing images");
+            picFile.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(picFile);
+            outputStream.write(bytes.toByteArray());
+            outputStream.close();
+        } catch (IOException e) {
+            Logger.logException(e);
+        }
+    }
+
+    private void writeToStorage(String[] questionAndOption) {
+        File picFile = new File(Constant.path, "QaOption_" + Long.toString(System.currentTimeMillis()) + ".txt");
+        StringBuilder value = new StringBuilder();
+        if (questionAndOption.length == 5) {
+            value.append(questionAndOption[4]);
+        } else {
+            value.append("ERROR: ");
+            for (String s : questionAndOption) {
+                value.append(s).append("\n");
             }
-        });
-
-    }
-
-    // here we process screen images to extract question and answer
-    public void processImage() {
-        Log.d(TAG, "processImage: ");
-        if (coordinate[2] == 0 || coordinate[3] == 0) {
-            coordinate[2] = width;
-            coordinate[3] = height;
         }
-        final Bitmap croppedGrayscaleImage;
-        //if (Data.GRAYSCALE_IAMGE_FOR_OCR)
-        //    croppedGrayscaleImage = Utils.getGrayscaleImage(Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]));
-        //else
-        croppedGrayscaleImage = Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
-
-        final String questionAndOption[] = imageTextReader.getTextFromBitmap2(croppedGrayscaleImage);
-        Log.d(TAG, "processImage: " + 15651);
-
-        if (questionAndOption.length == 4) {
-            new Update().execute(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]);
-        } else if (questionAndOption.length > 0) {
-            Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
-        }
-
-        if (Data.IMAGE_LOGS_STORAGE) {
-            new Thread() {
-                @Override
-                public void run() {
-                    writeToStorage(croppedGrayscaleImage);
-                    writeToStorage(questionAndOption);
-                }
-            }.start();
+        try {
+            picFile.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(picFile);
+            outputStream.write(value.toString().getBytes());
+            outputStream.close();
+        } catch (IOException e) {
+           Logger.logException(e);
         }
 
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -282,42 +273,138 @@ public class OCRFloating extends Service {
         return (mWindowManager);
     }
 
-    private void writeToStorage(String[] questionAndOption) {
-        File picFile = new File(Constant.path, "QaOption_" + Long.toString(System.currentTimeMillis()) + ".txt");
-        String value = "";
-        for (String s : questionAndOption) {
-            value += s + "\n";
-        }
-        try {
-            picFile.createNewFile();
-            FileOutputStream outputStream = new FileOutputStream(picFile);
-            outputStream.write(value.getBytes());
-            outputStream.close();
-        } catch (IOException e) {
-
-            CrashReporter.logException(e);
-        }
-
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
-    private void writeToStorage(Bitmap bmp) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        File picFile = new File(Constant.path, "SCR_" + Long.toString(System.currentTimeMillis()) + ".jpg");
-        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
-        try {
-            Log.d(TAG, "Writing images");
-            picFile.createNewFile();
-            FileOutputStream outputStream = new FileOutputStream(picFile);
-            outputStream.write(bytes.toByteArray());
-            outputStream.close();
-        } catch (IOException e) {
-            CrashReporter.logException(e);
-        }
-    }
-
-    private class Update extends AsyncTask<String, Void, String>  {
+    private class TakeScreenShot extends AsyncTask<Bitmap, Integer, String> {
+        private String[] questionAndOption;
+        private Bitmap croppedGrayscaleImage;
         private Engine engine;
 
+        @Override
+        protected void onPostExecute(final String s) {
+            if (s != null) {
+                option1.setText(engine.getA1());
+                option2.setText(engine.getB2());
+                option3.setText(engine.getC3());
+
+                switch (s) {
+                    case "a":
+                        option1.setTextColor(Color.RED);
+                        option2.setTextColor(Color.BLACK);
+                        option3.setTextColor(Color.BLACK);
+                        break;
+                    case "b":
+                        option2.setTextColor(Color.RED);
+                        option3.setTextColor(Color.BLACK);
+                        option1.setTextColor(Color.BLACK);
+                        break;
+                    case "c":
+                        option3.setTextColor(Color.RED);
+                        option1.setTextColor(Color.BLACK);
+                        option2.setTextColor(Color.BLACK);
+                        break;
+                }
+            } else if (questionAndOption.length > 0) {
+                Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
+            }
+            getAnswer.setProgress(100);
+
+            if (Data.IMAGE_LOGS_STORAGE) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        writeToStorage(croppedGrayscaleImage);
+                        writeToStorage(questionAndOption);
+                    }
+                }.start();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Bitmap... bitmaps) {
+            if (coordinate[2] == 0 || coordinate[3] == 0) {
+                coordinate[2] = width;
+                coordinate[3] = height;
+            }
+            croppedGrayscaleImage = Bitmap.createBitmap(bitmaps[0], coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
+            publishProgress(40);
+
+            if (Data.IS_TESSERACT_OCR_USE)
+                questionAndOption = TesseractImageTextReader.getTextFromBitmap(croppedGrayscaleImage, Data.TESSERACT_LANGUAGE);
+            else
+                questionAndOption = imageTextReader.getTextFromBitmap(croppedGrayscaleImage);
+
+            publishProgress(65);
+            if (questionAndOption.length == 5) {
+                engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
+                engine.search();
+                if (!engine.isError()) {
+                    publishProgress(90);
+                    return engine.getAnswer();
+                } else {
+                    engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
+                    publishProgress(90);
+                    return engine.search();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            getAnswer.setProgress(values[0]);
+        }
+    }
+
+
+/*
+    void captureScreenshot() {
+        Screenshotter.getInstance(getApplicationContext()).setSize(width, height).takeScreenshot(new Screenshotter.ScreenshotCallback() {
+            @Override
+            public void onScreenshot(Bitmap bitmap) {
+                mBitmap = bitmap;
+                processImage(bitmap);
+            }
+        });
+
+    }
+
+    void processImage(Bitmap bitmap) {
+        if (coordinate[2] == 0 || coordinate[3] == 0) {
+            coordinate[2] = width;
+            coordinate[3] = height;
+        }
+        final Bitmap croppedGrayscaleImage;
+        //if (Data.GRAYSCALE_IAMGE_FOR_OCR)
+        //    croppedGrayscaleImage = Utils.getGrayscaleImage(Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]));
+        //else
+        croppedGrayscaleImage = Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
+
+        final String questionAndOption[] = imageTextReader.getTextFromBitmap(croppedGrayscaleImage);
+        if (questionAndOption.length == 5) {
+            synchronized (this) {
+                new Update().execute(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]);
+            }
+        } else if (questionAndOption.length > 0) {
+            Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
+        }
+
+        if (Data.IMAGE_LOGS_STORAGE) {
+            new Thread() {
+                @Override
+                public void run() {
+                    writeToStorage(croppedGrayscaleImage);
+                    writeToStorage(questionAndOption);
+                }
+            }.start();
+        }
+
+    }
+    private class Update extends AsyncTask<String, Void, String> {
+        private Engine engine;
         @Override
         protected void onPostExecute(String s) {
             // Log.d(TAG, "Option 1==>" + engine.getA1());
@@ -354,7 +441,6 @@ public class OCRFloating extends Service {
             //obj.search();
             engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
             engine.search();
-
             if (!engine.isError()) {
                 return engine.getAnswer();
             } else {
@@ -364,7 +450,5 @@ public class OCRFloating extends Service {
             }
 
         }
-    }
-
-
+    }*/
 }

@@ -48,8 +48,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:icon">
 
         <activity
             android:name="ai.loko.hk.ui.MainActivity"
@@ -69,12 +69,12 @@
         <service
             android:name="ai.loko.hk.ui.services.Floating"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
         </service>
         <service
             android:name="ai.loko.hk.ui.services.OCRFloating"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
         </service>
         <service
             android:name="ai.loko.hk.ui.Accessibility"
@@ -120,7 +120,6 @@
             android:name="ai.loko.hk.ui.activities.CropActivity"
             android:label="@string/title_activity_crop"
             android:theme="@style/NoActionBar">
-
         </activity>
     </application>
 
