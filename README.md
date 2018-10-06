@@ -35,8 +35,8 @@
 10. Swag IQ
 
 ## Contribution
-* [Shubham Tyagi](https://subhamtyagi.github.io/) and his supporter
-* Contributions accepted(always)
+* [Shubham Tyagi](https://subhamtyagi.github.io/).
+* Valid Pull request always accepted.
 
 ## Screenshots
 | HOME | PROFILE |
