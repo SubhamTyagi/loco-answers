@@ -1,4 +1,5 @@
 
+
 [![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) 
 ![version](https://img.shields.io/badge/Version-2.0-green.svg)
 
@@ -6,13 +7,14 @@
 # Trivia hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 * A free, 100 % open source, ads free trivia helper app that respect user sentiments.
+*  Previously Known as LoKo HacK
 ## Features
 * Free ,open source, No ads.
 * Highest Accuracy.
 * Highest Speed.
 * Bug reporter.
 * Trivia Games Supported by OCR and Accessibility
-## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-red.svg" /></a>
 
 * Before downloading please give this app a :star: by pressing ![Star](/.github/assets/star.PNG) it means a lot to me it boost me to build more features and help you guys.
 * [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers/releases)
@@ -49,14 +51,19 @@
 
 ## External Credits
 
- 1. [Weiping Huang](https://nightonke.outlook.io) for [BoomMenu](https://github.com/Nightonke/BoomMenu).
- 2. [Danylyk Dmytro](https://dmytrodanylyk.com/) for  [Process Button](https://github.com/dmytrodanylyk/android-process-button).
- 3. [Anton]( https://vk.com/f0ris) for [Sweet Alert dialog](https://github.com/F0RIS/sweet-alert-dialog).
- 4. [Bal Sikandar](balsikandar.github.io) for [CrashReporter](https://github.com/MindorksOpenSource/CrashReporter).
- 5. [Robert Theis](http://www.rmtheis.com/) for [Tesseract Tools for Android](https://github.com/rmtheis/tess-two).
- 6. [Kamran](http://kamranzafar.github.com/) for [Jtar](https://github.com/kamranzafar/jtar).
- 7. [Jonathan Hedley](http://jonathanhedley.com) for [Jsoup](https://jsoup.org/).
- 8. [Arthur](http://TheArtOfDev.com/) for [Android Image Cropper](https://github.com/ArthurHub/Android-Image-Cropper).
+ - [Weiping Huang](https://nightonke.outlook.io) for [BoomMenu](https://github.com/Nightonke/BoomMenu).
+ - [Danylyk Dmytro](https://dmytrodanylyk.com/) for  [Process Button](https://github.com/dmytrodanylyk/android-process-button).
+ - [Anton]( https://vk.com/f0ris) for [Sweet Alert dialog](https://github.com/F0RIS/sweet-alert-dialog).
+ - [Bal Sikandar](balsikandar.github.io) for [CrashReporter](https://github.com/MindorksOpenSource/CrashReporter).
+ - [Robert Theis](http://www.rmtheis.com/) for [Tesseract Tools for Android](https://github.com/rmtheis/tess-two).
+ - [Kamran](http://kamranzafar.github.com/) for [Jtar](https://github.com/kamranzafar/jtar).
+ - [Jonathan Hedley](http://jonathanhedley.com) for [Jsoup](https://jsoup.org/).
+ - [Arthur](http://TheArtOfDev.com/) for [Android Image Cropper](https://github.com/ArthurHub/Android-Image-Cropper).
+ 
+ ## Why app is Re-named
+ 
+ - Old name pronunciation was same as one trivia game. Some uses are confused by old name and they thought this app is only work with particular game although that was not true.   
+
  
 
 ## Open Source License
