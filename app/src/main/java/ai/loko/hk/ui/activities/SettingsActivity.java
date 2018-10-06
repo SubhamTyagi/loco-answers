@@ -28,7 +28,6 @@
 
 package ai.loko.hk.ui.activities;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -78,15 +77,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     static final int BUFFER = 1024 * 10;
     private static final String TAG = "SettingsActivity";
     static boolean change = true;
+    static ConnectivityManager cm;
     // private static DownloadTrainingTask downloadTask;
     private static Resources res;
-    ConnectivityManager cm;
-    private SweetAlertDialog mSweetAlertDialogForProgressBar;//, confirmDialog;
+    private static SweetAlertDialog mSweetAlertDialogForProgressBar;//, confirmDialog;
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(final Preference preference, Object value) {
             String stringValue = value.toString();
@@ -111,7 +110,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             change = false;
                         }
                     } else {
-                        change =true;
+                        change = true;
                     }
                 }
             } else if (preference instanceof RingtonePreference) {
@@ -201,7 +200,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      *
      * @see #sBindPreferenceSummaryToValueListener
      */
-    private void bindPreferenceSummaryToValue(Preference preference) {
+    private static void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
@@ -258,9 +257,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
-    @SuppressLint("ValidFragment")
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public class MainPreferenceFragment extends PreferenceFragment {
+    public static class MainPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -287,7 +286,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    private class DownloadTrainingTask extends AsyncTask<String, Integer, Boolean> {
+    private static class DownloadTrainingTask extends AsyncTask<String, Integer, Boolean> {
         int total_length = 1;
 
         @Override
@@ -305,35 +304,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         protected void onProgressUpdate(Integer... values) {
             // update progress bar
             int percent = values[0] / total_length;
-            int ten10 = (int) Math.ceil(percent / 10);
-            switch (ten10) {
-                case 1:
-                case 10:
-                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.material_deep_teal_20));
-                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
-                    break;
-                case 9:
-                case 2:
-                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.success_stroke_color));
-                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
-                    break;
-                case 3:
-                case 8:
-                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.warning_stroke_color));
-                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
-                    break;
-                case 4:
-                case 7:
-                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.material_deep_teal_50));
-                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
-                    break;
-                case 5:
-                case 6:
-                    mSweetAlertDialogForProgressBar.getProgressHelper().setBarColor(res.getColor(R.color.blue_btn_bg_pressed_color));
-                    mSweetAlertDialogForProgressBar.setContentText(percent + "% downloads");
-                    break;
-
-            }
+            mSweetAlertDialogForProgressBar.setTitleText("Please wait.." + percent + "% downloads");
             mSweetAlertDialogForProgressBar.getProgressHelper().setProgress(percent);
         }
 
@@ -351,7 +322,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         url = new URL(url_string);
                     } catch (java.net.MalformedURLException ex) {
                         Log.e(TAG, "url " + url_string + " is bad: " + ex);
-
                         Logger.logException(ex);
                         return false;
                     }
@@ -366,7 +336,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             url_string = next.toExternalForm();
                             continue;
                     }
-
                     break;
                 }
 

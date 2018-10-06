@@ -29,11 +29,11 @@
 package ai.loko.hk.ui.utils;
 
 
+import com.balsikandar.crashreporter.CrashReporter;
 
 public class Logger {
     public static void logException(Exception e) {
-
-      //  CrashReporter.logException(e);
+        CrashReporter.logException(e);
     }
 }
 

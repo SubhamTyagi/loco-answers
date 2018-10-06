@@ -50,8 +50,8 @@ android {
         applicationId "ai.loko.hk.ui"
         minSdkVersion 19 //19
         targetSdkVersion 28
-        versionCode 22
-        versionName '2.1'
+        versionCode 23
+        versionName '2.1.1'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         versionNameSuffix '-capybara'
@@ -69,8 +69,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+           // minifyEnabled true
+            //shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
@@ -90,6 +90,9 @@ android {
         }
     }
 
+    dexOptions {
+        incremental true
+    }
 }
 
 dependencies {
@@ -119,7 +122,7 @@ dependencies {
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     implementation 'com.github.f0ris.sweetalert:library:1.5.6'
     implementation 'com.rmtheis:tess-two:9.0.0'
-    //implementation project(path: ':crashreporter')
+    implementation project(path: ':crashreporter')
 }
 
 /*tasks setOutputName(){

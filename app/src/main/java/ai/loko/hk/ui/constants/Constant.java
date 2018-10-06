@@ -34,8 +34,8 @@ import ui.BuildConfig;
 
 public class Constant {
     //TODO:
-    public static final int VERSION = 22;
-    public static final String VERSION_NAME = "2.1";
+    public static final int VERSION = 23;
+    public static final String VERSION_NAME = "2.1.1";
     public static final boolean DEBUG = BuildConfig.DEBUG;
     public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     public static final int CODE_FOR_SCREEN_CAPTURE = 1349;

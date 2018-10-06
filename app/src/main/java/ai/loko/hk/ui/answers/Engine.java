@@ -31,6 +31,8 @@ package ai.loko.hk.ui.answers;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.balsikandar.crashreporter.CrashReporter;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -195,8 +197,8 @@ public class Engine extends Base {
 
             }
             Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=15").userAgent(Data.USER_AGENT).get();
-            String text = doc.body().text().toLowerCase();
 
+            String text = doc.body().text().toLowerCase();
             String optionAsplit[] = optionA.split(" ");
             aSize = optionAsplit.length;
 
@@ -269,8 +271,7 @@ public class Engine extends Base {
             return setAnswer(isNeg);
 
         } catch (Exception ioe) {
-            Logger.logException(ioe);
-
+            //Logger.logException(ioe);
             error = true;
             optionRed = "b";
             return "error";
@@ -294,9 +295,8 @@ public class Engine extends Base {
             third.join();
             second.join();
             first.join();
-
         } catch (Exception e) {
-            Logger.logException(e);
+           // Logger.logException(e);
 
         }
         checkForNegative = false;

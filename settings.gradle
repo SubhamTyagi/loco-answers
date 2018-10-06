@@ -1,2 +1,2 @@
-include ':app'//, ':crashreporter'
+include ':app', ':crashreporter'
 //, ':dialog', ':button', ':boommenu', ':crashreporter'
