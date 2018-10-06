@@ -1,20 +1,20 @@
 /*
  *   Copyright (C) 2018 SHUBHAM TYAGI
  *
- *    This file is part of LoKo HacK.
+ *    This file is part of Trivia Hack.
  *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
  *     use this file except in compliance with the License. You may obtain a copy of
  *     the License at
  *
  *     https://www.gnu.org/licenses/gpl-3.0
  *
- *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    Trivia Hack is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *     along with Trivia Hack.  If not, see <http://www.gnu.org/licenses/>.
  *
  *
  *     Unless required by applicable law or agreed to in writing, software
@@ -66,6 +66,7 @@ import com.nightonke.boommenu.ButtonEnum;
 import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import java.io.File;
+import java.io.IOException;
 
 import ai.loko.hk.ui.activities.ProfileActivity;
 import ai.loko.hk.ui.activities.SettingsActivity;
@@ -118,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
             ocrBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(isServiceRunning(OCRFloating.class)){
+                        stopService(new Intent(MainActivity.this,OCRFloating.class));
+                    }else
                     startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 }
             });
@@ -369,16 +373,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
          /*
-         Note this this list preference value will be ignored by loko hack 2.0
+         Note this this list preference value will be ignored by Trivia hack 2.0
          because i think google search engine is best for our services .
          as search engine does not allow bot search google is some time flexibly due to his high usage
-
+*/
          if (sharedPref.getBoolean(getString(R.string.custom_search_engine), false))
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.custom_search_engine_url), "https://www.google.com/search?q=");
         else
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.search_engine_key), "https://www.google.com/search?q=");
-           Data.GRAYSCALE_IAMGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.grayscale_image_ocr), false);
-       */
+        //   Data.GRAYSCALE_IAMGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.grayscale_image_ocr), false);
+
 
          //these values are setted before due to performance
         Data.IMAGE_LOGS_STORAGE = sharedPref.getBoolean(getString(R.string.save_image_and_file_to_storage_key), true);
@@ -422,8 +426,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void about() {
         new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText("LOKO HACK VERSION " + Constant.VERSION_NAME)
-                .setContentText("Loko Hack " + Constant.VERSION_NAME)
+                .setTitleText("Trivia Hack VERSION " + Constant.VERSION_NAME)
+                .setContentText("Trivia Hack " + Constant.VERSION_NAME)
                 .setConfirmText("Ok")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -433,11 +437,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).show();
 
-       /* SweetAlertDialog sad=new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-                sad.setTitleText("LOKO HACK VERSION " + Constant.VERSION_NAME)
-                .setContentText("Loko Hack " + Constant.VERSION_NAME)
-                .setCancelable(false);
-                sad.show();*/
+
     }
 
     private void supportedApps() {
@@ -463,6 +463,11 @@ public class MainActivity extends AppCompatActivity {
                     new File(Constant.path).mkdirs();
                     new File(Constant.pathToErrors).mkdirs();
                     new File(Constant.pathToTesseract).mkdirs();
+                    try {
+                        new File(Constant.path,".nomedia").createNewFile();
+                    } catch (IOException e) {
+                       Logger.logException(e);
+                    }
                 } else {
                     finish();
                 }

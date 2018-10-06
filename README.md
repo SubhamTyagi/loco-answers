@@ -1,8 +1,9 @@
+
 [![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) 
 ![version](https://img.shields.io/badge/Version-2.0-green.svg)
 
 
-# Loko hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
+# Trivia hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 * A free, 100 % open source, ads free trivia helper app that respect user sentiments.
 ## Features
@@ -10,7 +11,7 @@
 * Highest Accuracy.
 * Highest Speed.
 * Bug reporter.
-* Feature on demand.
+* Trivia Games Supported by OCR and Accessibility
 ## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 * Before downloading please give this app a :star: by pressing ![Star](/.github/assets/star.PNG) it means a lot to me it boost me to build more features and help you guys.
@@ -19,7 +20,8 @@
 ## See Demo on YouTube
 * ### [Here](https://youtu.be/H0LvFNW_svA)
 ## Supported Apps
-### By using OCR you can use this app in all trivia games, Following apps are also supported by Accessibility. 
+- ### All Apps supported 
+##### Following apps are also supported by Accessibility. 
 1. Loco `version 2.1.9 or older`
 2. Brainbazzi `2.0.4 or older`
 3. Qureka `latest 1.0.30 or older`
@@ -41,7 +43,7 @@
 
 | Settings |Search| 
 |:-:|:-:|
-|![Settings](/.github/assets/settings.jpg?raw=true "Settings") | ![profile](/.github/assets/search.jpg?raw=true "Search")|
+|![Settings](/.github/assets/settings.jpg?raw=true "Settings") | ![Search](/.github/assets/search.jpg?raw=true "Search")|
 |Language|
 | ![Language](/.github/assets/language.jpg?raw=true "Language")|
 
@@ -55,10 +57,9 @@
  6. [Kamran](http://kamranzafar.github.com/) for [Jtar](https://github.com/kamranzafar/jtar).
  7. [Jonathan Hedley](http://jonathanhedley.com) for [Jsoup](https://jsoup.org/).
  8. [Arthur](http://TheArtOfDev.com/) for [Android Image Cropper](https://github.com/ArthurHub/Android-Image-Cropper).
-
+ 
 
 ## Open Source License
-
     Copyright 2018 SHUBHAM TYAGI
     Licensed under the FOLLOWING TERMS and as per GPL V3
     you may not use this file except in compliance with the License. If there is any conflict between these line and GPL v3 then GPL v3 Licence will prevail. 

@@ -1,20 +1,20 @@
 /*
  *   Copyright (C) 2018 SHUBHAM TYAGI
  *
- *    This file is part of LoKo HacK.
+ *    This file is part of Trivia Hack.
  *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
  *     use this file except in compliance with the License. You may obtain a copy of
  *     the License at
  *
  *     https://www.gnu.org/licenses/gpl-3.0
  *
- *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    Trivia Hack is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *     along with Trivia Hack.  If not, see <http://www.gnu.org/licenses/>.
  *
  *
  *     Unless required by applicable law or agreed to in writing, software
@@ -34,15 +34,15 @@ import ui.BuildConfig;
 
 public class Constant {
     //TODO:
-    public static final int VERSION = 21;
-    public static final String VERSION_NAME = "2.0";
+    public static final int VERSION = 22;
+    public static final String VERSION_NAME = "2.1";
     public static final boolean DEBUG = BuildConfig.DEBUG;
     public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     public static final int CODE_FOR_SCREEN_CAPTURE = 1349;
     public static final String LATEST = "latest";
 
-    public static final String path = Environment.getExternalStorageDirectory() + "/LoKoHacK/";
-    public static final String pathToErrors = Environment.getExternalStorageDirectory() + "/LoKoHacK/errors";
+    public static final String path = Environment.getExternalStorageDirectory() + "/TriviaHacK/";
+    public static final String pathToErrors = Environment.getExternalStorageDirectory() + "/TriviaHacK/errors";
     public static final String pathToTesseract = Environment.getExternalStorageDirectory() + "/tesseract/tessdata/";
     public static final String tesseractPath = Environment.getExternalStorageDirectory() + "/tesseract/";
 

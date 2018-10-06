@@ -2,20 +2,20 @@
 <!--
   ~   Copyright (C) 2018 SHUBHAM TYAGI
   ~
-  ~    This file is part of LoKo HacK.
+  ~    This file is part of Trivia Hack.
   ~     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
   ~     use this file except in compliance with the License. You may obtain a copy of
   ~     the License at
   ~
   ~     https://www.gnu.org/licenses/gpl-3.0
   ~
-  ~    LoKo hacK is free software: you can redistribute it and/or modify
+  ~    Trivia Hack is free software: you can redistribute it and/or modify
   ~    it under the terms of the GNU General Public License as published by
   ~    the Free Software Foundation, either version 3 of the License, or
   ~    (at your option) any later version.
   ~
   ~     You should have received a copy of the GNU General Public License
-  ~     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+  ~     along with Trivia Hack.  If not, see <http://www.gnu.org/licenses/>.
   ~
   ~
   ~     Unless required by applicable law or agreed to in writing, software
@@ -39,7 +39,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/appnamecontainer"
         android:layout_width="0dp"
-        android:layout_height="121dp"
+        android:layout_height="110dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -63,7 +63,7 @@
             android:layout_marginBottom="8dp"
             android:fontFamily="serif"
             android:text="@string/app_name"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/text_color"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -76,18 +76,19 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="283dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_width="280dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="20dp"
         android:background="@color/grey_mat"
+        android:paddingLeft="@dimen/padd_10"
         android:text="@string/desc"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.56"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -149,16 +150,13 @@
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="56dp"
         android:background="@android:color/holo_green_dark"
         android:text="@string/ocr_btn_txt"
         android:textColor="@android:color/background_light"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/start5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/start5"
-        app:layout_constraintTop_toBottomOf="@+id/olpermission5"/>
+        app:layout_constraintStart_toEndOf="@+id/start5"/>
 </android.support.constraint.ConstraintLayout>

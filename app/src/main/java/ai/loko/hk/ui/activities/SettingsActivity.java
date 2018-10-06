@@ -1,20 +1,20 @@
 /*
  *   Copyright (C) 2018 SHUBHAM TYAGI
  *
- *    This file is part of LoKo HacK.
+ *    This file is part of Trivia Hack.
  *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
  *     use this file except in compliance with the License. You may obtain a copy of
  *     the License at
  *
  *     https://www.gnu.org/licenses/gpl-3.0
  *
- *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    Trivia Hack is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *     along with Trivia Hack.  If not, see <http://www.gnu.org/licenses/>.
  *
  *
  *     Unless required by applicable law or agreed to in writing, software
@@ -28,6 +28,7 @@
 
 package ai.loko.hk.ui.activities;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -48,8 +51,6 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-
-
 
 import org.kamranzafar.jtar.TarEntry;
 import org.kamranzafar.jtar.TarInputStream;
@@ -76,44 +77,47 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     static final int BUFFER = 1024 * 10;
     private static final String TAG = "SettingsActivity";
-    private static SweetAlertDialog mSweetAlertDialogForProgressBar;
-   // private static DownloadTrainingTask downloadTask;
+    static boolean change = true;
+    // private static DownloadTrainingTask downloadTask;
     private static Resources res;
-
+    ConnectivityManager cm;
+    private SweetAlertDialog mSweetAlertDialogForProgressBar;//, confirmDialog;
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
+        public boolean onPreferenceChange(final Preference preference, Object value) {
             String stringValue = value.toString();
-
             if (preference instanceof ListPreference) {
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
                 String entry = index >= 0 ? (listPreference.getEntries()[index]).toString() : null;
                 preference.setSummary(entry);
-
                 if (preference.getKey().equals("language_for_tesseract")) {
-                    String lang = listPreference.getEntryValues()[index >= 0 ? index : 0].toString();
+                    final String lang = listPreference.getEntryValues()[index >= 0 ? index : 0].toString();
                     if (!isLanguageDataExists(lang)) {
-
-                        //download traing data for entry value
                         mSweetAlertDialogForProgressBar.show();
-                        new DownloadTrainingTask().execute(lang);
-
+                        NetworkInfo ni = cm.getActiveNetworkInfo();
+                        if (ni == null) {
+                            change = false;
+                            mSweetAlertDialogForProgressBar.setTitleText("Downloading Failed").setContentText("You are not connected to Internet").setConfirmText("Ok").changeAlertType(SweetAlertDialog.WARNING_TYPE);
+                        } else if (ni.isConnected()) {
+                            change = true;
+                            new DownloadTrainingTask().execute(lang);
+                        } else {
+                            mSweetAlertDialogForProgressBar.setTitleText("Downloading Failed").setContentText("You are not connected to Internet").setConfirmText("Ok").changeAlertType(SweetAlertDialog.WARNING_TYPE);
+                            change = false;
+                        }
                     } else {
-                        //do nothing
+                        change =true;
                     }
-
                 }
-
             } else if (preference instanceof RingtonePreference) {
                 if (!TextUtils.isEmpty(stringValue)) {
                     Ringtone ringtone = RingtoneManager.getRingtone(
                             preference.getContext(), Uri.parse(stringValue));
-
                     if (ringtone == null) {
                         // Clear the summary if there was a lookup error.
                         preference.setSummary(null);
@@ -130,7 +134,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
-            return true;
+            return change;
         }
     };
 
@@ -148,69 +152,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private static boolean isXLargeTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
-    }
-
-    /**
-     * Binds a preference's summary to its value. More specifically, when the
-     * preference's value is changed, its summary (line of text below the
-     * preference title) is updated to reflect the value. The summary is also
-     * immediately updated upon calling this method. The exact display format is
-     * dependent on the type of preference.
-     *
-     * @see #sBindPreferenceSummaryToValueListener
-     */
-    private static void bindPreferenceSummaryToValue(Preference preference) {
-        // Set the listener to watch for value changes.
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-
-        // Trigger the listener immediately with the preference's
-        // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager.getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setupActionBar();
-        mSweetAlertDialogForProgressBar = new SweetAlertDialog(SettingsActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-        mSweetAlertDialogForProgressBar.setTitleText(getString(R.string.download_language_data_please_wait)).setCancelable(false);
-        res=getResources();
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        finish();
-    }
-
-
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    @Override
-    public boolean onIsMultiPane() {
-        return isXLargeTablet(this);
-    }
-
-
-    protected boolean isValidFragment(String fragmentName) {
-        return PreferenceFragment.class.getName().equals(fragmentName)
-                || MainPreferenceFragment.class.getName().equals(fragmentName);
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
     }
 
     public static void untarTGzFile(String tar_gz_file, String dest_path) throws IOException {
@@ -252,18 +193,81 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     /**
+     * Binds a preference's summary to its value. More specifically, when the
+     * preference's value is changed, its summary (line of text below the
+     * preference title) is updated to reflect the value. The summary is also
+     * immediately updated upon calling this method. The exact display format is
+     * dependent on the type of preference.
+     *
+     * @see #sBindPreferenceSummaryToValueListener
+     */
+    private void bindPreferenceSummaryToValue(Preference preference) {
+        // Set the listener to watch for value changes.
+        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+
+        // Trigger the listener immediately with the preference's
+        // current value.
+        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                PreferenceManager.getDefaultSharedPreferences(preference.getContext())
+                        .getString(preference.getKey(), ""));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupActionBar();
+        mSweetAlertDialogForProgressBar = new SweetAlertDialog(SettingsActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        mSweetAlertDialogForProgressBar.setTitleText(getString(R.string.download_language_data_please_wait)).setCancelable(false);
+        cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        res = getResources();
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
+
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Show the Up button in the action bar.
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onIsMultiPane() {
+        return isXLargeTablet(this);
+    }
+
+    protected boolean isValidFragment(String fragmentName) {
+        return PreferenceFragment.class.getName().equals(fragmentName)
+                || MainPreferenceFragment.class.getName().equals(fragmentName);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
+    /**
      * This fragment shows general preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
+    @SuppressLint("ValidFragment")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class MainPreferenceFragment extends PreferenceFragment {
+    public class MainPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_main);
             setHasOptionsMenu(true);
 
-            // Note in Loko Hack version 2.0 i have ignored the the value set by user because i think google search engine is best for our engine
+            // Note in Trivia Hack version 2.0 i have ignored the the value set by user because i think google search engine is best for our engine
             //other search engines are not so efficient as Google
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.search_engine_key)));
@@ -283,7 +287,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    private static class DownloadTrainingTask extends AsyncTask<String, Integer, Boolean> {
+    private class DownloadTrainingTask extends AsyncTask<String, Integer, Boolean> {
         int total_length = 1;
 
         @Override
@@ -341,7 +345,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             URL url, base, next;
             HttpURLConnection conn;
             try {
-                while (true) {  // from http://stackoverflow.com/a/26046079/3798801
+                while (true) {
                     Log.v(TAG, "downloading " + url_string);
                     try {
                         url = new URL(url_string);

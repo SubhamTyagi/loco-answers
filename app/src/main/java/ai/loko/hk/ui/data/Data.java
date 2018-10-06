@@ -1,20 +1,20 @@
 /*
  *   Copyright (C) 2018 SHUBHAM TYAGI
  *
- *    This file is part of LoKo HacK.
+ *    This file is part of Trivia Hack.
  *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
  *     use this file except in compliance with the License. You may obtain a copy of
  *     the License at
  *
  *     https://www.gnu.org/licenses/gpl-3.0
  *
- *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    Trivia Hack is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *     along with Trivia Hack.  If not, see <http://www.gnu.org/licenses/>.
  *
  *
  *     Unless required by applicable law or agreed to in writing, software
@@ -74,7 +74,7 @@ public class Data {
             "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/60.1",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
     };
-    public static final String BASE_SEARCH_URL = "https://www.google.com/search?q=";
+    public static  String BASE_SEARCH_URL = "https://www.google.com/search?q=";
     public static String skip = "the of a an ? & and , in - ";
     private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none", "cannot", "can't", "didn't"};
     public static final ArrayList<String> removeNegativeWords = new ArrayList<>(Arrays.asList(negativeWords));

@@ -1,20 +1,20 @@
 /*
  *   Copyright (C) 2018 SHUBHAM TYAGI
  *
- *    This file is part of LoKo HacK.
+ *    This file is part of Trivia Hack.
  *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
  *     use this file except in compliance with the License. You may obtain a copy of
  *     the License at
  *
  *     https://www.gnu.org/licenses/gpl-3.0
  *
- *    LoKo hacK is free software: you can redistribute it and/or modify
+ *    Trivia Hack is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with LoKo Hack.  If not, see <http://www.gnu.org/licenses/>.
+ *     along with Trivia Hack.  If not, see <http://www.gnu.org/licenses/>.
  *
  *
  *     Unless required by applicable law or agreed to in writing, software
@@ -28,33 +28,37 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+/*
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+*/
 android {
-   /* signingConfigs {
+    signingConfigs {
         debug {
             keyAlias 'debug'
             keyPassword '123456'
             storeFile file('./../debug-key.jks')
             storePassword '123456'
         }
-    }*/
+    }
     compileSdkVersion 28
     buildToolsVersion "28.0.2"
     defaultConfig {
         applicationId "ai.loko.hk.ui"
         minSdkVersion 19 //19
         targetSdkVersion 28
-        versionCode 21
-        versionName '2.0'
+        versionCode 22
+        versionName '2.1'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         versionNameSuffix '-capybara'
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
-       // signingConfig signingConfigs.debug
+        //archivesBaseName "Trivia-hack-v"+versionName+".apk"
+
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
@@ -75,9 +79,17 @@ android {
             zipAlignEnabled true
             pseudoLocalesEnabled true
         }
+        debug {
+            debuggable true
+            jniDebuggable true
+            signingConfig signingConfigs.debug
+            renderscriptDebuggable true
+            minifyEnabled false
+            zipAlignEnabled false
+            signingConfig signingConfigs.debug
+        }
     }
-    productFlavors {
-    }
+
 }
 
 dependencies {
@@ -115,7 +127,7 @@ dependencies {
         variant ->
             variant.outputs.all{
                 output->
-                    def name="LoKo-Hack-v"+variant.versionName+".apk"
+                    def name="Trivia-Hack-v"+variant.versionName+".apk"
                     output.outputFileName=name
             }
 
