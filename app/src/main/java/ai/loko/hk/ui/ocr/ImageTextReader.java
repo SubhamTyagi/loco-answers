@@ -124,7 +124,7 @@ public class ImageTextReader {
                 if (indexOfQuestionMark != lines2.length()) {
                     String[] options = lines2.substring(indexOfQuestionMark + 1).split("\n");
                     if (options.length == 3)
-                        return new String[]{question, options[0], options[1], options[2],lines2};
+                        return new String[]{question, options[0], options[1], options[2], lines2};
                 }
             } else if ((indexOfQuestionMark = lines2.indexOf(".")) != -1) {
                 String question = lines2.substring(0, indexOfQuestionMark);

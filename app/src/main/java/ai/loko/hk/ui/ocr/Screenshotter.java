@@ -40,8 +40,6 @@ import android.media.projection.MediaProjection;
 import android.os.Build;
 import android.util.Log;
 
-
-
 import java.nio.Buffer;
 
 import ai.loko.hk.ui.utils.Logger;

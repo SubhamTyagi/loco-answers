@@ -34,7 +34,8 @@ import java.util.Random;
 
 
 public class Data {
-    public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64)";
+    //public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64)";
+    public static final String USER_AGENT = System.getProperty("http.agent");
     private static final String[] remove = {"name",
             "does", "do", "is", "am", "are", "have", "has", "been", "did", "was", "not", "least", "never", "don't", "haven't", "didn't", "wasn't", "except", "wouldn't", "itsn't",
             "were", "had", "will", "would", "shall", "can", "should", "could", "may", "might", "need", "come", "comes", "means",
@@ -74,7 +75,7 @@ public class Data {
             "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/60.1",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
     };
-    public static  String BASE_SEARCH_URL = "https://www.google.com/search?q=";
+    public static String BASE_SEARCH_URL = "https://www.google.com/search?q=";
     public static String skip = "the of a an ? & and , in - ";
     private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none", "cannot", "can't", "didn't"};
     public static final ArrayList<String> removeNegativeWords = new ArrayList<>(Arrays.asList(negativeWords));
@@ -84,10 +85,11 @@ public class Data {
         Random random = new Random();
         return USER_AGENTS_LIST[random.nextInt(USER_AGENTS_LIST.length)];
     }
+
     //public static boolean GRAYSCALE_IAMGE_FOR_OCR=false;
-    public static boolean IMAGE_LOGS_STORAGE=true;
-    public static boolean IS_TESSERACT_OCR_USE=false;
-    public static String TESSERACT_LANGUAGE="";
-    public static boolean FAST_MODE_FOR_OCR=false;
+    public static boolean IMAGE_LOGS_STORAGE = true;
+    public static boolean IS_TESSERACT_OCR_USE = false;
+    public static String TESSERACT_LANGUAGE = "";
+    public static boolean FAST_MODE_FOR_OCR = false;
 
 }

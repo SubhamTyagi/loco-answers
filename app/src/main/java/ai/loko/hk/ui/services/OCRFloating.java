@@ -53,7 +53,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.dd.processbutton.iml.ActionProcessButton;
 
 import java.io.ByteArrayOutputStream;
@@ -226,7 +225,7 @@ public class OCRFloating extends Service {
             outputStream.write(value.toString().getBytes());
             outputStream.close();
         } catch (IOException e) {
-           Logger.logException(e);
+            Logger.logException(e);
         }
 
     }

@@ -29,7 +29,6 @@
 package ai.loko.hk.ui.answers;
 
 
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -323,7 +322,7 @@ public class FindAnswers extends Which {
 
         } catch (Exception ioe) {
             ioe.printStackTrace();
-           Logger.logException(ioe);
+            Logger.logException(ioe);
             //  Crashlytics.log(ioe.getMessage());
             error = true;
             optionRed = "b";
@@ -487,7 +486,7 @@ public class FindAnswers extends Which {
 
         } catch (Exception ioe) {
             ioe.printStackTrace();
-           Logger.logException(ioe);
+            Logger.logException(ioe);
             //Crashlytics.log(ioe.getMessage());
             error = true;
             optionRed = "b";
@@ -522,7 +521,7 @@ public class FindAnswers extends Which {
             first.join();
 
         } catch (Exception e) {
-           Logger.logException(e);
+            Logger.logException(e);
         }
 
 

@@ -31,7 +31,6 @@ package ai.loko.hk.ui.ocr;
 
 import android.graphics.Bitmap;
 
-
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.util.ArrayList;

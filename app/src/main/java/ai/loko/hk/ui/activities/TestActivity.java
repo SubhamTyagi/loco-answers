@@ -46,7 +46,6 @@ import ai.loko.hk.ui.answers.Engine;
 import ai.loko.hk.ui.data.Which;
 import ai.loko.hk.ui.model.Question;
 import ai.loko.hk.ui.utils.CustomToast;
-
 import ui.R;
 
 public class TestActivity extends AppCompatActivity {

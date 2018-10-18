@@ -31,8 +31,6 @@ package ai.loko.hk.ui.answers;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.balsikandar.crashreporter.CrashReporter;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -173,7 +171,7 @@ public class Engine extends Base {
         }
     }
 
-    public String search() {
+    synchronized public String search() {
         //int max = 0;
         boolean isNeg = false;
         a = b = c = 0;
@@ -196,7 +194,7 @@ public class Engine extends Base {
                 return wikiBot(isNeg);
 
             }
-            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=15").userAgent(Data.USER_AGENT).get();
+            Document doc = Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
 
             String text = doc.body().text().toLowerCase();
             String optionAsplit[] = optionA.split(" ");
@@ -280,7 +278,7 @@ public class Engine extends Base {
 
     }
 
-    private String wikiBot(boolean isNeg) {
+    synchronized private String wikiBot(boolean isNeg) {
         ArrayList<String> simplifiedQuestionList = getSimplifiedQuestion(question);
         String simplifiedQuestion = getSimplifiedString(question, null);
 
@@ -296,7 +294,7 @@ public class Engine extends Base {
             second.join();
             first.join();
         } catch (Exception e) {
-           // Logger.logException(e);
+            // Logger.logException(e);
 
         }
         checkForNegative = false;

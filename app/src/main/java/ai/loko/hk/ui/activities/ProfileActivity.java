@@ -31,7 +31,6 @@ package ai.loko.hk.ui.activities;
 import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.projection.MediaProjectionManager;
@@ -46,7 +45,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -113,7 +111,8 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
                         .setConfirmText("I understood")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) { startActivityForResult(new Intent(ProfileActivity.this, CropActivity.class), CODE_FOR_CROP);
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                startActivityForResult(new Intent(ProfileActivity.this, CropActivity.class), CODE_FOR_CROP);
                                 sweetAlertDialog.dismissWithAnimation();
                             }
                         }).show();
@@ -175,7 +174,7 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
                 String name = data.getStringExtra(Constant.PROFILE_NAME);
 
                 insertDataToDB(new ProfileEntity(1, name, points[0], points[1], points[2], points[3]));
-                new SweetAlertDialog(ProfileActivity.this,SweetAlertDialog.SUCCESS_TYPE).setTitleText("Image Cropped").setConfirmText("Ok").show();
+                new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE).setTitleText("Image Cropped").setConfirmText("Ok").show();
                 profiles.add(new Profile(name, points[0], points[1], points[2], points[3]));
                 mProfileAdapter.notifyDataSetChanged();
                 break;

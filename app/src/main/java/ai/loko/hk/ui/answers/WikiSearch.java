@@ -70,7 +70,7 @@ class WikiSearch extends Thread {
     @Override
     public void run() {
         try {
-            Document option1wiki = Jsoup.connect(Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + option + /* i could use inurl:wikipedia.com or site:wikipedia.com but this will easily tends to human verification */" wikipedia ", "UTF-8") + "&num=2").userAgent(Data.USER_AGENT).get().select(".g>.r>a").get(0).absUrl("href")).userAgent(Data.USER_AGENT).get();
+            Document option1wiki = Jsoup.connect(Jsoup.connect(Data.BASE_SEARCH_URL + URLEncoder.encode(simplifiedQuestion + " " + option + /* i could use inurl:wikipedia.com or site:wikipedia.com but this will easily tends to human verification */" wikipedia ", "UTF-8") + "&num=5").userAgent(Data.USER_AGENT).get().select(".g .r a[href]").get(0).absUrl("href")).userAgent(Data.USER_AGENT).get();
             String t1 = option1wiki.body().text().toLowerCase();
             String text11 = getSimplifiedString(t1, null);
             for (String word : simplifiedQuestionList) {

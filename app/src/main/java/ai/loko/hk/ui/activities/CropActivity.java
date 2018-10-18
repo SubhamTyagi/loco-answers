@@ -38,7 +38,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -71,7 +70,7 @@ public class CropActivity extends AppCompatActivity {
 
                 //Log.d("CropActivity", "onClick: point are=" + points[0] + ", " + points[1] + ", " + points[2] + ", " + points[3]);
                 //Log.d("CropActivity", "onClick: 0:rect points are" + rect.left + " ," + rect.top + " ," + rect.right + " ," + rect.bottom);
-               // Log.d("CropActivity", "onClick: 2:rect points are" + rect2.left + " ," + rect2.top + " ," + rect2.right + " ," + rect2.bottom);
+                // Log.d("CropActivity", "onClick: 2:rect points are" + rect2.left + " ," + rect2.top + " ," + rect2.right + " ," + rect2.bottom);
 
                 final Intent backData = new Intent();
                 backData.putExtra(Constant.CLIP_POINTS, points);

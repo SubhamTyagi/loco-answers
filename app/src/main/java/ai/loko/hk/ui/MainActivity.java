@@ -119,10 +119,10 @@ public class MainActivity extends AppCompatActivity {
             ocrBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(isServiceRunning(OCRFloating.class)){
-                        stopService(new Intent(MainActivity.this,OCRFloating.class));
-                    }else
-                    startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                    if (isServiceRunning(OCRFloating.class)) {
+                        stopService(new Intent(MainActivity.this, OCRFloating.class));
+                    } else
+                        startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 }
             });
         } else {
@@ -377,20 +377,20 @@ public class MainActivity extends AppCompatActivity {
          because i think google search engine is best for our services .
          as search engine does not allow bot search google is some time flexibly due to his high usage
 */
-         if (sharedPref.getBoolean(getString(R.string.custom_search_engine), false))
+        if (sharedPref.getBoolean(getString(R.string.custom_search_engine), false))
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.custom_search_engine_url), "https://www.google.com/search?q=");
         else
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.search_engine_key), "https://www.google.com/search?q=");
         //   Data.GRAYSCALE_IAMGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.grayscale_image_ocr), false);
 
 
-         //these values are setted before due to performance
+        //these values are setted before due to performance
         Data.IMAGE_LOGS_STORAGE = sharedPref.getBoolean(getString(R.string.save_image_and_file_to_storage_key), true);
-        Data.IS_TESSERACT_OCR_USE=sharedPref.getBoolean(getString(R.string.tesseract_key),false);
-        Data.FAST_MODE_FOR_OCR=sharedPref.getBoolean(getString(R.string.fast_mode_key),false);
+        Data.IS_TESSERACT_OCR_USE = sharedPref.getBoolean(getString(R.string.tesseract_key), false);
+        Data.FAST_MODE_FOR_OCR = sharedPref.getBoolean(getString(R.string.fast_mode_key), false);
 
-        if (Data.IS_TESSERACT_OCR_USE){
-            Data.TESSERACT_LANGUAGE=sharedPref.getString(getString(R.string.language_for_tesseract),"en");
+        if (Data.IS_TESSERACT_OCR_USE) {
+            Data.TESSERACT_LANGUAGE = sharedPref.getString(getString(R.string.language_for_tesseract), "en");
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
@@ -464,9 +464,9 @@ public class MainActivity extends AppCompatActivity {
                     new File(Constant.pathToErrors).mkdirs();
                     new File(Constant.pathToTesseract).mkdirs();
                     try {
-                        new File(Constant.path,".nomedia").createNewFile();
+                        new File(Constant.path, ".nomedia").createNewFile();
                     } catch (IOException e) {
-                       Logger.logException(e);
+                        Logger.logException(e);
                     }
                 } else {
                     finish();
