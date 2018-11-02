@@ -1,3 +1,4 @@
+![image](https://user-images.githubusercontent.com/40510200/47895774-2ebe6580-dea5-11e8-9db7-9693c1bd6403.png)
 
 
 [![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) 
