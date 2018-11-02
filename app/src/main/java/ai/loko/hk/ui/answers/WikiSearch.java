@@ -43,6 +43,7 @@ import static ai.loko.hk.ui.utils.Utils.getSimplifiedString;
 /**
  * The type Wiki search.
  */
+@Deprecated
 class WikiSearch extends Thread {
     /**
      * The Recurrence.

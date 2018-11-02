@@ -33,9 +33,9 @@ import android.os.Environment;
 import ui.BuildConfig;
 
 public class Constant {
-    //TODO:
-    public static final int VERSION = 24;
-    public static final String VERSION_NAME = "2.1.2";
+    //TODO:why i am using this, Why not using BuildConfig "i don't know :)"
+    public static final int VERSION = 25;
+    public static final String VERSION_NAME = "2.2";//
     public static final boolean DEBUG = BuildConfig.DEBUG;
     public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     public static final int CODE_FOR_SCREEN_CAPTURE = 1349;

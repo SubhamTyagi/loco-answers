@@ -51,7 +51,6 @@ import com.dd.processbutton.iml.ActionProcessButton;
 
 import ai.loko.hk.ui.MainActivity;
 import ai.loko.hk.ui.activities.ForegroundActivity;
-import ai.loko.hk.ui.data.Which;
 import ui.R;
 
 
@@ -167,7 +166,6 @@ public class Floating extends Service {
         getAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Which.itIsGoogle = true;
                 setAnswers();
                 getAnswer.setProgress(1);
             }
@@ -210,7 +208,6 @@ public class Floating extends Service {
             option3.setText(option33);
 
 
-            Which.itIsGoogle = true;
             // wiki.setProgress(0);
             getAnswer.setProgress(0);
             switch (s) {

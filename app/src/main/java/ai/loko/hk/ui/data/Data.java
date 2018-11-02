@@ -30,7 +30,6 @@ package ai.loko.hk.ui.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 
 public class Data {
@@ -46,7 +45,21 @@ public class Data {
             "&", ".", "?", ",", "matched", "paired", "pair"
     };
     public static final ArrayList<String> removeWords = new ArrayList<>(Arrays.asList(remove));
-    private static final String[] USER_AGENTS_LIST = {
+
+    public static String BASE_SEARCH_URL = "https://www.google.com/search?q=";
+    public static String FALLBACK_SEARCH_ENGINE = "https://www.bing.com/search?q=";
+
+    public static String skip = "the of a an ? & and , in - ";
+    public static boolean IMAGE_LOGS_STORAGE = true;
+    public static boolean IS_TESSERACT_OCR_USE = false;
+    public static String TESSERACT_LANGUAGE = "";
+    public static boolean FAST_MODE_FOR_OCR = false;
+
+    private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none", "cannot", "can't", "didn't"};
+    public static final ArrayList<String> removeNegativeWords = new ArrayList<>(Arrays.asList(negativeWords));
+
+
+   /* private static final String[] USER_AGENTS_LIST = {
             "Mozilla/5.0 (Windows NT 6.1; Win64; x64)",
             "Mozilla/5.0 (Linux; Android 7.0; SM-G892A Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Mobile Safari/537.36",
             "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 6P Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.83 Mobile Safari/537.36",
@@ -75,21 +88,10 @@ public class Data {
             "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/60.1",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
     };
-    public static String BASE_SEARCH_URL = "https://www.google.com/search?q=";
-    public static String skip = "the of a an ? & and , in - ";
-    private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none", "cannot", "can't", "didn't"};
-    public static final ArrayList<String> removeNegativeWords = new ArrayList<>(Arrays.asList(negativeWords));
-
     //RETURN RANDOM USER
     public static String getRandomUserAgent(){
         Random random = new Random();
         return USER_AGENTS_LIST[random.nextInt(USER_AGENTS_LIST.length)];
-    }
-
-    //public static boolean GRAYSCALE_IAMGE_FOR_OCR=false;
-    public static boolean IMAGE_LOGS_STORAGE = true;
-    public static boolean IS_TESSERACT_OCR_USE = false;
-    public static String TESSERACT_LANGUAGE = "";
-    public static boolean FAST_MODE_FOR_OCR = false;
+    }*/
 
 }

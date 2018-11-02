@@ -36,22 +36,22 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 */
 android {
-    signingConfigs {
+    /*signingConfigs {
         debug {
             keyAlias 'debug'
             keyPassword '123456'
             storeFile file('./../debug-key.jks')
             storePassword '123456'
         }
-    }
+    }*/
     compileSdkVersion 28
     buildToolsVersion "28.0.2"
     defaultConfig {
         applicationId "ai.loko.hk.ui"
         minSdkVersion 19 //19
         targetSdkVersion 28
-        versionCode 24
-        versionName '2.1.2'
+        versionCode 25
+        versionName '2.2'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         versionNameSuffix '-capybara'
@@ -86,7 +86,7 @@ android {
             renderscriptDebuggable true
             minifyEnabled false
             zipAlignEnabled false
-            signingConfig signingConfigs.debug
+            //signingConfig signingConfigs.debug
         }
     }
 

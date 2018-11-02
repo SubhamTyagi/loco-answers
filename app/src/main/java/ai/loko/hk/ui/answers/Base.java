@@ -28,6 +28,7 @@
 
 package ai.loko.hk.ui.answers;
 
+import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.data.Which;
 import ai.loko.hk.ui.model.Question;
 
@@ -88,6 +89,10 @@ abstract class Base extends Which {
      */
     String optionRed;
 
+    protected static String BASE_URL;
+
+
+
     /**
      * Instantiates a new Base.
      *
@@ -101,9 +106,10 @@ abstract class Base extends Which {
         optionC = questionObj.getOptionC();
 
         reset();
+        BASE_URL=Data.BASE_SEARCH_URL;
         error = false;
         checkForNegative = true;
-        isWikiDone = false;
+        isFallbackDone = false;
     }
 
     /**

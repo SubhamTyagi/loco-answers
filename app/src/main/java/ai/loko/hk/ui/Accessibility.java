@@ -119,7 +119,7 @@ public class Accessibility extends AccessibilityService {
         } catch (Exception io) {
             io.printStackTrace();
             // Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
-            showCustomAlert("Some error occured");
+            showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
 
         }
 
@@ -147,7 +147,7 @@ public class Accessibility extends AccessibilityService {
         } catch (Exception io) {
             io.printStackTrace();
             // Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
-            showCustomAlert("Some error occured");
+            showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
 
         }
 
@@ -175,7 +175,7 @@ public class Accessibility extends AccessibilityService {
         } catch (Exception io) {
             io.printStackTrace();
             // Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
-            showCustomAlert("Some error occured");
+            showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
         }
     }
 
@@ -204,7 +204,7 @@ public class Accessibility extends AccessibilityService {
         } catch (Exception io) {
             io.printStackTrace();
             //  Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
-            showCustomAlert("Some error occured");
+            showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
         }
 
     }
@@ -237,7 +237,7 @@ public class Accessibility extends AccessibilityService {
         } catch (Exception io) {
             io.printStackTrace();
             //  Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
-            showCustomAlert("Some error occured");
+            showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
         }
     }
 
@@ -269,7 +269,7 @@ public class Accessibility extends AccessibilityService {
         } catch (Exception io) {
             io.printStackTrace();
             // Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
-            showCustomAlert("Some error occured");
+            showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
         }
     }
 
@@ -300,7 +300,7 @@ public class Accessibility extends AccessibilityService {
         } catch (Exception io) {
             io.printStackTrace();
             //  Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
-            showCustomAlert("Some error occured");
+            showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
         }
     }
 
@@ -331,9 +331,9 @@ public class Accessibility extends AccessibilityService {
                 option3ID.clear();
             }
         } catch (Exception io) {
-            io.printStackTrace();
+          
             // Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
-            showCustomAlert("Some error occured");
+            showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
         }
     }
 
@@ -361,9 +361,8 @@ public class Accessibility extends AccessibilityService {
                 option3ID.clear();
             }
         } catch (Exception io) {
-            io.printStackTrace();
-            Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
-            showCustomAlert("Some error occured");
+            
+            showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
         }
 
     }
@@ -419,7 +418,7 @@ public class Accessibility extends AccessibilityService {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Which.itIsGoogle = true;
+           
             Intent i = new Intent(getApplicationContext(), Floating.class);
         /*i.putExtra("option1", obj.getAcount());
             i.putExtra("option2", obj.getBcount());

@@ -82,8 +82,17 @@ public class Utils {
 
     public static int count(String subString, String string) {
         int cnt = 0;
-        String regex = "\\b" + subString + "\\b";
-        Pattern p = Pattern.compile(regex);
+       // String regex = "\\b" + subString + "\\b";
+        Pattern p = Pattern.compile("\\b" + subString + "\\b");
+        Matcher m = p.matcher(string);
+        while (m.find())
+            cnt++;
+        return cnt;
+    }
+
+    public static int count2(String subString, String string) {
+        int cnt = 0;
+        Pattern p = Pattern.compile(Pattern.quote(subString));
         Matcher m = p.matcher(string);
         while (m.find())
             cnt++;

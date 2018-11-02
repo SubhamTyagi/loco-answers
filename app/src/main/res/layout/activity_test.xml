@@ -38,14 +38,14 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="2dp">
 
         <TextView
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:padding="3dp"
             android:text="@string/a"
             android:textColor="@android:color/black"
@@ -54,9 +54,9 @@
 
         <TextView
             android:id="@+id/optionAtest"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_width="0dp"
             android:padding="3dp"
             android:text="@string/option_a"
             android:textColor="@android:color/black"
@@ -64,14 +64,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="3dp">
 
         <TextView
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:padding="3dp"
             android:text="@string/b"
             android:textColor="@android:color/black"
@@ -80,9 +80,9 @@
 
         <TextView
             android:id="@+id/optionBtest"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_width="0dp"
             android:padding="3dp"
             android:text="@string/option_b"
             android:textColor="@android:color/black"
@@ -90,14 +90,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="3dp">
 
         <TextView
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:padding="3dp"
             android:text="@string/c"
             android:textColor="@android:color/black"
@@ -106,9 +106,9 @@
 
         <TextView
             android:id="@+id/optionCtest"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_width="0dp"
             android:padding="3dp"
             android:text="@string/option_c"
             android:textColor="@android:color/black"
@@ -116,8 +116,8 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
         <!--
 
@@ -148,29 +148,10 @@
 
 
         <com.dd.processbutton.iml.ActionProcessButton
-            android:id="@+id/wiki1"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginEnd="2dp"
-            android:layout_weight="1"
-            android:text="@string/advance"
-            android:textColor="@android:color/background_light"
-
-            android:textSize="16sp"
-            app:pb_colorNormal="@android:color/holo_red_dark"
-            app:pb_colorPressed="@android:color/holo_blue_light"
-            app:pb_textComplete="@string/advance"
-            app:pb_textError="Error"
-            app:pb_textProgress="Finding.."
-            />
-
-
-        <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/getanswer1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
             android:padding="3dp"
             android:text="@string/simple"
             android:textAlignment="center"
@@ -189,57 +170,57 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0">
 
             <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
                 android:id="@+id/q_test"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_question"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0">
 
             <android.support.design.widget.TextInputEditText
-                android:layout_height="wrap_content"
                 android:id="@+id/a_test"
-                android:hint="@string/option_a"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/option_a"
                 tools:ignore="HardcodedText"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0">
 
             <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-
                 android:id="@+id/b_test"
+
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/option_b"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             >
 
             <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
                 android:id="@+id/c_test"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/option_c"/>
         </android.support.design.widget.TextInputLayout>
