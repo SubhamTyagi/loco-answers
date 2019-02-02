@@ -35,6 +35,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -69,7 +70,7 @@ import ai.loko.hk.ui.ocr.MediaProjectionHelper;
 import ai.loko.hk.ui.ocr.Points;
 import ai.loko.hk.ui.services.OCRFloating;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
+
 import ui.R;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -79,9 +80,12 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
     private static final int storageReadPermission = 412;
     private final String TAG = "ProfileActivity";
     List<Profile> profiles = new ArrayList<>();
+
     private CoordinatorLayout coordinatorLayout;
+
     private RecyclerView mRecyclerView;
     private ProfileAdapter mProfileAdapter;
+
     private AppDatabase db;
     private MediaProjectionManager mMediaProjectionManager;
     private Intent mScreenshotIntent;
@@ -262,7 +266,7 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
     }
 
     private void setUpDataFromDB() {
-        new AsyncTask<Void, Void, Void>() {
+         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 List<ProfileEntity> profileEntities = db.profileDAO().getAll();

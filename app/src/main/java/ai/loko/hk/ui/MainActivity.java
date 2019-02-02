@@ -52,12 +52,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
@@ -70,15 +64,12 @@ import java.io.IOException;
 
 import ai.loko.hk.ui.activities.ProfileActivity;
 import ai.loko.hk.ui.activities.SettingsActivity;
-import ai.loko.hk.ui.activities.TestActivity;
 import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.services.Floating;
 import ai.loko.hk.ui.services.OCRFloating;
 import ai.loko.hk.ui.utils.Logger;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import io.fabric.sdk.android.Fabric;
-import ui.BuildConfig;
 import ui.R;
 
 
@@ -86,19 +77,16 @@ public class MainActivity extends AppCompatActivity {
 
     private final Handler mHandler = new Handler();
     SharedPreferences sharedPref;
-    private FirebaseAnalytics mFirebaseAnalytics;
+
     private Intent mFloatingIntent;
     private Button mOverlayPermmissionBtn, mAccessibilityPermissionBtn, startStopBtn, ocrBtn;
-    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_launcher);
         setupActionBar();
-
-        Fabric.with(this, new Crashlytics());
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         mFloatingIntent = new Intent(MainActivity.this, Floating.class);
         takeStoragePermission();
@@ -130,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         givePermission();
-        getUpdate();
+
 
     }
 
@@ -214,91 +202,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onBoomButtonClick(int index) {
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            }
+        }));
 
-            }
-        }));
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_directions_run_black_24dp).subNormalText("Here you can test your question").normalText("Test your app").listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
-                startActivity(new Intent(MainActivity.this, TestActivity.class));
-            }
-        }));
         rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_apps_black_24dp).subNormalText("Supported App that are currently working").normalText("Supported Apps").listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
                 supportedApps();
             }
         }));
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_info_white_24dp).normalText("About").listener(new OnBMClickListener() {
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_info_white_24dp).normalText("About").subNormalText("About me").listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
                 about();
             }
         }));
-    }
-
-    private void getUpdate() {
-
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings;
-        if (Constant.DEBUG) {
-            configSettings = new FirebaseRemoteConfigSettings.Builder()
-                    .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                    .build();
-        } else {
-            configSettings = new FirebaseRemoteConfigSettings.Builder()
-                    .build();
-        }
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);
-        mFirebaseRemoteConfig.setDefaults(R.xml.updates);
-        long cacheExpiration = 6 * 60 * 60;
-        if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
-            cacheExpiration = 0;
-        }
-        mFirebaseRemoteConfig.fetch(cacheExpiration).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_directions_run_black_24dp).subNormalText("Click here to go to github release page").normalText("Update.").listener(new OnBMClickListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful())
-                    mFirebaseRemoteConfig.activateFetched();
-
+            public void onBoomButtonClick(int index) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/releases/")));
             }
-        });
-
-        int latest = Integer.valueOf(mFirebaseRemoteConfig.getString(Constant.LATEST));
-        if (latest - Constant.VERSION > 1) {
-
-            new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
-                    .setTitleText("New update is available")
-                    .setContentText("Kindly update the app, Some problems are fixed and accuracy is extremely improved and much more.. ")
-                    .setConfirmText("Update now")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/releases/")));
-                            sweetAlertDialog.dismissWithAnimation();
-                        }
-                    }).show();
-        } else if (latest > Constant.VERSION) {
-            new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
-                    .setTitleText("New update is available")
-                    .setContentText("Kindly update the app, Some problems are fixed and accuracy is extremely improved and much more.. ")
-                    .setConfirmText("Update now")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/releases/")));
-
-                        }
-                    })
-                    .setCancelText("Later")
-                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismissWithAnimation();
-                        }
-                    })
-                    .show();
-        }
+        }));
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {
@@ -427,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
     private void about() {
         new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText("Trivia Hack VERSION " + Constant.VERSION_NAME)
-                .setContentText("Trivia Hack " + Constant.VERSION_NAME)
+                .setContentText("This app is free and open source hosted on GitHub")
                 .setConfirmText("Ok")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -453,6 +377,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).show();
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
