@@ -37,10 +37,10 @@ import android.widget.Toast;
 
 import ui.R;
 
-public  class CustomToast {
+public class CustomToast {
     private Context context = null;
     private String msg;
-    private int duration=0;
+    private int duration = 0;
 
     public CustomToast(Context context) {
         this.context = context;

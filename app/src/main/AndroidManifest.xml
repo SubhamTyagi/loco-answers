@@ -42,7 +42,7 @@
 
     <application
         android:name="ai.loko.hk.ui.MyApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -90,20 +90,6 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibilty"/>
         </service>
-        <service android:name="ai.loko.hk.ui.notification.MyNotificationService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-        <service android:name="ai.loko.hk.ui.notification.IDReceiver">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="87d0d959fa9b880a5f2cfed1a1707f4a6c41504e"/>
 
         <activity
             android:name="ai.loko.hk.ui.activities.SettingsActivity"

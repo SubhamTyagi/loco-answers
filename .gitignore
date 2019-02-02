@@ -1,9 +1,6 @@
 *.iml
 .gradle
-/local.properties
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
+.idea
 .DS_Store
 /build
 /captures
@@ -12,8 +9,10 @@
 *.apk
 *.ap_
 
+*.properties
 # Files for the ART/Dalvik VM
 *.dex
+keystore.properties
 
 # Java class files
 *.class
@@ -22,6 +21,8 @@
 bin/
 gen/
 out/
+app/betaVersion
+app/release
 
 # Gradle files
 .gradle/
@@ -51,7 +52,6 @@ captures/
 .idea/dictionaries
 .idea/libraries
 .idea/caches
-.idea
 
 # Keystore files
 # Uncomment the following line if you do not want to check your keystore files in.
@@ -83,6 +83,3 @@ fastlane/readme.md
 /build
 /captures
 .externalNativeBuild
-.gitlab-ci.yml
-._config.yml
-

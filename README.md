@@ -1,6 +1,10 @@
-#  Trivia hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.0-green.svg)
 
-![Banner](/.github/assets/triviahack.png?raw=true "Banner")
+
+[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) 
+![version](https://img.shields.io/badge/Version-2.0-green.svg)
+
+
+# Trivia hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 * A free, 100 % open source, ads free trivia helper app that respect user sentiments.
 *  Previously Known as LoKo HacK
@@ -31,9 +35,8 @@
 10. Swag IQ
 
 ## Contribution
-* [Shubham Tyagi](https://subhamtyagi.github.io/).
-* New icon is designed by [Deb Pedrano](https://github.com/debpedrano) 
-* Valid Pull request always accepted.
+* [Shubham Tyagi](https://subhamtyagi.github.io/) and his supporter
+* Contributions accepted(always)
 
 ## Screenshots
 | HOME | PROFILE |

@@ -47,7 +47,7 @@
     <string name="ocr_btn_txt_stop">Stop OCR</string>
     <string name="giveoverlaypermission">Overlay Permission</string>
     <string name="accessibility">Accessibility Permission</string>
-    <string name="supported_apps">All Trivia App Supported now :}</string>
+    <string name="supported_apps">Trivia apps in which you can take screenshot of questions, are supported</string>
     <string name="search_engine_key">search_engine_key</string>
     <string name="custom_search_engine">custom_search_engine</string>
     <string name="custom_search_engine_url">custom_search_engine_url</string>

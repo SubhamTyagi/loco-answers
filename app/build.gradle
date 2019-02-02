@@ -27,7 +27,7 @@
  */
 
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+
 /*
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -50,8 +50,8 @@ android {
         applicationId "ai.loko.hk.ui"
         minSdkVersion 19 //19
         targetSdkVersion 28
-        versionCode 26
-        versionName '2.2.1'
+        versionCode 27
+        versionName '2.2.2'
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         versionNameSuffix '-capybara'
@@ -102,14 +102,9 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
-    implementation 'com.google.firebase:firebase-core:16.0.4'
-    implementation 'com.google.firebase:firebase-crash:16.2.1'
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
-    implementation 'com.google.firebase:firebase-config:16.1.0'
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
-        transitive = true;
-    }
+
     def room_version = "1.1.1"
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
@@ -137,4 +132,4 @@ dependencies {
 gradle.taskGraph.whenReady {
     setOutputName
 }*/
-apply plugin: 'com.google.gms.google-services'
+
