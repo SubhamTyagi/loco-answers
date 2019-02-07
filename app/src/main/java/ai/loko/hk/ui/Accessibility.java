@@ -33,12 +33,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.Toast;
 
 import java.util.List;
 
 import ai.loko.hk.ui.answers.Engine;
-import ai.loko.hk.ui.data.Which;
 import ai.loko.hk.ui.model.Question;
 import ai.loko.hk.ui.services.Floating;
 import ai.loko.hk.ui.utils.CustomToast;
@@ -331,7 +329,7 @@ public class Accessibility extends AccessibilityService {
                 option3ID.clear();
             }
         } catch (Exception io) {
-          
+
             // Toast.makeText(this, "Error:::" + io.getMessage(), Toast.LENGTH_SHORT).show();
             showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
         }
@@ -361,7 +359,7 @@ public class Accessibility extends AccessibilityService {
                 option3ID.clear();
             }
         } catch (Exception io) {
-            
+
             showCustomAlert("Error:Accessibility is either switch off or disabled on this screen ");
         }
 
@@ -418,7 +416,7 @@ public class Accessibility extends AccessibilityService {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-           
+
             Intent i = new Intent(getApplicationContext(), Floating.class);
         /*i.putExtra("option1", obj.getAcount());
             i.putExtra("option2", obj.getBcount());
@@ -443,14 +441,13 @@ public class Accessibility extends AccessibilityService {
             //obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
             //obj.search();
 
-            engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
+            engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3], "option4"));
             engine.search();
 
             if (!engine.isError()) {
                 return engine.getAnswer();
             } else {
-                engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
-                // obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
+                engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3], "option4"));
                 return engine.search();
             }
 

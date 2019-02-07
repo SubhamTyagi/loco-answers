@@ -27,7 +27,7 @@
   -->
 
 <resources>
-    <string name="app_name">Trivia Hack</string>
+    <string name="app_name">Trivia Hack 4</string>
     <string name="accessibility_desc">The usage of accessibility service for reading Question and Options from the app screen when these are appear to users.\n</string>
     <string name="desc">How to use: First take the screenshot of live question and crop the question and option using this app</string>
     <string name="title_activity_settings">Settings</string>
@@ -47,7 +47,7 @@
     <string name="ocr_btn_txt_stop">Stop OCR</string>
     <string name="giveoverlaypermission">Overlay Permission</string>
     <string name="accessibility">Accessibility Permission</string>
-    <string name="supported_apps">Trivia apps in which you can take screenshot of questions, are supported</string>
+    <string name="supported_apps">Trivia apps in which you can take screenshot of questions and has 4 options, are supported</string>
     <string name="search_engine_key">search_engine_key</string>
     <string name="custom_search_engine">custom_search_engine</string>
     <string name="custom_search_engine_url">custom_search_engine_url</string>
@@ -217,6 +217,8 @@
     <string name="fast_mode_key">fast_mode_key</string>
     <string name="fast_mode_title">Fast mode for OCR</string>
     <string name="fast_mode_summary">When this option is on Trivia Hack will find Answer fast but there may be misbehave by Trivia Hack(Not work when tesseract ocr is used)</string>
+    <string name="d">D:</string>
+    <string name="option_d">Option D</string>
 
 
 </resources>

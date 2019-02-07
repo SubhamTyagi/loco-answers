@@ -70,9 +70,10 @@ public class ImageTextReader {
         }
     }
 
-    //will return String[4] 0-> question 1->option1 2->option2 3-> option3
+    //will return String[5] 0-> question 1->option1 2->option2 3-> option3 4->option4
     public String[] getTextFromBitmap(Bitmap src) {
         if (textRecognizer.isOperational() && src != null) {
+
             Frame frame = new Frame.Builder().setBitmap(src).build();
             SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
 
@@ -117,73 +118,37 @@ public class ImageTextReader {
             }
             String lines2 = lines.toString();
 
-
             int indexOfQuestionMark = 0;
+
             if ((indexOfQuestionMark = lines2.indexOf("?")) != -1) {
                 String question = lines2.substring(0, indexOfQuestionMark);
+
                 if (indexOfQuestionMark != lines2.length()) {
                     String[] options = lines2.substring(indexOfQuestionMark + 1).split("\n");
-                    if (options.length == 3)
-                        return new String[]{question, options[0], options[1], options[2], lines2};
+                    if (options.length == 4)
+                        return new String[]{question, options[0], options[1], options[2] ,options[3], lines2};
                 }
             } else if ((indexOfQuestionMark = lines2.indexOf(".")) != -1) {
                 String question = lines2.substring(0, indexOfQuestionMark);
                 if (indexOfQuestionMark != lines2.length()) {
                     String[] options = lines2.substring(indexOfQuestionMark + 1).split("\n");
-                    if (options.length == 3)
-                        return new String[]{question, options[0], options[1], options[2], lines2};
+                    if (options.length == 4)
+                        return new String[]{question, options[0], options[1], options[2],options[3], lines2};
                 }
             }
 
             String[] textOnScreen = lines2.split("\n");
             int lineCount = textOnScreen.length;
-            if (lineCount > 3) {
+            if (lineCount > 4) {
                 StringBuilder question = new StringBuilder();
-                for (int i = 0; i < lineCount - 3; i++) {
+                for (int i = 0; i < lineCount-4; i++) {
                     question.append(textOnScreen[i]);
                 }
-                return new String[]{question.toString(), textOnScreen[lineCount - 3], textOnScreen[lineCount - 2], textOnScreen[lineCount - 1], lines2};
+                return new String[]{question.toString(), textOnScreen[lineCount - 4], textOnScreen[lineCount - 3], textOnScreen[lineCount - 2],textOnScreen[lineCount - 1], lines2};
             }
             return new String[]{"Scan Failed: Could not read options"};
 
         } else {
-            return new String[]{"Scan Failed:  Could not set up the detector!"};
-        }
-    }
-
-    public String[] getTextFromBitmap2(Bitmap src) {
-        if (textRecognizer.isOperational() && src != null) {
-            Frame frame = new Frame.Builder().setBitmap(src).build();
-            SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
-            String blocks = "";
-            String lines = "";
-            for (int index = 0; index < textBlocks.size(); index++) {
-                TextBlock tBlock = textBlocks.valueAt(index);
-                blocks = blocks + tBlock.getValue() + "\n";
-                for (Text line : tBlock.getComponents()) {
-                    lines = lines + line.getValue() + "\n";
-                }
-            }
-
-            if (textBlocks.size() == 0) {
-                // Log.d(TAG, "getTextFromBitmap: Scan Failed: Found nothing to scan");
-                return new String[]{"Scan Failed: Found nothing to scan"};
-            } else {
-                String[] textOnScreen = lines.split("\n");
-                int lineCount = textOnScreen.length;
-                if (lineCount > 3) {
-                    String question = "";
-                    for (int i = 0; i < lineCount - 3; i++) {
-                        question += textOnScreen[i];
-                    }
-                    return new String[]{question, textOnScreen[lineCount - 3], textOnScreen[lineCount - 2], textOnScreen[lineCount - 1]};
-
-                }
-                return new String[]{"Scan Failed: Could not read options"};
-
-            }
-        } else {
-            Log.d(TAG, "getTextFromBitmap: Could not set up the detector!");
             return new String[]{"Scan Failed:  Could not set up the detector!"};
         }
     }

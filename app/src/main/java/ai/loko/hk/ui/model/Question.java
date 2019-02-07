@@ -34,9 +34,22 @@ public class Question {
     private final String optionA;
     private final String optionB;
     private final String optionC;
+    private final String optionD;
+
     private boolean isNegative;
     private String answer;
 
+
+    public Question(String questionText, String optionA, String optionB, String optionC, String optionD) {
+        if (questionText.contains("?")) {
+            this.questionText = questionText.substring(0, questionText.length() - 1).toLowerCase();
+        } else
+            this.questionText = questionText.toLowerCase();
+        this.optionA = optionA.toLowerCase();
+        this.optionB = optionB.toLowerCase();
+        this.optionC = optionC.toLowerCase();
+        this.optionD = optionD.toLowerCase();
+    }
 
     public boolean isNegative() {
         return isNegative;
@@ -45,16 +58,6 @@ public class Question {
     public Question setNegative(boolean negative) {
         isNegative = negative;
         return this;
-    }
-
-    public Question(String questionText, String optionA, String optionB, String optionC) {
-        if (questionText.contains("?")) {
-            this.questionText = questionText.substring(0, questionText.length() - 1).toLowerCase();
-        } else
-            this.questionText = questionText.toLowerCase();
-        this.optionA = optionA.toLowerCase();
-        this.optionB = optionB.toLowerCase();
-        this.optionC = optionC.toLowerCase();
     }
 
     public String getQuestionText() {
@@ -73,4 +76,7 @@ public class Question {
         return optionC;
     }
 
+    public String getOptionD() {
+        return optionD;
+    }
 }

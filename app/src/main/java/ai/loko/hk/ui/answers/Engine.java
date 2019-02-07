@@ -29,6 +29,7 @@
 package ai.loko.hk.ui.answers;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -53,11 +54,6 @@ import static ai.loko.hk.ui.utils.Utils.stringToArrayList;
 public class Engine extends Base {
     private final String TAG = "Engine";
 
-    /**
-     * Instantiates a new Engine.
-     *
-     * @param questionObj the question obj
-     */
     public Engine(Question questionObj) {
         super(questionObj);
     }
@@ -65,16 +61,16 @@ public class Engine extends Base {
     //currently not used but will be...
     private String pairSearch() {
         boolean isNeg;
-        a = b = c = 0;
-        int p, q, r;
+        a = b = c = d = 0;
+        int p, q, r, s;
         reset();
         try {
             isNeg = stringToArrayList(question).removeAll(Data.removeNegativeWords);
             if (isNeg) {
                 ArrayList<String> simplifiedQuestion = getSimplifiedQuestion(question, 1);//1 means negative words remove
                 StringBuilder stringBuilder = new StringBuilder();
-                for (String s : simplifiedQuestion) {
-                    stringBuilder.append(s).append(" ");
+                for (String s1 : simplifiedQuestion) {
+                    stringBuilder.append(s1).append(" ");
                 }
                 this.question = stringBuilder.toString();
             }
@@ -84,14 +80,15 @@ public class Engine extends Base {
             String sub1 = optionA.substring(0, optionA.indexOf("-") - 1);
             String sub2 = optionB.substring(0, optionB.indexOf("-") - 1);
             String sub3 = optionC.substring(0, optionC.indexOf("-") - 1);
+            String sub4 = optionD.substring(0, optionD.indexOf("-") - 1);
 
-
-            String text1 = getResponseFromInternet(simplifiedQuestion, sub1);
 
             A1.append(sub1).append("-");
             B2.append(sub2).append("-");
             C3.append(sub3).append("-");
+            D4.append(sub4).append("-");
 
+            String text1 = getResponseFromInternet(simplifiedQuestion, sub1);
             sub1 = optionA.substring(optionA.indexOf("-") + 1);
             String optionA[] = sub1.split(" ");
             aSize = optionA.length;
@@ -107,12 +104,10 @@ public class Engine extends Base {
             }
 
 
-            String text2 = getResponseFromInternet(simplifiedQuestion, sub2);
-
             sub2 = optionB.substring(optionB.indexOf("-") + 1);
             String optionB[] = sub2.split(" ");
             bSize = optionB.length;
-
+            String text2 = getResponseFromInternet(simplifiedQuestion, sub2);
             for (String words : optionB) {
                 if (!skip.contains(words)) {
                     q = count(words, text2);
@@ -139,9 +134,26 @@ public class Engine extends Base {
                 }
             }
 
+            sub4 = optionD.substring(optionD.indexOf("-") + 1);
+            String optionD[] = sub3.split(" ");
+            cSize = optionC.length;
+
+            String text4 = getResponseFromInternet(simplifiedQuestion, sub4);
+
+            for (String words : optionD) {
+                if (!skip.contains(words)) {
+                    r = count(words, text4);
+                    c += r;
+                    D4.append(words).append("(").append(r).append(") ");
+                } else {
+                    D4.append(words).append(" ");
+                }
+            }
+
             p = a;
             q = b;
             r = c;
+            s = d;
 
             if (aSize != 1)
                 a = count(sub1.trim(), text1);
@@ -150,15 +162,20 @@ public class Engine extends Base {
             if (cSize != 1)
                 c = count(sub3.trim(), text3);
 
-            if (a == b && b == c) {
+            if (dSize != 1)
+                d = count(sub4.trim(), text4);
+
+            if (a == b && b == c && a == d) {
                 a = p;
                 b = q;
                 c = r;
+                d = s;
             }
 
             A1.append("=(").append(a).append(")");
             B2.append("=(").append(b).append(")");
             C3.append("=(").append(c).append(")");
+            D4.append("=(").append(c).append(")");
 
             return setAnswer(isNeg);
 
@@ -172,8 +189,8 @@ public class Engine extends Base {
 
     synchronized public String search() {
         boolean isNeg = false;
-        a = b = c = 0;
-        int p, q, r;
+        a = b = c = d = 0;
+        int p, q, r, s;
         reset();
         try {
             if (checkForNegative)
@@ -181,8 +198,8 @@ public class Engine extends Base {
             if (isNeg && checkForNegative) {
                 ArrayList<String> simplifiedQuestion = getSimplifiedQuestion(question, 1);//1 means negative words remove
                 StringBuilder stringBuilder = new StringBuilder();
-                for (String s : simplifiedQuestion) {
-                    stringBuilder.append(s).append(" ");
+                for (String s65 : simplifiedQuestion) {
+                    stringBuilder.append(s65).append(" ");
                 }
                 this.question = stringBuilder.toString();
             }
@@ -190,6 +207,7 @@ public class Engine extends Base {
             Document doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
 
             String text = doc.body().text().toLowerCase();
+
             String optionAsplit[] = optionA.split(" ");
             aSize = optionAsplit.length;
 
@@ -218,7 +236,6 @@ public class Engine extends Base {
 
             String optionCsplit[] = optionC.split(" ");
             cSize = optionCsplit.length;
-
             for (String words : optionCsplit) {
                 if (!skip.contains(words)) {
                     r = count(words, text);
@@ -229,9 +246,22 @@ public class Engine extends Base {
                 }
             }
 
+            String optionDsplit[] = optionD.split(" ");
+            dSize = optionDsplit.length;
+            for (String words : optionDsplit) {
+                if (!skip.contains(words)) {
+                    s = count(words, text);
+                    d += s;
+                    D4.append(words).append("(").append(s).append(") ");
+                } else {
+                    D4.append(words).append(" ");
+                }
+            }
+
             p = a;
             q = b;
             r = c;
+            s = d;
             // now p,q,r have commutative count
 
             if (aSize != 1)
@@ -241,33 +271,40 @@ public class Engine extends Base {
             if (cSize != 1)
                 c = count(optionC.trim(), text);
 
-            if (a == b && b == c) {
+            if (dSize != 1)
+                d = count(optionD.trim(), text);
+            if (a == b && b == c && a == d) {
                 a = p;
                 b = q;
                 c = r;
+                d = s;
             }
 
             if (p != 0 && aSize > 1) a *= p;
             if (q != 0 && bSize > 1) b *= q;
             if (r != 0 && cSize > 1) c *= r;
 
-            if (a == b && b == c && !isFallbackDone) {
+            if (s != 0 && cSize > 1) d *= s;
+
+            if (a == b && b == c && c == d && !isFallbackDone) {
                 return fallbackSearch(isNeg);
             }
 
             A1.append("=(").append(a).append(")");
             B2.append("=(").append(b).append(")");
             C3.append("=(").append(c).append(")");
-
+            D4.append("=(").append(d).append(")");
             return setAnswer(isNeg);
 
         } catch (Exception ioe) {
-
-            if (!isFallbackDone){
+            ioe.printStackTrace();
+            if (!isFallbackDone) {
                 return fallbackSearch(isNeg);
             }
             error = true;
             Logger.logException(ioe);
+
+            // if there is error (bad luck) then set option 'b'
             optionRed = "b";
             return "error";
         }
@@ -284,37 +321,24 @@ public class Engine extends Base {
 
     private String setAnswer(boolean isNeg) {
         if (!isNeg) {
-            if (a > b) {
-                if (c > a) {
-                    optionRed = "c";
-                } else {
-                    optionRed = "a";
-                }
-            } else if (b > c) {
-                //b is gerater than a check for c and b b>c>a
+            if (a > b && a > c && a > d) {
+                optionRed = "a";
+            } else if (b > c && b > d) {
                 optionRed = "b";
-            } else {
-                // c is greater c>b>a
+            } else if (c > d) {
                 optionRed = "c";
-            }
+            } else optionRed = "d";
         } else {
-            if (a < b) {
-                if (c < a) {
-                    //c is most least
-                    optionRed = "c";
-                } else {
-                    //a is most least
-                    optionRed = "a";
-                }
-            } else if (b < c) {
-                //b is least
+            if (a < b && a < c && a < d) {
+                optionRed = "a";
+            } else if (b < c && b < d && b < a) {
                 optionRed = "b";
-            } else {
-                //c is least
+            } else if (c < d && c < a && c < b) {
                 optionRed = "c";
-            }
+            } else optionRed = "d";
         }
 
+        //Log.d(TAG, "setAnswer: optionRed=="+optionRed);
         return optionRed;
     }
 

@@ -177,7 +177,7 @@ public class TestActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            obj = new Engine(new Question(qu, o1, o2, o3));
+            obj = new Engine(new Question(qu, o1, o2, o3,"option4"));
             return obj.search();
             // obj = new FindAnswers(qu, o1, o2, o3);
             //obj.search();

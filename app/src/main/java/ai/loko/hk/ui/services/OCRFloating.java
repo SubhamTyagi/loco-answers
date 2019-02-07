@@ -84,7 +84,7 @@ public class OCRFloating extends Service {
     private NotificationManager notificationManager;
     private WindowManager mWindowManager;
     private View mFloatingView;
-    private TextView option1, option2, option3;
+    private TextView option1, option2, option3, option4;
     private WindowManager.LayoutParams params;
     private ImageTextReader imageTextReader;
     private int width, height;
@@ -161,6 +161,7 @@ public class OCRFloating extends Service {
         option1 = mFloatingView.findViewById(R.id.optionA);
         option2 = mFloatingView.findViewById(R.id.optionB);
         option3 = mFloatingView.findViewById(R.id.optionC);
+        option4 = mFloatingView.findViewById(R.id.optionD);
 
         imageTextReader = new ImageTextReader(getApplicationContext());
 
@@ -285,28 +286,38 @@ public class OCRFloating extends Service {
         @Override
         protected void onPostExecute(final String s) {
             if (s != null) {
+                Log.d(TAG, "onPostExecute: setting values on screen");
                 option1.setText(engine.getA1());
                 option2.setText(engine.getB2());
                 option3.setText(engine.getC3());
-
+                option4.setText(engine.getD4());
                 switch (s) {
                     case "a":
                         option1.setTextColor(Color.RED);
                         option2.setTextColor(Color.BLACK);
                         option3.setTextColor(Color.BLACK);
+                        option4.setTextColor(Color.BLACK);
                         break;
                     case "b":
                         option2.setTextColor(Color.RED);
                         option3.setTextColor(Color.BLACK);
+                        option4.setTextColor(Color.BLACK);
                         option1.setTextColor(Color.BLACK);
                         break;
                     case "c":
                         option3.setTextColor(Color.RED);
+                        option4.setTextColor(Color.BLACK);
                         option1.setTextColor(Color.BLACK);
                         option2.setTextColor(Color.BLACK);
                         break;
+                    case "d":
+                        option4.setTextColor(Color.RED);
+                        option1.setTextColor(Color.BLACK);
+                        option2.setTextColor(Color.BLACK);
+                        option3.setTextColor(Color.BLACK);
                 }
             } else if (questionAndOption.length > 0) {
+                Log.d(TAG, "onPostExecute: question and option lenght=="+questionAndOption.length);
                 Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
             }
             getAnswer.setProgress(100);
@@ -337,18 +348,21 @@ public class OCRFloating extends Service {
                 questionAndOption = imageTextReader.getTextFromBitmap(croppedGrayscaleImage);
 
             publishProgress(65);
-            if (questionAndOption.length == 5) {
-                engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
+
+            if (questionAndOption.length >= 5) {
+                engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3], questionAndOption[5]));
                 engine.search();
                 if (!engine.isError()) {
                     publishProgress(90);
                     return engine.getAnswer();
                 } else {
-                    engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
+                    engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3], questionAndOption[5]));
                     publishProgress(90);
                     return engine.search();
                 }
             }
+
+            Log.d(TAG, "doInBackground: wtf is this");
             return null;
         }
 
@@ -359,95 +373,4 @@ public class OCRFloating extends Service {
     }
 
 
-/*
-    void captureScreenshot() {
-        Screenshotter.getInstance(getApplicationContext()).setSize(width, height).takeScreenshot(new Screenshotter.ScreenshotCallback() {
-            @Override
-            public void onScreenshot(Bitmap bitmap) {
-                mBitmap = bitmap;
-                processImage(bitmap);
-            }
-        });
-
-    }
-
-    void processImage(Bitmap bitmap) {
-        if (coordinate[2] == 0 || coordinate[3] == 0) {
-            coordinate[2] = width;
-            coordinate[3] = height;
-        }
-        final Bitmap croppedGrayscaleImage;
-        //if (Data.GRAYSCALE_IAMGE_FOR_OCR)
-        //    croppedGrayscaleImage = Utils.getGrayscaleImage(Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]));
-        //else
-        croppedGrayscaleImage = Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
-
-        final String questionAndOption[] = imageTextReader.getTextFromBitmap(croppedGrayscaleImage);
-        if (questionAndOption.length == 5) {
-            synchronized (this) {
-                new Update().execute(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]);
-            }
-        } else if (questionAndOption.length > 0) {
-            Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
-        }
-
-        if (Data.IMAGE_LOGS_STORAGE) {
-            new Thread() {
-                @Override
-                public void run() {
-                    writeToStorage(croppedGrayscaleImage);
-                    writeToStorage(questionAndOption);
-                }
-            }.start();
-        }
-
-    }
-    private class Update extends AsyncTask<String, Void, String> {
-        private Engine engine;
-        @Override
-        protected void onPostExecute(String s) {
-            // Log.d(TAG, "Option 1==>" + engine.getA1());
-            // Log.d(TAG, "Option 2==>" + engine.getB2());
-            // Log.d(TAG, "Option 3==>" + engine.getC3());
-
-            option1.setText(engine.getA1());
-            option2.setText(engine.getB2());
-            option3.setText(engine.getC3());
-
-            getAnswer.setProgress(0);
-            switch (s) {
-                case "a":
-                    option1.setTextColor(Color.RED);
-                    option2.setTextColor(Color.BLACK);
-                    option3.setTextColor(Color.BLACK);
-                    break;
-                case "b":
-                    option2.setTextColor(Color.RED);
-                    option3.setTextColor(Color.BLACK);
-                    option1.setTextColor(Color.BLACK);
-                    break;
-                case "c":
-                    option3.setTextColor(Color.RED);
-                    option1.setTextColor(Color.BLACK);
-                    option2.setTextColor(Color.BLACK);
-                    break;
-            }
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            //engine = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
-            //obj.search();
-            engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
-            engine.search();
-            if (!engine.isError()) {
-                return engine.getAnswer();
-            } else {
-                engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
-                // obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
-                return engine.search();
-            }
-
-        }
-    }*/
 }

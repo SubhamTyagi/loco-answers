@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
 
     private Intent mFloatingIntent;
-    private Button mOverlayPermmissionBtn, mAccessibilityPermissionBtn, startStopBtn, ocrBtn;
+    private Button mOverlayPermmissionBtn, ocrBtn;
 
 
     @Override
@@ -92,17 +92,9 @@ public class MainActivity extends AppCompatActivity {
         takeStoragePermission();
 
         mOverlayPermmissionBtn = findViewById(R.id.olpermission5);
-        mAccessibilityPermissionBtn = findViewById(R.id.accpermission5);
-        startStopBtn = findViewById(R.id.start5);
+
         ocrBtn = findViewById(R.id.ocr_btn5);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-
-        startStopBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFloatingWindow();
-            }
-        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ocrBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -142,41 +134,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mAccessibilityPermissionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                giveAccessibilityPermission();
-            }
-        });
+
     }
 
-    public void startFloatingWindow() {
-
-        if (isServiceRunning(Floating.class)) {
-            startStopBtn.setText(R.string.start);
-            startStopBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-            stopService(mFloatingIntent);
-        } else {
-            if (canOverdraw()) {
-                if (isAccessibilityEnabled()) {
-                    startStopBtn.setText(R.string.stop);
-                    startStopBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
-                    startService(mFloatingIntent);
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 500);
-                } else {
-                    giveAccessibilityPermission();
-                }
-            } else {
-                giveOverlayPermission();
-            }
-
-        }
-    }
 
     private void setupActionBar() {
         ActionBar mActionBar = getSupportActionBar();
@@ -325,19 +285,6 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
-        if (isAccessibilityEnabled()) {
-            mAccessibilityPermissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-        } else {
-            mAccessibilityPermissionBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
-        }
-
-        if (isServiceRunning(Floating.class)) {
-            startStopBtn.setText(R.string.stop);
-            startStopBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
-        } else {
-            startStopBtn.setText(R.string.start);
-            startStopBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-        }
         if (isServiceRunning(OCRFloating.class)) {
             ocrBtn.setText(R.string.ocr_btn_txt_stop);
             ocrBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
@@ -381,7 +328,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //if ()
         switch (requestCode) {
             case 296: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

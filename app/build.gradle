@@ -47,7 +47,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
-        applicationId "ai.loko.hk.ui"
+        applicationId "ai.loko.hk.ui4"
         minSdkVersion 19 //19
         targetSdkVersion 28
         versionCode 27
