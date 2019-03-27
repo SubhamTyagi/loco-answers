@@ -87,8 +87,9 @@ public class OCRFloating extends Service {
     private TextView option1, option2, option3;
     private WindowManager.LayoutParams params;
     private ImageTextReader imageTextReader;
+    private TesseractImageTextReader tesseractImageTextReader;
     private int width, height;
-    private Bitmap mBitmap;
+   // private Bitmap mBitmap;
 
     public OCRFloating() {
     }
@@ -163,6 +164,7 @@ public class OCRFloating extends Service {
         option3 = mFloatingView.findViewById(R.id.optionC);
 
         imageTextReader = new ImageTextReader(getApplicationContext());
+        tesseractImageTextReader=TesseractImageTextReader.geInstance(Data.TESSERACT_LANGUAGE);
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -277,7 +279,7 @@ public class OCRFloating extends Service {
         return null;
     }
 
-    private class TakeScreenShot extends AsyncTask<Bitmap, Integer, String> {
+    private  class TakeScreenShot extends AsyncTask<Bitmap, Integer, String> {
         private String[] questionAndOption;
         private Bitmap croppedGrayscaleImage;
         private Engine engine;
@@ -332,7 +334,7 @@ public class OCRFloating extends Service {
             publishProgress(40);
 
             if (Data.IS_TESSERACT_OCR_USE)
-                questionAndOption = TesseractImageTextReader.getTextFromBitmap(croppedGrayscaleImage, Data.TESSERACT_LANGUAGE);
+                questionAndOption = tesseractImageTextReader.getTextFromBitmap(croppedGrayscaleImage);
             else
                 questionAndOption = imageTextReader.getTextFromBitmap(croppedGrayscaleImage);
 
@@ -357,97 +359,4 @@ public class OCRFloating extends Service {
             getAnswer.setProgress(values[0]);
         }
     }
-
-
-/*
-    void captureScreenshot() {
-        Screenshotter.getInstance(getApplicationContext()).setSize(width, height).takeScreenshot(new Screenshotter.ScreenshotCallback() {
-            @Override
-            public void onScreenshot(Bitmap bitmap) {
-                mBitmap = bitmap;
-                processImage(bitmap);
-            }
-        });
-
-    }
-
-    void processImage(Bitmap bitmap) {
-        if (coordinate[2] == 0 || coordinate[3] == 0) {
-            coordinate[2] = width;
-            coordinate[3] = height;
-        }
-        final Bitmap croppedGrayscaleImage;
-        //if (Data.GRAYSCALE_IAMGE_FOR_OCR)
-        //    croppedGrayscaleImage = Utils.getGrayscaleImage(Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]));
-        //else
-        croppedGrayscaleImage = Bitmap.createBitmap(mBitmap, coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
-
-        final String questionAndOption[] = imageTextReader.getTextFromBitmap(croppedGrayscaleImage);
-        if (questionAndOption.length == 5) {
-            synchronized (this) {
-                new Update().execute(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]);
-            }
-        } else if (questionAndOption.length > 0) {
-            Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
-        }
-
-        if (Data.IMAGE_LOGS_STORAGE) {
-            new Thread() {
-                @Override
-                public void run() {
-                    writeToStorage(croppedGrayscaleImage);
-                    writeToStorage(questionAndOption);
-                }
-            }.start();
-        }
-
-    }
-    private class Update extends AsyncTask<String, Void, String> {
-        private Engine engine;
-        @Override
-        protected void onPostExecute(String s) {
-            // Log.d(TAG, "Option 1==>" + engine.getA1());
-            // Log.d(TAG, "Option 2==>" + engine.getB2());
-            // Log.d(TAG, "Option 3==>" + engine.getC3());
-
-            option1.setText(engine.getA1());
-            option2.setText(engine.getB2());
-            option3.setText(engine.getC3());
-
-            getAnswer.setProgress(0);
-            switch (s) {
-                case "a":
-                    option1.setTextColor(Color.RED);
-                    option2.setTextColor(Color.BLACK);
-                    option3.setTextColor(Color.BLACK);
-                    break;
-                case "b":
-                    option2.setTextColor(Color.RED);
-                    option3.setTextColor(Color.BLACK);
-                    option1.setTextColor(Color.BLACK);
-                    break;
-                case "c":
-                    option3.setTextColor(Color.RED);
-                    option1.setTextColor(Color.BLACK);
-                    option2.setTextColor(Color.BLACK);
-                    break;
-            }
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            //engine = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
-            //obj.search();
-            engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
-            engine.search();
-            if (!engine.isError()) {
-                return engine.getAnswer();
-            } else {
-                engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
-                // obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
-                return engine.search();
-            }
-
-        }
-    }*/
 }

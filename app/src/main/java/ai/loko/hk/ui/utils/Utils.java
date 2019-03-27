@@ -80,7 +80,7 @@ public class Utils {
 
     public static int count(String subString, String string) {
         int cnt = 0;
-        Pattern p = Pattern.compile("\\b" + subString + "\\b");
+        Pattern p = Pattern.compile("\\b" + Pattern.quote(subString) + "\\b");
         Matcher m = p.matcher(string);
         while (m.find())
             cnt++;

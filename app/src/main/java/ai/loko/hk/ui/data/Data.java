@@ -52,7 +52,7 @@ public class Data {
     public static String skip = "the of a an ? & and , in - ";
     public static boolean IMAGE_LOGS_STORAGE = true;
     public static boolean IS_TESSERACT_OCR_USE = false;
-    public static String TESSERACT_LANGUAGE = "";
+    public static String TESSERACT_LANGUAGE = "eng";
     public static boolean FAST_MODE_FOR_OCR = false;
 
     private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none", "cannot", "can't", "didn't"};

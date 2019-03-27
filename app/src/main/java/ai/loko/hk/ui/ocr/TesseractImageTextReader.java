@@ -40,17 +40,28 @@ import ai.loko.hk.ui.utils.Logger;
 
 public class TesseractImageTextReader {
 
-    public static String[] getTextFromBitmap(Bitmap src, String language) {
-        TessBaseAPI api = new TessBaseAPI();
+    private static volatile TessBaseAPI api;
+  //  private static volatile TesseractImageTextReader INSTANCE;
+
+    public static TesseractImageTextReader geInstance(String language) {
+        api = new TessBaseAPI();
         api.init(Constant.tesseractPath, language);
         api.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO_OSD);
+        return new TesseractImageTextReader();
+    }
+
+    public String[] getTextFromBitmap(Bitmap src) {
+        //TessBaseAPI api = new TessBaseAPI();
+        //api.init(Constant.tesseractPath, language);
+        //api.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO_OSD);
+
         api.setImage(src);
         String textOnImage;
 
         //StringBuilder text=new StringBuilder();
         try {
             textOnImage = api.getUTF8Text();
-            api.end();
+           // api.end();
         } catch (Exception e) {
             Logger.logException(e);
             return new String[]{"Scan Failed:  Could not set up the detector!"};
@@ -78,16 +89,4 @@ public class TesseractImageTextReader {
         }
         return new String[]{"Scan Failed: Could not read options"};
     }
-}
-
-
-   /* ResultIterator iterator=api.getResultIterator();
-            iterator.begin();
-                    Pixa pixa=api.getWords();
-                    rects=pixa.getBoxRects();
-                    for (int i=0;i<rects.size();i++){
-        text+=iterator.getUTF8Text(TessBaseAPI.PageIteratorLevel.RIL_TEXTLINE)+" \n";
-        iterator.next(TessBaseAPI.PageIteratorLevel.RIL_WORD);
-        }
-
-        pixa.recycle();*/
+    }

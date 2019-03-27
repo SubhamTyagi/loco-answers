@@ -93,8 +93,6 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
             if (mMediaProjection == null) {
                 Log.e(TAG, "MediaProjection null. Cannot take the screenshot.");
             }
-
-
         }
         try {
             virtualDisplay = mMediaProjection.createVirtualDisplay("Screenshotter", width, height, 50,

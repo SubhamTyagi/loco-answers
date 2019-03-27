@@ -35,11 +35,13 @@ import android.support.multidex.MultiDex;
 import com.balsikandar.crashreporter.CrashReporter;
 
 import ai.loko.hk.ui.constants.Constant;
+import ai.loko.hk.ui.utils.SpUtil;
 
 public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        SpUtil.getInstance().init(this);
         CrashReporter.initialize(this, Constant.pathToErrors);
     }
 

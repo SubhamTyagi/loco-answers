@@ -51,24 +51,19 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
-import org.kamranzafar.jtar.TarEntry;
-import org.kamranzafar.jtar.TarInputStream;
-
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.zip.GZIPInputStream;
 
 import ai.loko.hk.ui.MainActivity;
 import ai.loko.hk.ui.constants.Constant;
+import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.utils.Logger;
+import ai.loko.hk.ui.utils.SpUtil;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ui.R;
 
@@ -94,7 +89,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 int index = listPreference.findIndexOfValue(stringValue);
                 String entry = index >= 0 ? (listPreference.getEntries()[index]).toString() : null;
                 preference.setSummary(entry);
-                if (preference.getKey().equals("language_for_tesseract")) {
+
+                Data.IS_TESSERACT_OCR_USE = SpUtil.getInstance().getBoolean(Constant.IS_TESSERACT_IN_USE, false);
+
+                if (preference.getKey().equals(Constant.LANGUAGE_FOR_TESSERACT_OCR) && Data.IS_TESSERACT_OCR_USE) {
                     final String lang = listPreference.getEntryValues()[index >= 0 ? index : 0].toString();
                     if (!isLanguageDataExists(lang)) {
                         mSweetAlertDialogForProgressBar.show();
@@ -138,7 +136,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     };
 
     private static boolean isLanguageDataExists(String lang) {
-        File t = new File(Constant.pathToTesseract + lang + ".traineddata");
+        File t = new File(String.format(Constant.TESSERACT_DATA_FILE_NAME,lang));
         boolean r = t.exists();
         Log.v(TAG, "training data for " + lang + " exists? " + r);
         return r;
@@ -153,7 +151,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
-    public static void untarTGzFile(String tar_gz_file, String dest_path) throws IOException {
+ /*   public static void untarTGzFile(String tar_gz_file, String dest_path) throws IOException {
 
         File zf = new File(tar_gz_file);
         TarInputStream tis = new TarInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(zf))));
@@ -170,17 +168,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             byte data[] = new byte[BUFFER];
             String file_name = entry.getName();
             if (entry.isDirectory()) {
-                /*new File(destFolder + "/" + entry.getName()).mkdirs();*/
+                *//*new File(destFolder + "/" + entry.getName()).mkdirs();*//*
                 continue;
             } else {
                 int di = entry.getName().lastIndexOf('/');
                 if (di != -1) {
-                    /*new File(destFolder + "/" + entry.getName().substring(0, di)).mkdirs();*/
+                    *//*new File(destFolder + "/" + entry.getName().substring(0, di)).mkdirs();*//*
                     file_name = entry.getName().substring(di + 1, entry.getName().length());
                 }
             }
             Log.v(TAG, "writing to " + file_name);
-            FileOutputStream fos = new FileOutputStream(destFolder + "/" + file_name /*entry.getName()*/);
+            FileOutputStream fos = new FileOutputStream(destFolder + "/" + file_name *//*entry.getName()*//*);
             dest = new BufferedOutputStream(fos);
             while ((count = tis.read(data)) != -1) {
                 dest.write(data, 0, count);
@@ -189,7 +187,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             dest.flush();
             dest.close();
         }
-    }
+    }*/
 
     /**
      * Binds a preference's summary to its value. More specifically, when the
@@ -253,10 +251,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         finish();
     }
 
-    /**
-     * This fragment shows general preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class MainPreferenceFragment extends PreferenceFragment {
@@ -279,19 +273,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 startActivity(new Intent(getActivity(), MainActivity.class));
-
                 return true;
             }
             return super.onOptionsItemSelected(item);
         }
     }
 
+
     private static class DownloadTrainingTask extends AsyncTask<String, Integer, Boolean> {
-        int total_length = 1;
+        int totalLenght = 1;
+        int downloads_count=0;
 
         @Override
         protected void onPostExecute(Boolean bool) {
-            // fininh downloading
+            // finish downloading
             mSweetAlertDialogForProgressBar.setTitleText("Success").setConfirmText("Ok").changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
         }
 
@@ -303,25 +298,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             // update progress bar
-            int percent = values[0] / total_length;
-            mSweetAlertDialogForProgressBar.setTitleText("Please wait.." + percent + "% downloads");
+            int percent = values[0] / totalLenght;
+            mSweetAlertDialogForProgressBar.setTitleText("Please wait.." + downloads_count/ totalLenght + "% downloads");
             mSweetAlertDialogForProgressBar.getProgressHelper().setProgress(percent);
         }
 
         private boolean downloadTraingData(String lang) {
             boolean result = true;
-            String url_string = res.getString(R.string.training_data_tgz_url_template, lang);
+
+            String downloadURL=String.format(Constant.TESSERACT_DATA_DOWNLOAD_URL,lang);
+            //String downloadURL = res.getString(R.string.training_data_tgz_url_template, lang);
             String location;
-            String dest_file_name = Constant.pathToTesseract + res.getString(R.string.training_data_tgz_file_name_template, lang);
+            String destFileName=String.format(Constant.TESSERACT_DATA_FILE_NAME,lang);
+            //String destFileName = Constant.pathOfTesseractData + res.getString(R.string.training_data_tgz_file_name_template, lang);
+
             URL url, base, next;
             HttpURLConnection conn;
             try {
                 while (true) {
-                    Log.v(TAG, "downloading " + url_string);
+                    Log.v(TAG, "downloading " + downloadURL);
                     try {
-                        url = new URL(url_string);
+                        url = new URL(downloadURL);
                     } catch (java.net.MalformedURLException ex) {
-                        Log.e(TAG, "url " + url_string + " is bad: " + ex);
+                        Log.e(TAG, "url " + downloadURL + " is bad: " + ex);
                         Logger.logException(ex);
                         return false;
                     }
@@ -331,9 +330,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         case HttpURLConnection.HTTP_MOVED_PERM:
                         case HttpURLConnection.HTTP_MOVED_TEMP:
                             location = conn.getHeaderField("Location");
-                            base = new URL(url_string);
+                            base = new URL(downloadURL);
                             next = new URL(base, location);  // Deal with relative URLs
-                            url_string = next.toExternalForm();
+                            downloadURL = next.toExternalForm();
                             continue;
                     }
                     break;
@@ -341,21 +340,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                 conn.connect();
 
-                total_length = conn.getContentLength();
+                totalLenght = conn.getContentLength();
 
                 InputStream input = new BufferedInputStream(url.openStream());
-                OutputStream output = new FileOutputStream(dest_file_name);
+                OutputStream output = new FileOutputStream(destFileName);
 
                 byte data[] = new byte[1024 * 6];
-                int total_downloaded = 0;
+               // int total_downloaded = 0;
                 int count;
 
-                //upadte progress bar with total_length
+                //upadte progress bar with totalLenght
 
                 while ((count = input.read(data)) != -1) {
-                    total_downloaded += count;
+                    downloads_count += count;
                     output.write(data, 0, count);
-                    publishProgress(total_downloaded);
+                    publishProgress(downloads_count);
                 }
                 output.flush();
                 output.close();
@@ -363,18 +362,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             } catch (Exception e) {
                 result = false;
                 Logger.logException(e);
-                Log.e(TAG, "failed to download " + url_string + " : " + e);
+                Log.e(TAG, "failed to download " + downloadURL + " : " + e);
             }
 
             if (result) {
-                Log.v(TAG, "unarchive " + dest_file_name);
-                try {
-                    untarTGzFile(dest_file_name, Constant.pathToTesseract);
+               // Log.v(TAG, "unarchive " + destFileName);
+                /*try {
+                    untarTGzFile(destFileName, Constant.pathOfTesseractData);
                 } catch (IOException e) {
                     result = false;
                     Logger.logException(e);
-                    Log.e(TAG, "failed to ungzip/untar " + dest_file_name + " : " + e);
-                }
+                    Log.e(TAG, "failed to ungzip/untar " + destFileName + " : " + e);
+                }*/
             }
 
             return result;

@@ -62,7 +62,7 @@ public class Engine extends Base {
         super(questionObj);
     }
 
-    //currently not used but will be...
+    //currently not IN use but will be...
     private String pairSearch() {
         boolean isNeg;
         a = b = c = 0;
