@@ -111,6 +111,7 @@ dependencies {
     implementation 'com.nightonke:boommenu:2.1.1'
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     implementation 'com.github.f0ris.sweetalert:library:1.5.6'
+    implementation 'com.github.javiersantos:AppUpdater:2.7'
     //implementation 'com.rmtheis:tess-two:9.0.0'
     implementation project(path: ':crashreporter')
     implementation project(':tesseract4android')

@@ -52,6 +52,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         mFloatingIntent = new Intent(MainActivity.this, Floating.class);
         takeStoragePermission();
+        checkForUpdates();
 
         mOverlayPermmissionBtn = findViewById(R.id.olpermission5);
         mAccessibilityPermissionBtn = findViewById(R.id.accpermission5);
@@ -144,6 +147,13 @@ public class MainActivity extends AppCompatActivity {
         givePermission();
 
 
+    }
+
+    private void checkForUpdates() {
+        new AppUpdater(this)
+                .setUpdateFrom(UpdateFrom.JSON)
+                .setUpdateJSON("https://raw.githubusercontent.com/SubhamTyagi/loco-answers/master/update-changelog.json")
+                .start();
     }
 
     private void takeStoragePermission() {
