@@ -34,7 +34,6 @@ import ui.BuildConfig;
 
 public class Constant {
 
-    public static final String VERSION_NAME = "2.3.0";
     public static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     public static final int CODE_FOR_SCREEN_CAPTURE = 1349;
     public static final String path = Environment.getExternalStorageDirectory() + "/TriviaHacK/";

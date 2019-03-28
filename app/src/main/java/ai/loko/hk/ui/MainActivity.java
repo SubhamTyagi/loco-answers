@@ -68,8 +68,10 @@ import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.services.Floating;
 import ai.loko.hk.ui.services.OCRFloating;
+import ai.loko.hk.ui.services.option4.OCRFloating4;
 import ai.loko.hk.ui.utils.Logger;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import ui.BuildConfig;
 import ui.R;
 
 
@@ -77,9 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
     private final Handler mHandler = new Handler();
     SharedPreferences sharedPref;
-
     private Intent mFloatingIntent;
-    private Button mOverlayPermmissionBtn, mAccessibilityPermissionBtn, startStopBtn, ocrBtn;
+    private Button mOverlayPermmissionBtn, mAccessibilityPermissionBtn, startStopBtnLegacy, ocrBtn;
+    private Button mOCRBtn4;
 
 
     @Override
@@ -93,28 +95,50 @@ public class MainActivity extends AppCompatActivity {
 
         mOverlayPermmissionBtn = findViewById(R.id.olpermission5);
         mAccessibilityPermissionBtn = findViewById(R.id.accpermission5);
-        startStopBtn = findViewById(R.id.start5);
+        startStopBtnLegacy = findViewById(R.id.start5);
         ocrBtn = findViewById(R.id.ocr_btn5);
+
+        mOCRBtn4=findViewById(R.id.ocr_btn5_4);
+
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        startStopBtn.setOnClickListener(new View.OnClickListener() {
+        startStopBtnLegacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startFloatingWindow();
             }
         });
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ocrBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (isServiceRunning(OCRFloating.class)) {
                         stopService(new Intent(MainActivity.this, OCRFloating.class));
-                    } else
+                    } else {
+                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR=false;
                         startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                    }
                 }
             });
+
+
+            mOCRBtn4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isServiceRunning(OCRFloating4.class)) {
+                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR=false;
+                        stopService(new Intent(MainActivity.this, OCRFloating4.class));
+                    } else {
+                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR=true;
+                        startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                    }
+                }
+            });
+
         } else {
             ocrBtn.setVisibility(View.GONE);
+            mOCRBtn4.setVisibility(View.GONE);
         }
 
         givePermission();
@@ -153,14 +177,14 @@ public class MainActivity extends AppCompatActivity {
     public void startFloatingWindow() {
 
         if (isServiceRunning(Floating.class)) {
-            startStopBtn.setText(R.string.start);
-            startStopBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            startStopBtnLegacy.setText(R.string.start);
+            startStopBtnLegacy.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
             stopService(mFloatingIntent);
         } else {
             if (canOverdraw()) {
                 if (isAccessibilityEnabled()) {
-                    startStopBtn.setText(R.string.stop);
-                    startStopBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
+                    startStopBtnLegacy.setText(R.string.stop);
+                    startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.btnred));
                     startService(mFloatingIntent);
                     mHandler.postDelayed(new Runnable() {
                         @Override
@@ -327,11 +351,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (isServiceRunning(Floating.class)) {
-            startStopBtn.setText(R.string.stop);
-            startStopBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
+            startStopBtnLegacy.setText(R.string.stop);
+            startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.btnred));
         } else {
-            startStopBtn.setText(R.string.start);
-            startStopBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            startStopBtnLegacy.setText(R.string.start);
+            startStopBtnLegacy.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
         if (isServiceRunning(OCRFloating.class)) {
             ocrBtn.setText(R.string.ocr_btn_txt_stop);
@@ -340,13 +364,21 @@ public class MainActivity extends AppCompatActivity {
             ocrBtn.setText(R.string.ocr_btn_txt);
             ocrBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
+
+        if (isServiceRunning(OCRFloating4.class)) {
+            mOCRBtn4.setText(R.string.ocr_btn_txt_stop);
+            mOCRBtn4.setBackgroundColor(getResources().getColor(R.color.btnred));
+        } else {
+            mOCRBtn4.setText(R.string.ocr_btn_txt_4);
+            mOCRBtn4.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+        }
         super.onResume();
     }
 
     private void about() {
         new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText("Trivia Hack VERSION " + Constant.VERSION_NAME)
-                .setContentText("This app is free and open source hosted on GitHub")
+                .setTitleText("Trivia Hack VERSION " + BuildConfig.VERSION_NAME)
+                .setContentText("This app is free and open source app hosted on GitHub")
                 .setConfirmText("Ok")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override

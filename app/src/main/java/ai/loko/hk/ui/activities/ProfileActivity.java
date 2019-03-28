@@ -61,6 +61,7 @@ import java.util.List;
 
 import ai.loko.hk.ui.adapters.ProfileAdapter;
 import ai.loko.hk.ui.constants.Constant;
+import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.db.AppDatabase;
 import ai.loko.hk.ui.db.ProfileEntity;
 import ai.loko.hk.ui.listeners.ListItemSwipeListener;
@@ -69,8 +70,8 @@ import ai.loko.hk.ui.model.Profile;
 import ai.loko.hk.ui.ocr.MediaProjectionHelper;
 import ai.loko.hk.ui.ocr.Points;
 import ai.loko.hk.ui.services.OCRFloating;
+import ai.loko.hk.ui.services.option4.OCRFloating4;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
 import ui.R;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -124,7 +125,11 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
         });
 
         takeNecessaryPermission();
-        mScreenshotIntent = new Intent(this, OCRFloating.class);
+
+        if (Data.IS_THIS_REQUEST_FOR_OPTION_FOUR)
+            mScreenshotIntent = new Intent(this, OCRFloating4.class);
+        else
+            mScreenshotIntent = new Intent(this, OCRFloating.class);
 
         mRecyclerView = findViewById(R.id.recycler_view);
         mProfileAdapter = new ProfileAdapter(getApplicationContext(), profiles);
@@ -176,7 +181,6 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
             case CODE_FOR_CROP: {
                 float[] points = data.getFloatArrayExtra(Constant.CLIP_POINTS);
                 String name = data.getStringExtra(Constant.PROFILE_NAME);
-
                 insertDataToDB(new ProfileEntity(1, name, points[0], points[1], points[2], points[3]));
                 new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE).setTitleText("Image Cropped").setConfirmText("Ok").show();
                 profiles.add(new Profile(name, points[0], points[1], points[2], points[3]));
@@ -184,13 +188,11 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
                 break;
             }
             case Constant.CODE_FOR_SCREEN_CAPTURE: {
-                if (resultCode == RESULT_OK) {
                     MediaProjectionHelper.setMediaProjectionManager(mMediaProjectionManager);
                     MediaProjectionHelper.setScreenshotPermission(data);
                     startService(mScreenshotIntent);
                     finish();
                     break;
-                }
             }
         }
     }
@@ -266,7 +268,7 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
     }
 
     private void setUpDataFromDB() {
-         new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
                 List<ProfileEntity> profileEntities = db.profileDAO().getAll();
