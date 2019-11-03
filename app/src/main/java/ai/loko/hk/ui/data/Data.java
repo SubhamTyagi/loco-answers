@@ -48,7 +48,7 @@ public class Data {
     public static final ArrayList<String> removeWords = new ArrayList<>(Arrays.asList(remove));
 
     public static String BASE_SEARCH_URL = "https://www.google.com/search?q=";
-    public static String FALLBACK_SEARCH_ENGINE = "https://www.bing.com/search?q=";
+    public static String FALLBACK_SEARCH_ENGINE = "https://www.startpage.com/do/search?q=";
 
     public static String skip = "the of a an ? & and , in - ";
     public static boolean IMAGE_LOGS_STORAGE = true;

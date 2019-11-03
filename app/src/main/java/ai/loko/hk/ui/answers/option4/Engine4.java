@@ -193,15 +193,16 @@ public class Engine4 extends Base4 {
         int p, q, r, s;
         reset();
         try {
-            if (checkForNegative)
+            if (checkForNegative) {
                 isNeg = stringToArrayList(question).removeAll(Data.removeNegativeWords);
-            if (isNeg && checkForNegative) {
-                ArrayList<String> simplifiedQuestion = getSimplifiedQuestion(question, 1);//1 means negative words remove
-                StringBuilder stringBuilder = new StringBuilder();
-                for (String s65 : simplifiedQuestion) {
-                    stringBuilder.append(s65).append(" ");
+                if (isNeg) {
+                    ArrayList<String> simplifiedQuestion = getSimplifiedQuestion(question, 1);//1 means negative words remove
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String s65 : simplifiedQuestion) {
+                        stringBuilder.append(s65).append(" ");
+                    }
+                    this.question = stringBuilder.toString();
                 }
-                this.question = stringBuilder.toString();
             }
 
             Document doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();

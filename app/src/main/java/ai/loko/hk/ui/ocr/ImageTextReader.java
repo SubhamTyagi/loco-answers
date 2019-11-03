@@ -66,6 +66,7 @@ public class ImageTextReader {
                 .build();
 
         if (!textRecognizer.isOperational()) {
+
             Log.d(TAG, "OCR dependencies not available ");
         }
     }
