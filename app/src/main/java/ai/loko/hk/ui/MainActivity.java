@@ -34,23 +34,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
@@ -101,14 +104,17 @@ public class MainActivity extends AppCompatActivity {
         startStopBtnLegacy = findViewById(R.id.start5);
         ocrBtn = findViewById(R.id.ocr_btn5);
 
-        mOCRBtn4=findViewById(R.id.ocr_btn5_4);
+        mOCRBtn4 = findViewById(R.id.ocr_btn5_4);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         startStopBtnLegacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startFloatingWindow();
+                if (isNetworkAvailable())
+                    startFloatingWindow();
+                else
+                    showAlertNetworkNotAvailable();
             }
         });
 
@@ -118,9 +124,11 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if (isServiceRunning(OCRFloating.class)) {
                         stopService(new Intent(MainActivity.this, OCRFloating.class));
-                    } else {
-                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR=false;
+                    } else if (isNetworkAvailable()) {
+                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR = false;
                         startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                    } else {
+                        showAlertNetworkNotAvailable();
                     }
                 }
             });
@@ -130,11 +138,14 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (isServiceRunning(OCRFloating4.class)) {
-                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR=false;
+                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR = false;
                         stopService(new Intent(MainActivity.this, OCRFloating4.class));
-                    } else {
-                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR=true;
+                    } else if (isNetworkAvailable()) {
+                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR = true;
                         startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                    } else {
+                        showAlertNetworkNotAvailable();
+
                     }
                 }
             });
@@ -195,13 +206,15 @@ public class MainActivity extends AppCompatActivity {
                 if (isAccessibilityEnabled()) {
                     startStopBtnLegacy.setText(R.string.stop);
                     startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.btnred));
-                    startService(mFloatingIntent);
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 500);
+
+                        startService(mFloatingIntent);
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                finish();
+                            }
+                        }, 500);
+
                 } else {
                     giveAccessibilityPermission();
                 }
@@ -415,6 +428,24 @@ public class MainActivity extends AppCompatActivity {
                 }).show();
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void showAlertNetworkNotAvailable() {
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Network not Available")
+                .setContentText("Your Device is not connected to internet\n First Connect to internet")
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                }).show();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

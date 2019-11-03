@@ -263,12 +263,11 @@ public class Engine extends Base {
             return setAnswer(isNeg);
 
         } catch (Exception ioe) {
-
+            Logger.logException(ioe);
             if (!isFallbackDone){
                 return fallbackSearch(isNeg);
             }
             error = true;
-            Logger.logException(ioe);
             optionRed = "b";
             return "error";
         }

@@ -177,6 +177,8 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) switch (requestCode) {
             case CODE_FOR_CROP: {
                 float[] points = data.getFloatArrayExtra(Constant.CLIP_POINTS);
@@ -188,11 +190,11 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
                 break;
             }
             case Constant.CODE_FOR_SCREEN_CAPTURE: {
-                    MediaProjectionHelper.setMediaProjectionManager(mMediaProjectionManager);
-                    MediaProjectionHelper.setScreenshotPermission(data);
-                    startService(mScreenshotIntent);
-                    finish();
-                    break;
+                MediaProjectionHelper.setMediaProjectionManager(mMediaProjectionManager);
+                MediaProjectionHelper.setScreenshotPermission(data);
+                startService(mScreenshotIntent);
+                finish();
+                break;
             }
         }
     }
