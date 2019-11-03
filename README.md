@@ -41,7 +41,9 @@
 ## Screenshots
 | HOME | PROFILE |
 |:-:|:-:|
+
 | ![home](/.github/assets/home.png?raw=true "home") | ![profile](/.github/assets/profiles.png?raw=true "profile") |
+
 
 | Settings |Search|
 |:-:|:-:|
