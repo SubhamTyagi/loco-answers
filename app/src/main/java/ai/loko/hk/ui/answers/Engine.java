@@ -320,7 +320,7 @@ public class Engine extends Base {
 
     @NonNull
     private String getResponseFromInternet(String simplifiedQuestion, String sub) throws IOException {
-        return Jsoup.connect(BASE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=5").userAgent(Data.USER_AGENT).get().body().text().toLowerCase();
+        return Jsoup.connect(BASE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=8").userAgent(Data.USER_AGENT).get().body().text().toLowerCase();
     }
 }
 

@@ -36,18 +36,18 @@
 * [Shubham Tyagi](https://subhamtyagi.github.io/) 
 
 ## Trivia Hack Logo
-* Trivia hack logo is designed by [Deb Pedrano](https://github.com/debpedrano)|[blog](https://steemit.com/@debpedrano)
+* Trivia hack logo is designed by [Deb Pedrano](https://github.com/debpedrano) |[blog](https://steemit.com/@debpedrano)
 
 ## Screenshots
 | HOME | PROFILE |
 |:-:|:-:|
-| ![home](/.github/assets/home.jpg?raw=true "home") | ![profile](/.github/assets/profile.jpg?raw=true "profile") |
+| ![home](/.github/assets/home.jpng?raw=true "home") | ![profile](/.github/assets/profiles.png?raw=true "profile") |
 
 | Settings |Search|
 |:-:|:-:|
-|![Settings](/.github/assets/settings.jpg?raw=true "Settings") | ![Search](/.github/assets/search.jpg?raw=true "Search")|
+|![Settings](/.github/assets/settings.png?raw=true "Settings") | ![Search](/.github/assets/search.png?raw=true "Search")|
 |Language|
-| ![Language](/.github/assets/language.jpg?raw=true "Language")|
+| ![Language](/.github/assets/language.png?raw=true "Language")|
 
 ## External Credits
 
@@ -64,7 +64,7 @@
 
 
 ## Open Source License
-    Copyright 2018 SHUBHAM TYAGI
+    Copyright 2018,2019 SHUBHAM TYAGI
     Licensed under the GPL V3
     you may not use this project except in compliance with the Licence. You may obtain a copy of the License at
 	
