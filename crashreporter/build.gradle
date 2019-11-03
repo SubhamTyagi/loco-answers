@@ -59,6 +59,3 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.0-alpha01'
     testImplementation 'junit:junit:4.12'
 }
-
-
-//apply from: 'upload.gradle'

@@ -28,17 +28,20 @@
   -->
 
 <resources>
-    <color name="colorPrimaryDark">#3d3d3d</color>
-    <color name="colorAccent">#FF4081</color>
+
     <color name="btnred">#FFCC0000</color>
-    <color name="primary_material_dark">#bfbcbc</color>
-    <color name="background_material_light">#757575</color>
-    <color name="bg_row_background">#fa315b</color>
+    <color name="bg_row_background">#C0BEBE</color>
 
 
-    <color name="colorPrimary">#E6295F</color>
-    <color name="colorPrimaryDark2">#D61B50</color>
-    <color name="colorAccent2">#FF4081</color>
+    <color name="colorAccent">#FF9e9e9e</color>
+    <color name="colorAccent2">#FF9e9e9e</color>
+
+    <color name="colorPrimary">#FF9e9e9e</color>
+    <color name="colorPrimaryDark">#FF616161</color>
+    <color name="colorPrimaryDark2">#FF616161</color>
+
+
+
     <color name="red">#F15050</color>
     <color name="red_dark">#d43c3c</color>
     <color name="yellow">#EED45A</color>

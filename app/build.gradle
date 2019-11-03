@@ -101,25 +101,21 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //Multidex support for older version than lollipop
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-rc01'
+    implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha01'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-rc01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
-
     implementation 'androidx.room:room-runtime:2.2.1'
     annotationProcessor 'androidx.room:room-compiler:2.2.1'
-
     implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation 'com.nightonke:boommenu:2.1.1'
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
     implementation 'com.github.javiersantos:AppUpdater:2.7'
-
-    //implementation 'com.rmtheis:tess-two:9.0.0'
     implementation project(path: ':crashreporter')
     implementation project(':tesseract4android')
 }

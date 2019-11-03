@@ -44,13 +44,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme1"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:icon">
 
         <activity
-            android:name="ai.loko.hk.ui.MainActivity"
-            android:theme="@style/AppTheme">
+
+            android:name="ai.loko.hk.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -66,15 +66,15 @@
         <service
             android:name="ai.loko.hk.ui.services.Floating"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name="ai.loko.hk.ui.services.OCRFloating"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name="ai.loko.hk.ui.services.option4.OCRFloating4"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name="ai.loko.hk.ui.Accessibility"
             android:enabled="true"
@@ -92,17 +92,15 @@
 
         <activity
             android:name="ai.loko.hk.ui.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name="ai.loko.hk.ui.activities.ProfileActivity"
-            android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/title_activity_profile" />
 
         <activity
             android:name="ai.loko.hk.ui.activities.CropActivity"
             android:label="@string/title_activity_crop"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>
