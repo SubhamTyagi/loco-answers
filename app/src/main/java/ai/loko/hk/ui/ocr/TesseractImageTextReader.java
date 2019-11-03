@@ -41,7 +41,7 @@ import ai.loko.hk.ui.utils.Logger;
 public class TesseractImageTextReader {
 
     private static volatile TessBaseAPI api;
-  //  private static volatile TesseractImageTextReader INSTANCE;
+    //  private static volatile TesseractImageTextReader INSTANCE;
 
     public static TesseractImageTextReader geInstance(String language) {
         api = new TessBaseAPI();
@@ -51,25 +51,24 @@ public class TesseractImageTextReader {
     }
 
     public String[] getTextFromBitmap(Bitmap src) {
-        //TessBaseAPI api = new TessBaseAPI();
-        //api.init(Constant.tesseractPath, language);
-        //api.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO_OSD);
 
         api.setImage(src);
         String textOnImage;
 
-        //StringBuilder text=new StringBuilder();
         try {
             textOnImage = api.getUTF8Text();
-           // api.end();
+
         } catch (Exception e) {
             Logger.logException(e);
-            return new String[]{"Scan Failed:  Could not set up the detector!"};
+            return new String[]{"Scan Failed: WTF: Must be submitted to developer!"};
         }
 
         if (textOnImage == null) {
-            return new String[]{"Scan Failed:  Could not set up the detector!"};
+            return new String[]{"Scan Failed: No Text on screen!"};
         }
+
+        //RTL language should be implemented other way
+        //char rleChar = (char)0x202B;
 
         String[] textOnScreenArray = textOnImage.split("\n");
         ArrayList<String> textOnScreen = new ArrayList<>();
@@ -86,7 +85,13 @@ public class TesseractImageTextReader {
                 question.append(textOnScreen.get(i));
             }
             return new String[]{question.toString(), textOnScreen.get(lineCount - 3), textOnScreen.get(lineCount - 2), textOnScreen.get(lineCount - 1), textOnImage};
+        } else {
+            StringBuilder question = new StringBuilder();
+            for (int i = 0; i < lineCount; i++) {
+                question.append(textOnScreen.get(i));
+            }
+            return new String[]{"Scan Failed: Could not read all options\n" + question};
         }
-        return new String[]{"Scan Failed: Could not read options"};
+
     }
-    }
+}

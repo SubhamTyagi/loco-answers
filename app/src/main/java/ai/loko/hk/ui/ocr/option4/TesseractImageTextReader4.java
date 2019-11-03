@@ -81,7 +81,13 @@ public class TesseractImageTextReader4 {
                 question.append(textOnScreen.get(i));
             }
             return new String[]{question.toString(),textOnScreen.get(lineCount - 4), textOnScreen.get(lineCount - 3), textOnScreen.get(lineCount - 2), textOnScreen.get(lineCount - 1), textOnImage};
+        }else {
+            StringBuilder question = new StringBuilder();
+            for (int i = 0; i < lineCount; i++) {
+                question.append(textOnScreen.get(i));
+            }
+            return new String[]{"Scan Failed: Could not read all options\n" + question};
         }
-        return new String[]{"Scan Failed: Could not read options"};
+
     }
 }

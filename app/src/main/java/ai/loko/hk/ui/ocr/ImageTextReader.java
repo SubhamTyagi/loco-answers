@@ -78,7 +78,7 @@ public class ImageTextReader {
             SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
 
             if (textBlocks.size() == 0) {
-                return new String[]{"Scan Failed: Found nothing to scan"};
+                return new String[]{"Scan Failed: No Text on screen"};
             }
 
             StringBuilder lines = new StringBuilder();
@@ -148,7 +148,7 @@ public class ImageTextReader {
             return new String[]{"Scan Failed: Could not read options"};
 
         } else {
-            return new String[]{"Scan Failed:  Could not set up the detector!"};
+            return new String[]{"Scan Failed: WTF: should be submitted to developer!"};
         }
     }
 

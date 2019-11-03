@@ -41,7 +41,7 @@ public class Utils {
 
 
     public static String getSimplifiedString(String text, @Nullable String optionalRemoveWord) {
-        String split[] = text.split(" ");
+        String[] split = text.split(" ");
         ArrayList<String> list = new ArrayList<>(Arrays.asList(split));
         list.removeAll(Data.removeWords);
 
