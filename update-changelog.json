@@ -1,9 +1,10 @@
 {
-  "latestVersion": "2.3.1",
-  "latestVersionCode": "29",
+  "latestVersion": "2.4",
+  "latestVersionCode": "30",
   "url": "https://github.com/SubhamTyagi/loco-answers/releases",
   "releaseNotes": [
-    "- Support for 4 option trivia apps",
-    "- Bug fixes and performance improvement"
+       "- Bug fixes and performance improvement",
+       "- Material Theme update"
+		
   ]
 }

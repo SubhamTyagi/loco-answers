@@ -59,10 +59,12 @@ Welcome file
  - [Anton]( https://vk.com/f0ris) for [Sweet Alert dialog](https://github.com/F0RIS/sweet-alert-dialog).
  - [Bal Sikandar](balsikandar.github.io) for [CrashReporter](https://github.com/MindorksOpenSource/CrashReporter).
  - [Robert Theis](http://www.rmtheis.com/) for [Tesseract Tools for Android](https://github.com/rmtheis/tess-two).
- -  [Robert Pösel](https://github.com/Robyer) for[Tesseract 4 Tool for Android](https://github.com/adaptech-cz/Tesseract4Android)
+ - [Robert Pösel](https://github.com/Robyer) for[Tesseract 4 Tool for Android](https://github.com/adaptech-cz/Tesseract4Android)
  - [Kamran](http://kamranzafar.github.com/) for [Jtar](https://github.com/kamranzafar/jtar).
  - [Jonathan Hedley](http://jonathanhedley.com) for [Jsoup](https://jsoup.org/).
  - [Arthur](http://TheArtOfDev.com/) for [Android Image Cropper](https://github.com/ArthurHub/Android-Image-Cropper).
+ - [Javier Santos](https://github.com/javiersantos) for [App Updator](https://github.com/javiersantos/AppUpdater/).
+
 
  ## Why app is Re-named
 

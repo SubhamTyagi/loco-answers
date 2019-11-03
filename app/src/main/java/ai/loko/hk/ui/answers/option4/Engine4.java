@@ -29,7 +29,7 @@ package ai.loko.hk.ui.answers.option4;
  */
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

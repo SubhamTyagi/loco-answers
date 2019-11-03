@@ -31,8 +31,8 @@ package ai.loko.hk.ui.activities;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -43,7 +43,6 @@ import com.dd.processbutton.iml.ActionProcessButton;
 import java.util.Random;
 
 import ai.loko.hk.ui.answers.Engine;
-import ai.loko.hk.ui.data.Which;
 import ai.loko.hk.ui.model.Question;
 import ai.loko.hk.ui.utils.CustomToast;
 import ui.R;

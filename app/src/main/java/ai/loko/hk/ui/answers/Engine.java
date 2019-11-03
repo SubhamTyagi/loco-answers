@@ -28,7 +28,7 @@
 
 package ai.loko.hk.ui.answers;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -176,15 +176,16 @@ public class Engine extends Base {
         int p, q, r;
         reset();
         try {
-            if (checkForNegative)
+            if (checkForNegative) {
                 isNeg = stringToArrayList(question).removeAll(Data.removeNegativeWords);
-            if (isNeg && checkForNegative) {
-                ArrayList<String> simplifiedQuestion = getSimplifiedQuestion(question, 1);//1 means negative words remove
-                StringBuilder stringBuilder = new StringBuilder();
-                for (String s : simplifiedQuestion) {
-                    stringBuilder.append(s).append(" ");
+                if (isNeg) {
+                    ArrayList<String> simplifiedQuestion = getSimplifiedQuestion(question, 1);//1 means negative words remove
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String s : simplifiedQuestion) {
+                        stringBuilder.append(s).append(" ");
+                    }
+                    this.question = stringBuilder.toString();
                 }
-                this.question = stringBuilder.toString();
             }
 
             Document doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();

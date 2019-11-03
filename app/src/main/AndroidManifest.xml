@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~   Copyright (C) 2018 SHUBHAM TYAGI
   ~
   ~    This file is part of Trivia Hack.
@@ -28,21 +27,19 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="ui">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ui">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-   <!-- <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>-->
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-   <!-- <uses-permission android:name="android.permission.WAKE_LOCK"/>-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="ai.loko.hk.ui.MyApplication"
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -55,12 +52,12 @@
             android:name="ai.loko.hk.ui.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="ai.loko.hk.ui.activities.ForegroundActivity"/>
+        <activity android:name="ai.loko.hk.ui.activities.ForegroundActivity" />
 
         <activity android:name="ai.loko.hk.ui.activities.TestActivity">
 
@@ -69,18 +66,15 @@
         <service
             android:name="ai.loko.hk.ui.services.Floating"
             android:enabled="true"
-            android:exported="false">
-        </service>
+            android:exported="false"/>
         <service
             android:name="ai.loko.hk.ui.services.OCRFloating"
             android:enabled="true"
-            android:exported="false">
-        </service>
+            android:exported="false"/>
         <service
             android:name="ai.loko.hk.ui.services.option4.OCRFloating4"
             android:enabled="true"
-            android:exported="false">
-        </service>
+            android:exported="false"/>
         <service
             android:name="ai.loko.hk.ui.Accessibility"
             android:enabled="true"
@@ -88,30 +82,27 @@
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:process=":service">
             <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService"/>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/accessibilty"/>
+                android:resource="@xml/accessibilty" />
         </service>
 
         <activity
             android:name="ai.loko.hk.ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name="ai.loko.hk.ui.activities.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme"/>
 
         <activity
             android:name="ai.loko.hk.ui.activities.CropActivity"
             android:label="@string/title_activity_crop"
-            android:theme="@style/NoActionBar">
-        </activity>
+            android:theme="@style/NoActionBar"/>
     </application>
 
 </manifest>

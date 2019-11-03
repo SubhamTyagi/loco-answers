@@ -28,7 +28,8 @@
 
 package com.balsikandar.crashreporter.utils;
 
-import android.support.v4.view.ViewPager;
+
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by bali on 11/08/17.
