@@ -1,9 +1,4 @@
-
-Welcome file
-
-
 [![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.3.0-green.svg)[ ![HitCount](http://hits.dwyl.io/SubhamTyagi/loco-answers.svg)](http://hits.dwyl.io/SubhamTyagi/loco-answers)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
-
 
 # Trivia hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
@@ -21,7 +16,7 @@ Welcome file
 
 * Before downloading please give this app a :star: by pressing ![Star](/.github/assets/star.PNG) it means a lot to me it boost me to build more features and help you guys.
 * [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers/releases)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
-* **Why this app not on play store:** Because i support **Open-source software advocacy** and i hate Google Play store. This app will be available on open-source market such as F-Droid (i am working for comply with the [F-Droid's inclusion policy](https://f-droid.org/docs/Inclusion_Policy/?title=Inclusion_Policy))
+
 ## See Demo on YouTube
 * ### [Here](https://youtu.be/H0LvFNW_svA)
 ## Supported Apps
@@ -38,8 +33,10 @@ Welcome file
 10. Swag IQ
 
 ## Contribution
-* [Shubham Tyagi](https://subhamtyagi.github.io/) and his supporter
-* Contributions accepted(always)
+* [Shubham Tyagi](https://subhamtyagi.github.io/) 
+
+## Trivia Hack Logo
+* Trivia hack logo is designed by [Deb Pedrano](https://github.com/debpedrano)|[blog](https://steemit.com/@debpedrano)
 
 ## Screenshots
 | HOME | PROFILE |
@@ -66,23 +63,16 @@ Welcome file
  - [Javier Santos](https://github.com/javiersantos) for [App Updator](https://github.com/javiersantos/AppUpdater/).
 
 
- ## Why app is Re-named
-
- - Old name pronunciation was same as one trivia game. Some uses are confused by old name and they thought this app is only work with particular game although that was not true.
-
-
-
 ## Open Source License
     Copyright 2018 SHUBHAM TYAGI
-    Licensed under the FOLLOWING TERMS and as per GPL V3
-    you may not use this file except in compliance with the License. If there is any conflict between these line and GPL v3 then GPL v3 Licence will prevail.
-
-        you may do good and not evil.
-        you find forgiveness for yourself and forgive others.
-        you must share this freely, never taking and talking more than you give.
-
+    Licensed under the GPL V3
+    you may not use this project except in compliance with the Licence. You may obtain a copy of the License at
+	
+	    https://www.gnu.org/licenses/gpl-3.0.en.html
+    
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
