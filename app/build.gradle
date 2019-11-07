@@ -28,28 +28,15 @@
 
 apply plugin: 'com.android.application'
 
-/*
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-*/
 android {
-    /*signingConfigs {
-        debug {
-            keyAlias 'debug'
-            keyPassword '123456'
-            storeFile file('./../debug-key.jks')
-            storePassword '123456'
-        }
-    }*/
-    compileSdkVersion 29
+
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "ai.loko.hk.ui"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 30
         versionName '2.4'
         multiDexEnabled true
