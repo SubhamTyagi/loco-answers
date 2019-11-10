@@ -103,6 +103,8 @@ dependencies {
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
     implementation 'com.github.javiersantos:AppUpdater:2.7'
+    //downloader
+    implementation 'com.ixuea:AndroidDownloader:2.0.6'
     implementation project(path: ':crashreporter')
     implementation project(':tesseract4android')
 }

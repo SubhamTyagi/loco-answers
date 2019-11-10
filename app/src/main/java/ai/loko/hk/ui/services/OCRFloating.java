@@ -164,7 +164,20 @@ public class OCRFloating extends Service {
         option3 = mFloatingView.findViewById(R.id.optionC);
 
         imageTextReader = new ImageTextReader(getApplicationContext());
-        tesseractImageTextReader=TesseractImageTextReader.geInstance(Data.TESSERACT_LANGUAGE);
+
+        String path;
+        switch (Data.TESSERACT_DATA){
+            case "best":
+                path = Constant.TESSERACT_PATH_BEST;
+                break;
+            case "standard":
+                path = Constant.TESSERACT_PATH_STANDARD;
+                break;
+            default:
+                path = Constant.TESSERACT_PATH_FAST;
+        }
+
+        tesseractImageTextReader=TesseractImageTextReader.geInstance(path,Data.TESSERACT_LANGUAGE);
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -197,7 +210,7 @@ public class OCRFloating extends Service {
 
     private void writeToStorage(Bitmap bmp) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        File picFile = new File(Constant.path, "SCR_" + Long.toString(System.currentTimeMillis()) + ".jpg");
+        File picFile = new File(Constant.PATH, "SCR_" + Long.toString(System.currentTimeMillis()) + ".jpg");
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
         try {
             Log.d(TAG, "Writing images");
@@ -211,7 +224,7 @@ public class OCRFloating extends Service {
     }
 
     private void writeToStorage(String[] questionAndOption) {
-        File picFile = new File(Constant.path, "QaOption_" + Long.toString(System.currentTimeMillis()) + ".txt");
+        File picFile = new File(Constant.PATH, "QaOption_" + Long.toString(System.currentTimeMillis()) + ".txt");
         StringBuilder value = new StringBuilder();
         if (questionAndOption.length == 5) {
             value.append(questionAndOption[4]);

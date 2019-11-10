@@ -101,6 +101,14 @@
             android:name="ai.loko.hk.ui.activities.CropActivity"
             android:label="@string/title_activity_crop"
             android:theme="@style/NoActionBar" />
+
+
+        <service android:name="com.ixuea.android.downloader.DownloadService">
+            <intent-filter>
+                <action android:name="com.ixuea.android.downloader.DOWNLOAD_SERVICE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

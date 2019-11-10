@@ -90,13 +90,14 @@
 
     <string name="language_for_tesseract">language_for_tesseract</string>
     <string name="tess_language_title">Select language for Tesseract</string>
+    <string name="tess_training_data_source">tess_training_data_source</string>
     <string name="tesseract_key">tesseract_key</string>
     <string name="tesseract_title">Use Tesseract</string>
     <string name="tesseract_detaill">When this option is on, Trivia Hack will use Tesseract OCR rather than Google Vision</string>
     <string name="language">Language</string>
     <string name="grayscale_image_ocr">grayscale_image_ocr</string>
     <string name="use_gray_scale_image_for_ocr">Use Grayscale for OCR</string>
-    <string name="gray_scale_detail">When this option is on OCR will convert image to Grayscale(speed will decrease)</string>
+    <string name="gray_scale_detail">OCR will convert image to Grayscale(speed will decrease)</string>
     <string name="save_image_and_file_to_storage_key">save_images_and_file_to_storage_key</string>
     <string name="image_storage_titile">Save ScreenShot and logs</string>
     <string name="image_storage_details">Store question and option to Storage</string>
@@ -303,7 +304,7 @@
         <item>sqi</item>
         <item>srp</item>
         <item>srp_latn</item>
-         <item>swa</item>
+        <item>swa</item>
         <item>swe</item>
         <item>syr</item>
         <item>tam</item>
@@ -321,5 +322,18 @@
         <item>vie</item>
         <item>yid</item>
     </string-array>
+
+    <string-array name="ocr_traning_data_entries">
+        <item>Fast</item>
+        <item>Best</item>
+        <item>Standard</item>
+    </string-array>
+
+    <string-array name="ocr_traning_data_entries_values">
+        <item>fast</item>
+        <item>best</item>
+        <item>standard</item>
+    </string-array>
+
 
 </resources>

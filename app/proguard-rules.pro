@@ -32,7 +32,9 @@
 
 -keep class android.support.v7.widget.** { *; }
 -keep class cn.pedant.SweetAlert.Rotate3dAnimation { public <init>(...); }
+-keep public class * implements com.ixuea.android.downloader.db.DownloadDBController
 -dontwarn com.google.**
+
 #-keepattributes SourceFile,LineNumberTable
 
 -keepattributes InnerClasses

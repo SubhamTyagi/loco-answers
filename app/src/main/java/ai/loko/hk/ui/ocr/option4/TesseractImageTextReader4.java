@@ -36,16 +36,15 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 import java.util.ArrayList;
 
 import ai.loko.hk.ui.constants.Constant;
-import ai.loko.hk.ui.ocr.TesseractImageTextReader;
 import ai.loko.hk.ui.utils.Logger;
 
 public class TesseractImageTextReader4 {
 
     private static volatile TessBaseAPI api;
 
-    public static TesseractImageTextReader4 geInstance(String language) {
+    public static TesseractImageTextReader4 geInstance(String path ,String language) {
         api = new TessBaseAPI();
-        api.init(Constant.tesseractPath, language);
+        api.init(path, language);
         api.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO_OSD);
         return new TesseractImageTextReader4();
     }

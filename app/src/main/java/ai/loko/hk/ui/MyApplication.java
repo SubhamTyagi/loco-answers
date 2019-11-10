@@ -42,7 +42,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         SpUtil.getInstance().init(this);
-        CrashReporter.initialize(this, Constant.pathToErrors);
+        CrashReporter.initialize(this, Constant.PATH_TO_ERRORS);
     }
 
     @Override

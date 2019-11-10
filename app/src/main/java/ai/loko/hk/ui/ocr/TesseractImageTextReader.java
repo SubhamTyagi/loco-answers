@@ -43,9 +43,9 @@ public class TesseractImageTextReader {
     private static volatile TessBaseAPI api;
     //  private static volatile TesseractImageTextReader INSTANCE;
 
-    public static TesseractImageTextReader geInstance(String language) {
+    public static TesseractImageTextReader geInstance(String path,String language) {
         api = new TessBaseAPI();
-        api.init(Constant.tesseractPath, language);
+        api.init(path, language);
         api.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO_OSD);
         return new TesseractImageTextReader();
     }

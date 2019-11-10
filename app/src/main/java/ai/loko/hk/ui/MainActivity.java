@@ -82,6 +82,7 @@ import ui.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE_STORAGE_PERMISSION = 153;
     private final Handler mHandler = new Handler();
     SharedPreferences sharedPref;
     private Intent mFloatingIntent;
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.INTERNET,
                         Manifest.permission.GET_TASKS
                 },
-                296);
+                REQUEST_CODE_STORAGE_PERMISSION);
     }
 
     private void givePermission() {
@@ -207,13 +208,13 @@ public class MainActivity extends AppCompatActivity {
                     startStopBtnLegacy.setText(R.string.stop);
                     startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.btnred));
 
-                        startService(mFloatingIntent);
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                finish();
-                            }
-                        }, 500);
+                    startService(mFloatingIntent);
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 500);
 
                 } else {
                     giveAccessibilityPermission();
@@ -348,17 +349,24 @@ public class MainActivity extends AppCompatActivity {
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.custom_search_engine_url), "https://www.google.com/search?q=");
         else
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.search_engine_key), "https://www.google.com/search?q=");
-        //   Data.GRAYSCALE_IAMGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.grayscale_image_ocr), false);
 
-        //these values are setted before due to performance
+        Data.GRAYSCALE_IAMGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.grayscale_image_ocr), false);
+
+
         Data.IMAGE_LOGS_STORAGE = sharedPref.getBoolean(getString(R.string.save_image_and_file_to_storage_key), true);
         Data.IS_TESSERACT_OCR_USE = sharedPref.getBoolean(getString(R.string.tesseract_key), false);
         Data.FAST_MODE_FOR_OCR = sharedPref.getBoolean(getString(R.string.fast_mode_key), false);
 
         if (Data.IS_TESSERACT_OCR_USE) {
             Data.TESSERACT_LANGUAGE = sharedPref.getString(getString(R.string.language_for_tesseract), "eng");
+            Data.TESSERACT_DATA = sharedPref.getString(getString(R.string.tess_training_data_source), "fast");
         }
 
+        setButtonsColorsAndText();
+        super.onResume();
+    }
+
+    private void setButtonsColorsAndText() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
             mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         } else {
@@ -395,7 +403,6 @@ public class MainActivity extends AppCompatActivity {
             mOCRBtn4.setText(R.string.ocr_btn_txt_4);
             mOCRBtn4.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
         }
-        super.onResume();
     }
 
     private void about() {
@@ -449,21 +456,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //if ()
-        switch (requestCode) {
-            case 296: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    new File(Constant.path).mkdirs();
-                    new File(Constant.pathToErrors).mkdirs();
-                    new File(Constant.pathOfTesseractData).mkdirs();
-                    try {
-                        new File(Constant.path, ".nomedia").createNewFile();
-                    } catch (IOException e) {
-                        Logger.logException(e);
-                    }
-                } else {
-                    finish();
+
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                new File(Constant.PATH).mkdirs();
+                new File(Constant.PATH_TO_ERRORS).mkdirs();
+                new File(Constant.PATH_OF_TESSERACT_DATA_STANDARD).mkdirs();
+                new File(Constant.PATH_OF_TESSERACT_DATA_FAST).mkdirs();
+                new File(Constant.PATH_OF_TESSERACT_DATA_BEST).mkdirs();
+
+                try {
+                    new File(Constant.PATH, ".nomedia").createNewFile();
+                } catch (IOException e) {
+                    Logger.logException(e);
                 }
+            } else {
+                finish();
             }
         }
 

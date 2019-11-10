@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~   Copyright (C) 2018 SHUBHAM TYAGI
   ~
   ~    This file is part of Trivia Hack.
@@ -29,9 +28,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="Search Engine">
-    </PreferenceCategory>
+    <PreferenceCategory android:title="Search Engine"></PreferenceCategory>
     <!--Note this this list preference value will be ignored by Trivia Hack 2.0
         because i think google search engine is best for our services .
         as search engine does not allow bot search google is some time flexibly due to his high usage    -->
@@ -41,13 +38,12 @@
         android:entryValues="@array/list_preference_url_list"
         android:key="@string/search_engine_key"
         android:summary="Choose Search Engine(List is sorted by usability)"
-        android:title="Search Engine"
-        />
+        android:title="Search Engine" />
     <SwitchPreference
         android:defaultValue="false"
         android:key="@string/custom_search_engine"
         android:summary="Set full qualified url in below box "
-        android:title="Custom Search Engine"/>
+        android:title="Custom Search Engine" />
     <EditTextPreference
         android:defaultValue="https://www.google.com/search?q="
         android:dependency="@string/custom_search_engine"
@@ -55,16 +51,24 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:summary="Fill fully Qualified URL(if this is wrong than Trivia Hack will not work)"
-        android:title="Custom Search Engine URL"/>
+        android:title="Custom Search Engine URL" />
 
-    <PreferenceCategory
-        android:title="OCR Settings">
-    </PreferenceCategory>
+    <PreferenceCategory android:title="OCR Settings"></PreferenceCategory>
     <SwitchPreference
         android:defaultValue="false"
         android:key="@string/tesseract_key"
         android:summary="@string/tesseract_detaill"
-        android:title="@string/tesseract_title"/>
+        android:title="@string/tesseract_title" />
+
+    <ListPreference
+        android:defaultValue="fast"
+        android:dependency="@string/tesseract_key"
+        android:entries="@array/ocr_traning_data_entries"
+        android:entryValues="@array/ocr_traning_data_entries_values"
+        android:key="@string/tess_training_data_source"
+        android:summary="Fast/Best/Standard"
+        android:title="Select Tesseract Data type"/>
+
     <ListPreference
         android:defaultValue="eng"
         android:dependency="@string/tesseract_key"
@@ -72,22 +76,24 @@
         android:entryValues="@array/ocr_engine_language_value"
         android:key="@string/language_for_tesseract"
         android:summary="@string/language"
-        android:title="@string/tess_language_title"/>
-    <!--<SwitchPreference
+        android:title="@string/tess_language_title" />
+
+    <SwitchPreference
         android:defaultValue="false"
         android:key="@string/grayscale_image_ocr"
         android:summary="@string/gray_scale_detail"
-        android:title="@string/use_gray_scale_image_for_ocr"/>-->
+        android:title="@string/use_gray_scale_image_for_ocr"/>
+
     <SwitchPreference
         android:defaultValue="true"
         android:key="@string/save_image_and_file_to_storage_key"
         android:summary="@string/image_storage_details"
-        android:title="@string/image_storage_titile"/>
+        android:title="@string/image_storage_titile" />
     <SwitchPreference
         android:defaultValue="false"
         android:key="@string/fast_mode_key"
         android:summary="@string/fast_mode_summary"
-        android:title="@string/fast_mode_title"/>
+        android:title="@string/fast_mode_title" />
 
 
 </PreferenceScreen>

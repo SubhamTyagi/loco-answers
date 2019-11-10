@@ -36,6 +36,7 @@ import java.util.Arrays;
 public class Data {
     //public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64)";
     public static final String USER_AGENT = System.getProperty("http.agent");
+    public static boolean GRAYSCALE_IAMGE_FOR_OCR = false;
     private static final String[] remove = {"name",
             "does", "do", "is", "am", "are", "have", "has", "been", "did", "was", "not", "least", "never", "don't", "haven't", "didn't", "wasn't", "except", "wouldn't", "itsn't",
             "were", "had", "will", "would", "shall", "can", "should", "could", "may", "might", "need", "come", "comes", "means",
@@ -55,6 +56,8 @@ public class Data {
     public static boolean IS_TESSERACT_OCR_USE = false;
     public static String TESSERACT_LANGUAGE = "eng";
     public static boolean FAST_MODE_FOR_OCR = false;
+
+    public static String TESSERACT_DATA="fast";
 
     private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none", "cannot", "can't", "didn't"};
     public static final ArrayList<String> removeNegativeWords = new ArrayList<>(Arrays.asList(negativeWords));
