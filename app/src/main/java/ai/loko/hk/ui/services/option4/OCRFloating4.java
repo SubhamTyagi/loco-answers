@@ -39,13 +39,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -56,6 +52,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -170,7 +169,7 @@ public class OCRFloating4 extends Service {
 
         imageTextReader4 = new ImageTextReader4(getApplicationContext());
         String path;
-        switch (Data.TESSERACT_DATA){
+        switch (Data.TESSERACT_DATA) {
             case "best":
                 path = Constant.TESSERACT_PATH_BEST;
                 break;
@@ -180,7 +179,7 @@ public class OCRFloating4 extends Service {
             default:
                 path = Constant.TESSERACT_PATH_FAST;
         }
-        tesseractImageTextReader4 = TesseractImageTextReader4.geInstance(path,Data.TESSERACT_LANGUAGE);
+        tesseractImageTextReader4 = TesseractImageTextReader4.geInstance(path, Data.TESSERACT_LANGUAGE);
 
 
         Display display = getWindowManager().getDefaultDisplay();

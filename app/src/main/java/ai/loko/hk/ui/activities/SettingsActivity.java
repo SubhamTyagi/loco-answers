@@ -97,7 +97,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             mSweetAlertDialogForProgressBar.setTitleText("Downloading Failed").setContentText("You are not connected to Internet").setConfirmText("Ok").changeAlertType(SweetAlertDialog.WARNING_TYPE);
                         } else if (ni.isConnected()) {
                             change = true;
-                            new DownloadTrainingTask().execute(Data.TESSERACT_DATA,lang);
+                            new DownloadTrainingTask().execute(Data.TESSERACT_DATA, lang);
                         } else {
                             mSweetAlertDialogForProgressBar.setTitleText("Downloading Failed").setContentText("You are not connected to Internet").setConfirmText("Ok").changeAlertType(SweetAlertDialog.WARNING_TYPE);
                             change = false;
@@ -116,7 +116,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             mSweetAlertDialogForProgressBar.setTitleText("Downloading Failed").setContentText("You are not connected to Internet").setConfirmText("Ok").changeAlertType(SweetAlertDialog.WARNING_TYPE);
                         } else if (ni.isConnected()) {
                             change = true;
-                            new DownloadTrainingTask().execute(data,Data.TESSERACT_LANGUAGE);
+                            new DownloadTrainingTask().execute(data, Data.TESSERACT_LANGUAGE);
                         } else {
                             mSweetAlertDialogForProgressBar.setTitleText("Downloading Failed").setContentText("You are not connected to Internet").setConfirmText("Ok").changeAlertType(SweetAlertDialog.WARNING_TYPE);
                             change = false;
@@ -223,7 +223,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         protected Boolean doInBackground(String... languages) {
 
-            return downloadTraningData(languages[0],languages[1]);
+            return downloadTraningData(languages[0], languages[1]);
         }
 
         @Override
@@ -231,11 +231,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         }
 
-        private boolean downloadTraningData(String dataSource,String lang) {
+        private boolean downloadTraningData(String dataSource, String lang) {
             boolean result = true;
             String downloadURL;
             String location;
-            String destFileName ;
+            String destFileName;
 
             switch (dataSource) {
                 case "best":
@@ -250,7 +250,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     destFileName = String.format(Constant.TESSERACT_DATA_FILE_NAME_FAST, lang);
                     downloadURL = String.format(Constant.TESSERACT_DATA_DOWNLOAD_URL_FAST, lang);
             }
-
 
 
             URL url, base, next;
@@ -300,9 +299,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
     }
-
-
-
 
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

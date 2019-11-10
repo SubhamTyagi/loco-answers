@@ -114,7 +114,7 @@
     <string name="language_not_exists">Training data for language %s  does not exist; cannot do recognition</string>
     <string name="fast_mode_key">fast_mode_key</string>
     <string name="fast_mode_title">Fast mode for OCR</string>
-    <string name="fast_mode_summary">When this option is on Trivia Hack will find Answer fast but there may be misbehave by Trivia Hack(Not work when tesseract ocr is used)</string>
+    <string name="fast_mode_summary">When this option is on Trivia Hack will find Answer fast but there may be misbehave by Trivia Hack(Not work when tesseract ocr is in use)</string>
     <string name="d">D:</string>
     <string name="option_d">Option D</string>
     <string name="enlarge_image_key">enlarge_image_key</string>
