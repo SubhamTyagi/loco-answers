@@ -1,10 +1,13 @@
 {
-  "latestVersion": "2.4",
-  "latestVersionCode": "30",
+  "latestVersion": "2.5",
+  "latestVersionCode": "31",
   "url": "https://github.com/SubhamTyagi/loco-answers/releases",
   "releaseNotes": [
-       "- Bug fixes and performance improvement",
-       "- Material Theme update"
-		
+       "- See App Settings for WhatsNew
+       "- Tesseract all types data(fast,best,standard) for accuracy and performance",
+       "- Grayscale image control"
+       "- Enlarge Image"
+       "- Android 10 crash fix"
+       "- other bug fixes and performance improvements"		
   ]
 }
