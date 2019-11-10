@@ -60,6 +60,8 @@
         <item>https://www.yandex.com/search/?text=</item>
         <item>https://in.search.yahoo.com/search?p=</item>
         <item>https://www.ask.com/web?q="</item>
+        <item>https://www.startpage.com/do/search?query=</item>
+        <item>https://searx.me/?q=</item>
         <item>https://search.aol.com/aol/search;?q=</item>
         <!--<item>https://en.wikipedia.org/wiki/Special:Search?search=</item>-->
         <item>http://msxml.excite.com/search/web?q=</item>
@@ -77,6 +79,8 @@
         <item>Yandex</item>
         <item>Yahoo!</item>
         <item>Ask.com</item>
+        <item>Start Page</item>
+        <item>SearX.me</item>
         <item>Aol.com</item>
         <!--<item>Wikipedia</item>-->
         <item>Excite</item>

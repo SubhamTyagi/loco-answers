@@ -345,6 +345,7 @@ public class OCRFloating extends Service {
                 coordinate[3] = height;
             }
             croppedGrayscaleImage = Bitmap.createBitmap(bitmaps[0], coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
+
             if (Data.GRAYSCALE_IAMGE_FOR_OCR) {
                 Log.d(TAG, "doInBackground: converting to grayscale");
                 croppedGrayscaleImage = Utils.convertToGrayscale(croppedGrayscaleImage);
