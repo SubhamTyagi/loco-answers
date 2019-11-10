@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.utils.Logger;
 
+//TODO: PIXA
 public class TesseractImageTextReader4 {
 
     private static volatile TessBaseAPI api;

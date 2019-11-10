@@ -37,6 +37,7 @@ public class Data {
     //public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64)";
     public static final String USER_AGENT = System.getProperty("http.agent");
     public static boolean GRAYSCALE_IAMGE_FOR_OCR = false;
+    public static boolean ENLARGE_IMAGE_FOR_OCR=false;
     private static final String[] remove = {"name",
             "does", "do", "is", "am", "are", "have", "has", "been", "did", "was", "not", "least", "never", "don't", "haven't", "didn't", "wasn't", "except", "wouldn't", "itsn't",
             "were", "had", "will", "would", "shall", "can", "should", "could", "may", "might", "need", "come", "comes", "means",

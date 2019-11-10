@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.search_engine_key), "https://www.google.com/search?q=");
 
         Data.GRAYSCALE_IAMGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.grayscale_image_ocr), false);
-
+        Data.ENLARGE_IMAGE_FOR_OCR=sharedPref.getBoolean(getString(R.string.enlarge_image_key),false);
 
         Data.IMAGE_LOGS_STORAGE = sharedPref.getBoolean(getString(R.string.save_image_and_file_to_storage_key), true);
         Data.IS_TESSERACT_OCR_USE = sharedPref.getBoolean(getString(R.string.tesseract_key), false);

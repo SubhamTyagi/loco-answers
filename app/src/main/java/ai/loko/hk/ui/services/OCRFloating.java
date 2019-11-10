@@ -40,8 +40,6 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -52,6 +50,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -70,6 +71,7 @@ import ai.loko.hk.ui.ocr.Points;
 import ai.loko.hk.ui.ocr.Screenshotter;
 import ai.loko.hk.ui.ocr.TesseractImageTextReader;
 import ai.loko.hk.ui.utils.Logger;
+import ai.loko.hk.ui.utils.Utils;
 import ui.R;
 
 
@@ -89,10 +91,11 @@ public class OCRFloating extends Service {
     private ImageTextReader imageTextReader;
     private TesseractImageTextReader tesseractImageTextReader;
     private int width, height;
-   // private Bitmap mBitmap;
+    // private Bitmap mBitmap;
 
     public OCRFloating() {
     }
+
 
     @Override
     public void onCreate() {
@@ -166,7 +169,7 @@ public class OCRFloating extends Service {
         imageTextReader = new ImageTextReader(getApplicationContext());
 
         String path;
-        switch (Data.TESSERACT_DATA){
+        switch (Data.TESSERACT_DATA) {
             case "best":
                 path = Constant.TESSERACT_PATH_BEST;
                 break;
@@ -177,7 +180,7 @@ public class OCRFloating extends Service {
                 path = Constant.TESSERACT_PATH_FAST;
         }
 
-        tesseractImageTextReader=TesseractImageTextReader.geInstance(path,Data.TESSERACT_LANGUAGE);
+        tesseractImageTextReader = TesseractImageTextReader.geInstance(path, Data.TESSERACT_LANGUAGE);
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -206,7 +209,6 @@ public class OCRFloating extends Service {
         coordinate[2] = (int) Math.ceil((double) Points.X2);
         coordinate[3] = (int) Math.ceil((double) Points.Y2);
     }
-
 
     private void writeToStorage(Bitmap bmp) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -244,7 +246,6 @@ public class OCRFloating extends Service {
         }
 
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -292,7 +293,7 @@ public class OCRFloating extends Service {
         return null;
     }
 
-    private  class TakeScreenShot extends AsyncTask<Bitmap, Integer, String> {
+    private class TakeScreenShot extends AsyncTask<Bitmap, Integer, String> {
         private String[] questionAndOption;
         private Bitmap croppedGrayscaleImage;
         private Engine engine;
@@ -344,6 +345,13 @@ public class OCRFloating extends Service {
                 coordinate[3] = height;
             }
             croppedGrayscaleImage = Bitmap.createBitmap(bitmaps[0], coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
+            if (Data.GRAYSCALE_IAMGE_FOR_OCR) {
+                Log.d(TAG, "doInBackground: converting to grayscale");
+                croppedGrayscaleImage = Utils.convertToGrayscale(croppedGrayscaleImage);
+            }
+            if (Data.ENLARGE_IMAGE_FOR_OCR) {
+                croppedGrayscaleImage = Bitmap.createScaledBitmap(croppedGrayscaleImage, (int) (width * 1.5), (int) (height * 1.5), true);
+            }
             publishProgress(40);
 
             if (Data.IS_TESSERACT_OCR_USE)
