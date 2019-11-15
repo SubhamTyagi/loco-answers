@@ -1,11 +1,14 @@
 
-[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.3.0-green.svg)[ ![HitCount](http://hits.dwyl.io/SubhamTyagi/loco-answers.svg)](http://hits.dwyl.io/SubhamTyagi/loco-answers)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
+[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.5.1-green.svg)[ ![HitCount](http://hits.dwyl.io/SubhamTyagi/loco-answers.svg)](http://hits.dwyl.io/SubhamTyagi/loco-answers)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
 
 # Trivia hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
 
 
 * A free, 100 % open source, ads free trivia helper app that respect user sentiments.
 *  Previously Known as LoKo HacK
+* **(16/Nov/2019:00:07 ist):** it is time to say goodbye to this repo. As today i quit programming and development efforts. Todays efforts was the last efforts towards my apps developments. No further updates to this repo from my side.
+
+### * Version 2.5.1 is the last and latest version of this wonderful app.
 
 ## Features
 * Free ,open source, No ads.
