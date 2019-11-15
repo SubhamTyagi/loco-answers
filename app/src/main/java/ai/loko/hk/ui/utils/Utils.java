@@ -33,14 +33,20 @@ import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.data.Data;
 
 public class Utils {
@@ -120,6 +126,40 @@ public class Utils {
         return bmpGrayscale;
     }
 
+    public static void  writeToStorage(Bitmap bmp) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        File picFile = new File(Constant.PATH, "SCR_" + Long.toString(System.currentTimeMillis()) + ".jpg");
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+        try {
+            picFile.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(picFile);
+            outputStream.write(bytes.toByteArray());
+            outputStream.close();
+        } catch (IOException e) {
+            Logger.logException(e);
+        }
+    }
 
+    public static void writeToStorage(String[] questionAndOption) {
+        File picFile = new File(Constant.PATH, "QaOption_" + Long.toString(System.currentTimeMillis()) + ".txt");
+        StringBuilder value = new StringBuilder();
+        if (questionAndOption.length == 5) {
+            value.append(questionAndOption[4]);
+        } else {
+            value.append("ERROR: ");
+            for (String s : questionAndOption) {
+                value.append(s).append("\n");
+            }
+        }
+        try {
+            picFile.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(picFile);
+            outputStream.write(value.toString().getBytes());
+            outputStream.close();
+        } catch (IOException e) {
+            Logger.logException(e);
+        }
+
+    }
     //public static String getDataUrl()
 }

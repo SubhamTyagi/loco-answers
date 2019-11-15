@@ -45,40 +45,22 @@ import java.nio.Buffer;
 import ai.loko.hk.ui.utils.Logger;
 
 
-/**
- * The type Screenshotter.
- */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class Screenshotter implements ImageReader.OnImageAvailableListener {
 
     private static final String TAG = "Screenshotter";
-    private static Screenshotter mInstance;
-    private static Context context;
+    private Screenshotter mInstance;
+    private Context context;
     private VirtualDisplay virtualDisplay;
     private int width;
     private int height;
     private ScreenshotCallback cb;
     private ImageReader mImageReader;
     private MediaProjection mMediaProjection;
-    private volatile int imageAvailable = 0;
 
-    private Screenshotter() {
+    public Screenshotter(Context context) {
+        this.context = context;
     }
-
-    /**
-     * Get the single instance of the Screenshotter class.
-     *
-     * @param context1 the context 1
-     * @return the instance
-     */
-    public static Screenshotter getInstance(Context context1) {
-        context = context1;
-        if (mInstance == null) {
-            mInstance = new Screenshotter();
-        }
-        return mInstance;
-    }
-
 
     /**
      * Take screenshot.
@@ -95,20 +77,19 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
             }
         }
         try {
-            virtualDisplay = mMediaProjection.createVirtualDisplay("Screenshotter", width, height, 50,
+            virtualDisplay = mMediaProjection.createVirtualDisplay(
+                    "Screenshotter",
+                    width, height, 50,
                     DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                    mImageReader.getSurface(), null, null);
-
+                    mImageReader.getSurface(),
+                    null,
+                    null);
             mImageReader.setOnImageAvailableListener(Screenshotter.this, null);
-
-
         } catch (Exception e) {
             e.printStackTrace();
             Logger.logException(e);
-
-
         }
-        // return this;
+
     }
 
     /**
@@ -126,22 +107,12 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
 
     @Override
     public void onImageAvailable(ImageReader reader) {
-        Image image;
-        // Log.d(TAG, "onImageAvailable: start");
-       /*synchronized (this) {
-            ++imageAvailable;
-            if (imageAvailable != 2) {
-                image = reader.acquireLatestImage();
-                if (image == null) return;
-                image.close();
-               return;
-           }
-        }*/
-        image = reader.acquireLatestImage();
+        Image image = reader.acquireLatestImage();
         if (image == null) {
             Log.d(TAG, "onImageAvailable: image is null");
             return;
         }
+
         final Image.Plane[] planes = image.getPlanes();
         final Buffer buffer = planes[0].getBuffer().rewind();
         int pixelStride = planes[0].getPixelStride();
@@ -149,7 +120,6 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
         int rowPadding = rowStride - pixelStride * width;
         Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.ARGB_8888);
         bitmap.copyPixelsFromBuffer(buffer);
-
         tearDown();
         image.close();
         cb.onScreenshot(bitmap);
@@ -166,12 +136,6 @@ public class Screenshotter implements ImageReader.OnImageAvailableListener {
      * The interface Screenshot callback.
      */
     public interface ScreenshotCallback {
-        /**
-         * On screenshot.
-         *
-         * @param bitmap the bitmap
-         */
         void onScreenshot(Bitmap bitmap);
-
     }
 }

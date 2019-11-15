@@ -253,10 +253,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }));
 
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_apps_black_24dp).subNormalText("Supported App that are currently working").normalText("Supported Apps").listener(new OnBMClickListener() {
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_help_white_24dp).subNormalText("If you are getting any error than get online help").normalText("Help Me").listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
-                supportedApps();
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/HELP.md")));
             }
         }));
         rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_info_white_24dp).normalText("About").subNormalText("About me").listener(new OnBMClickListener() {
@@ -419,20 +419,6 @@ public class MainActivity extends AppCompatActivity {
                 }).show();
 
 
-    }
-
-    private void supportedApps() {
-        new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText("Supported Apps")
-                .setContentText(getResources().getString(R.string.supported_apps))
-                .setConfirmText("Ok")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/releases/")));
-                        sweetAlertDialog.dismissWithAnimation();
-                    }
-                }).show();
     }
 
     private boolean isNetworkAvailable() {

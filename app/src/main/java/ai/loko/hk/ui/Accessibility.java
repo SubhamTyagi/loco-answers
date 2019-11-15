@@ -43,6 +43,9 @@ import ai.loko.hk.ui.model.Question;
 import ai.loko.hk.ui.services.Floating;
 import ai.loko.hk.ui.utils.CustomToast;
 
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
+import static android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE;
+
 /**
  * This accessibility may be discontinue in future;
  */
@@ -393,7 +396,7 @@ public class Accessibility extends AccessibilityService {
 
     synchronized private void findAnswer(String question, String option1, String option2, String option3) {
         synchronized (this) {
-            new Update().execute(question, option1, option2, option3);
+            new Update().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,question, option1, option2, option3);
         }
     }
 
@@ -420,10 +423,6 @@ public class Accessibility extends AccessibilityService {
             super.onPostExecute(s);
            
             Intent i = new Intent(getApplicationContext(), Floating.class);
-        /*i.putExtra("option1", obj.getAcount());
-            i.putExtra("option2", obj.getBcount());
-            i.putExtra("option3", obj.getCcount());
-            */
             i.putExtra("option1", engine.getA1());
             i.putExtra("option2", engine.getB2());
             i.putExtra("option3", engine.getC3());
@@ -439,9 +438,7 @@ public class Accessibility extends AccessibilityService {
 
         @Override
         protected String doInBackground(String... strings) {
-
-            //obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
-            //obj.search();
+            android.os.Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
 
             engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
             engine.search();
@@ -450,7 +447,6 @@ public class Accessibility extends AccessibilityService {
                 return engine.getAnswer();
             } else {
                 engine = new Engine(new Question(strings[0], strings[1], strings[2], strings[3]));
-                // obj = new FindAnswers(strings[0], strings[1], strings[2], strings[3]);
                 return engine.search();
             }
 

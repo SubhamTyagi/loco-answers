@@ -53,6 +53,9 @@ import ai.loko.hk.ui.MainActivity;
 import ai.loko.hk.ui.activities.ForegroundActivity;
 import ui.R;
 
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
+import static android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE;
+
 
 public class Floating extends Service {
 
@@ -75,6 +78,8 @@ public class Floating extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        android.os.Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
+
         LinearLayout linearLayout = new LinearLayout(this);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating, linearLayout);
 
@@ -101,15 +106,6 @@ public class Floating extends Service {
         params.gravity = Gravity.TOP | Gravity.START;        //Initially view will be added to top-left corner
         params.x = 0;
         params.y = 100;
-
-        //if (Build.VERSION.SDK_INT>=22)
-        //  params.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
-        //else
-        //    params.type=WindowManager.LayoutParams.TYPE_PHONE;
-        //params.format = PixelFormat.TRANSLUCENT;
-        // params.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        // params.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        //params.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
         //Add the view to the window
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -171,24 +167,14 @@ public class Floating extends Service {
             }
         });
 
-        /*wiki.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Which.itIsGoogle = false;
-                setAnswers();
-                wiki.setProgress(1);
-            }
-        });*/
-
     }
 
-    //GENERATE
+
     private void setAnswers() {
         Intent i = new Intent(getApplicationContext(), ForegroundActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
-        //getApplicationContext().startActivity(new Intent(getApplicationContext(),ForegroundActivity.class));
-    }
+     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

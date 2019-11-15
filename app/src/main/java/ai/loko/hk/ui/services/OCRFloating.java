@@ -56,11 +56,6 @@ import androidx.core.app.NotificationCompat;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import ai.loko.hk.ui.MainActivity;
 import ai.loko.hk.ui.answers.Engine;
 import ai.loko.hk.ui.constants.Constant;
@@ -70,9 +65,11 @@ import ai.loko.hk.ui.ocr.ImageTextReader;
 import ai.loko.hk.ui.ocr.Points;
 import ai.loko.hk.ui.ocr.Screenshotter;
 import ai.loko.hk.ui.ocr.TesseractImageTextReader;
-import ai.loko.hk.ui.utils.Logger;
 import ai.loko.hk.ui.utils.Utils;
 import ui.R;
+
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
+import static android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE;
 
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -100,12 +97,10 @@ public class OCRFloating extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        android.os.Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating, new LinearLayout(this));
-
         notification();
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -127,7 +122,6 @@ public class OCRFloating extends Service {
 
         if (mWindowManager != null) {
             mWindowManager.addView(mFloatingView, params);
-            //
         }
 
         mFloatingView.findViewById(R.id.head).setOnTouchListener(new View.OnTouchListener() {
@@ -188,63 +182,30 @@ public class OCRFloating extends Service {
         width = size.x;
         height = size.y;
 
+        final Screenshotter screenshotter = new Screenshotter(getApplicationContext());
+        screenshotter.setSize(width, height);
+
+
         getAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OCRFloating.isGoogle = true;
                 getAnswer.setProgress(10);
-                synchronized (OCRFloating.this) {
-                    Screenshotter.getInstance(getApplicationContext()).setSize(width, height).takeScreenshot(new Screenshotter.ScreenshotCallback() {
-                        @Override
-                        public void onScreenshot(final Bitmap bitmap) {
-                            getAnswer.setProgress(25);
-                            new TakeScreenShot().execute(bitmap);
-                        }
-                    });
-                }
+                screenshotter.takeScreenshot(new Screenshotter.ScreenshotCallback() {
+                    @Override
+                    public void onScreenshot(Bitmap bitmap) {
+                        getAnswer.setProgress(25);
+
+                        new ProcessImageAndSearch().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bitmap);
+                    }
+                });
             }
         });
+
         coordinate[0] = (int) Math.ceil((double) Points.X1);
         coordinate[1] = (int) Math.ceil((double) Points.Y1);
         coordinate[2] = (int) Math.ceil((double) Points.X2);
         coordinate[3] = (int) Math.ceil((double) Points.Y2);
-    }
-
-    private void writeToStorage(Bitmap bmp) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        File picFile = new File(Constant.PATH, "SCR_" + Long.toString(System.currentTimeMillis()) + ".jpg");
-        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
-        try {
-            Log.d(TAG, "Writing images");
-            picFile.createNewFile();
-            FileOutputStream outputStream = new FileOutputStream(picFile);
-            outputStream.write(bytes.toByteArray());
-            outputStream.close();
-        } catch (IOException e) {
-            Logger.logException(e);
-        }
-    }
-
-    private void writeToStorage(String[] questionAndOption) {
-        File picFile = new File(Constant.PATH, "QaOption_" + Long.toString(System.currentTimeMillis()) + ".txt");
-        StringBuilder value = new StringBuilder();
-        if (questionAndOption.length == 5) {
-            value.append(questionAndOption[4]);
-        } else {
-            value.append("ERROR: ");
-            for (String s : questionAndOption) {
-                value.append(s).append("\n");
-            }
-        }
-        try {
-            picFile.createNewFile();
-            FileOutputStream outputStream = new FileOutputStream(picFile);
-            outputStream.write(value.toString().getBytes());
-            outputStream.close();
-        } catch (IOException e) {
-            Logger.logException(e);
-        }
-
     }
 
     @Override
@@ -293,7 +254,7 @@ public class OCRFloating extends Service {
         return null;
     }
 
-    private class TakeScreenShot extends AsyncTask<Bitmap, Integer, String> {
+    private class ProcessImageAndSearch extends AsyncTask<Bitmap, Integer, String> {
         private String[] questionAndOption;
         private Bitmap croppedGrayscaleImage;
         private Engine engine;
@@ -331,8 +292,8 @@ public class OCRFloating extends Service {
                 new Thread() {
                     @Override
                     public void run() {
-                        writeToStorage(croppedGrayscaleImage);
-                        writeToStorage(questionAndOption);
+                        Utils.writeToStorage(croppedGrayscaleImage);
+                        Utils.writeToStorage(questionAndOption);
                     }
                 }.start();
             }
@@ -340,6 +301,8 @@ public class OCRFloating extends Service {
 
         @Override
         protected String doInBackground(Bitmap... bitmaps) {
+            Log.d(TAG, "doInBackground: ");
+            android.os.Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
             if (coordinate[2] == 0 || coordinate[3] == 0) {
                 coordinate[2] = width;
                 coordinate[3] = height;
