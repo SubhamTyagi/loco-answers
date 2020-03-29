@@ -37,10 +37,10 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 32
-        versionName '2.5.1'
+        versionName '2.5.2'
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionNameSuffix '-Coral'
+        versionNameSuffix '-Beta'
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
 
