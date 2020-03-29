@@ -190,7 +190,7 @@ public class Engine extends Base {
 
             Document doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
 
-            String text = doc.body().text().toLowerCase();
+            String text = doc.body().text().toLowerCase().replace("."," ");
             String optionAsplit[] = optionA.split(" ");
             aSize = optionAsplit.length;
 
@@ -284,7 +284,10 @@ public class Engine extends Base {
 
     private String setAnswer(boolean isNeg) {
         if (!isNeg) {
-            if (a > b) {
+            if (a==b&&b==c){
+                optionRed = "abc";//if answer has same rating answer color will be black
+            }
+            else if (a > b) {
                 if (c > a) {
                     optionRed = "c";
                 } else {
@@ -298,21 +301,34 @@ public class Engine extends Base {
                 optionRed = "c";
             }
         } else {
-            if (a < b) {
-                if (c < a) {
-                    //c is most least
-                    optionRed = "c";
-                } else {
-                    //a is most least
-                    optionRed = "a";
-                }
-            } else if (b < c) {
-                //b is least
-                optionRed = "b";
-            } else {
-                //c is least
-                optionRed = "c";
+            if (a==b && b==c){
+                optionRed="abc";/* if a,b and c has same rating means no ans*/
             }
+            else if (a==b && a<c){
+                optionRed="ab";/* a and b has same rating but less than c ans may be a or b*/
+            }else  if (a==c && a<b){
+                optionRed="ac";/* a and c has same rating but less than b*/
+            }else if(b==c && b<a){
+                optionRed="bc";/* b and c has same rating but less than a*/
+            }
+            else {
+                if (a < b) {
+                    if (c < a) {
+                        //c is most least
+                        optionRed = "c";
+                    } else {
+                        //a is most least
+                        optionRed = "a";
+                    }
+                } else if (b < c) {
+                    //b is least
+                    optionRed = "b";
+                } else {
+                    //c is least
+                    optionRed = "c";
+                }
+            }
+
         }
 
         return optionRed;

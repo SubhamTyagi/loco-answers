@@ -282,6 +282,26 @@ public class OCRFloating extends Service {
                         option1.setTextColor(Color.BLACK);
                         option2.setTextColor(Color.BLACK);
                         break;
+                    case "ab":
+                        option1.setTextColor(Color.RED);
+                        option2.setTextColor(Color.RED);
+                        option3.setTextColor(Color.BLACK);
+                        break;
+                    case "ac":
+                        option1.setTextColor(Color.RED);
+                        option2.setTextColor(Color.BLACK);
+                        option3.setTextColor(Color.RED);
+                        break;
+                    case "bc":
+                        option1.setTextColor(Color.BLACK);
+                        option2.setTextColor(Color.RED);
+                        option3.setTextColor(Color.RED);
+                        break;
+                    case "abc":
+                        option1.setTextColor(Color.BLACK);
+                        option2.setTextColor(Color.BLACK);
+                        option3.setTextColor(Color.BLACK);
+                        break;
                 }
             } else if (questionAndOption.length > 0) {
                 Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
