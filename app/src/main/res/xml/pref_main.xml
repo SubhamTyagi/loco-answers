@@ -39,6 +39,14 @@
         android:key="@string/search_engine_key"
         android:summary="Choose Search Engine(List is sorted by usability)"
         android:title="Search Engine" />
+<!--    <ListPreference-->
+<!--        android:defaultValue="https://www.google.com/search?q="-->
+<!--        android:entries="@array/list_preference_search_engine"-->
+<!--        android:entryValues="@array/list_preference_url_list"-->
+<!--        android:key="@string/search_engine_key"-->
+<!--        android:summary="Choose FallBack Search Engine"-->
+<!--        android:title="Fallback Search Engine" />-->
+
     <SwitchPreference
         android:defaultValue="false"
         android:key="@string/custom_search_engine"

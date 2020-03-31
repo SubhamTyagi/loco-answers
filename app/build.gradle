@@ -37,7 +37,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 32
-        versionName '2.5.2'
+        versionName '2.5.3'
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionNameSuffix '-Beta'
@@ -96,7 +96,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
     implementation 'androidx.room:room-runtime:2.2.1'
     annotationProcessor 'androidx.room:room-compiler:2.2.1'
-    implementation 'org.jsoup:jsoup:1.12.1'
+    implementation 'org.jsoup:jsoup:1.13.1'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation 'com.nightonke:boommenu:2.1.1'
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'

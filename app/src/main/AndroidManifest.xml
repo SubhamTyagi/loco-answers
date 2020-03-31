@@ -101,6 +101,7 @@
             android:name="ai.loko.hk.ui.activities.CropActivity"
             android:label="@string/title_activity_crop"
             android:theme="@style/NoActionBar" />
+
     </application>
 
 </manifest>

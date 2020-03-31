@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_foreground"
@@ -11,39 +10,42 @@
     android:background="@drawable/bg1"
     android:padding="@dimen/padd_10">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?android:attr/actionModeWebSearchDrawable" />
+
     <TextView
         android:id="@+id/profile_name"
         android:layout_width="0dp"
-        android:layout_height="21dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="profile name "
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/search_engine"
-        app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="47dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?android:attr/actionModeWebSearchDrawable" tools:targetApi="lollipop"/>
-
     <TextView
         android:id="@+id/search_engine"
-        android:layout_width="91dp"
-        android:layout_height="22dp"
+        android:layout_width="0dp"
+        android:layout_height="26dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Search"
+        android:clickable="false"
+        android:text="@string/start"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,12 +53,12 @@
         android:id="@+id/profile_x1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="x1"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -64,48 +66,48 @@
         app:layout_constraintEnd_toStartOf="@+id/profile_y1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_name"
-        app:layout_constraintVertical_bias="0.51"/>
+        app:layout_constraintVertical_bias="0.51" />
 
     <TextView
         android:id="@+id/profile_y1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_toLeftOf="@+id/profile_x2"
         android:text="Y1"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/profile_x1"
         app:layout_constraintEnd_toStartOf="@+id/profile_x2"
-        app:layout_constraintStart_toEndOf="@+id/profile_x1"/>
+        app:layout_constraintStart_toEndOf="@+id/profile_x1" />
 
     <TextView
         android:id="@+id/profile_x2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_toLeftOf="@+id/profile_y2"
         android:text="x2"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/profile_y1"
         app:layout_constraintEnd_toStartOf="@+id/profile_y2"
-        app:layout_constraintStart_toEndOf="@+id/profile_y1"/>
+        app:layout_constraintStart_toEndOf="@+id/profile_y1" />
 
 
     <TextView
         android:id="@+id/profile_y2"
         android:layout_width="0dp"
-        android:layout_height="17dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="20dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:text="y2"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/profile_x2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profile_x2"/>
+        app:layout_constraintStart_toEndOf="@+id/profile_x2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
