@@ -37,7 +37,6 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.core.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -46,6 +45,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -236,16 +238,16 @@ public class Floating extends Service {
         i.setAction("stop");
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
-        mBuilder.setContentText("Trivia Hack most accurate answer")
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "stop");
+        mBuilder.setContentText("Trivia Hack: Committed to speed and performance :)")
                 .setContentTitle("Tap to remove overlay screen")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pi)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.drawable.ic_stat_name)
                 .setOngoing(true).setAutoCancel(true)
                 .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // notificationManager.notify(1545, mBuilder.build());
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(1234, mBuilder.build());
     }
 }

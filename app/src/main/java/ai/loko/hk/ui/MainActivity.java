@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkForUpdates() {
         new AppUpdater(this)
                 .setUpdateFrom(UpdateFrom.JSON)
-                .setUpdateJSON("https://raw.githubusercontent.com/SubhamTyagi/loco-answers/master/update-changelog.json")
+                .setUpdateJSON("https://raw.githubusercontent.com/rollychop/loco-answers/master/update-changelog.json")
                 .start();
     }
 

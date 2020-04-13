@@ -29,7 +29,11 @@
 package ai.loko.hk.ui;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
+
 import androidx.multidex.MultiDex;
 
 import com.balsikandar.crashreporter.CrashReporter;
@@ -43,11 +47,24 @@ public class MyApplication extends Application {
         super.onCreate();
         SpUtil.getInstance().init(this);
         CrashReporter.initialize(this, Constant.PATH_TO_ERRORS);
+        notificationChannel();
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    private void notificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "STOP";
+            String description = "Stop Overlay";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("stop", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

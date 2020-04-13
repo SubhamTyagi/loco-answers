@@ -53,6 +53,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -224,17 +225,17 @@ public class OCRFloating extends Service {
         i.setAction("stop");
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "stop");
         mBuilder.setContentText("Trivia Hack: Committed to speed and performance :)")
                 .setContentTitle("Tap to remove overlay screen")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pi)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.drawable.ic_stat_name)
                 .setOngoing(true).setAutoCancel(true)
                 .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
 
+        // notificationManager.notify(1545, mBuilder.build());
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(1545, mBuilder.build());
-
     }
 
     @Override
