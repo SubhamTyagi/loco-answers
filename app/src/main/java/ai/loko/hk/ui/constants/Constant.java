@@ -70,4 +70,7 @@ public class Constant {
     public static final String LANGUAGE_FOR_TESSERACT_OCR = "language_for_tesseract";
     public static final String TESS_TRAINING_DATA_SOURCE ="tess_training_data_source";
     public static final String IS_GRAYSCALE_IMAGE = "grayscale_image_ocr";
+
+    //package name
+    public static final String PACKAGE_NAME = "ai.loko.hk.ui";
 }

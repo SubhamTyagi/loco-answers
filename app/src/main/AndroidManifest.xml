@@ -49,14 +49,18 @@
         tools:replace="android:icon">
 
         <activity
+            android:name="ai.loko.hk.ui.MainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
 
-            android:name="ai.loko.hk.ui.MainActivity">
+        </activity>
+        <activity android:name="ai.loko.hk.ui.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name="ai.loko.hk.ui.activities.ForegroundActivity" />
 
         <activity android:name="ai.loko.hk.ui.activities.TestActivity">
@@ -101,6 +105,10 @@
             android:name="ai.loko.hk.ui.activities.CropActivity"
             android:label="@string/title_activity_crop"
             android:theme="@style/NoActionBar" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
     </application>
 

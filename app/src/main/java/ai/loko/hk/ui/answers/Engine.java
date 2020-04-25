@@ -28,6 +28,8 @@
 
 package ai.loko.hk.ui.answers;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import org.jsoup.Jsoup;
@@ -93,7 +95,7 @@ public class Engine extends Base {
             C3.append(sub3).append("-");
 
             sub1 = optionA.substring(optionA.indexOf("-") + 1);
-            String optionA[] = sub1.split(" ");
+            String[] optionA = sub1.split(" ");
             aSize = optionA.length;
 
             for (String words : optionA) {
@@ -110,7 +112,7 @@ public class Engine extends Base {
             String text2 = getResponseFromInternet(simplifiedQuestion, sub2);
 
             sub2 = optionB.substring(optionB.indexOf("-") + 1);
-            String optionB[] = sub2.split(" ");
+            String[] optionB = sub2.split(" ");
             bSize = optionB.length;
 
             for (String words : optionB) {
@@ -124,7 +126,7 @@ public class Engine extends Base {
             }
 
             sub3 = optionC.substring(optionC.indexOf("-") + 1);
-            String optionC[] = sub3.split(" ");
+            String[] optionC = sub3.split(" ");
             cSize = optionC.length;
 
             String text3 = getResponseFromInternet(simplifiedQuestion, sub3);
@@ -169,9 +171,7 @@ public class Engine extends Base {
             return "error";
         }
     }
-
     synchronized public String search() {
-        boolean isNeg = false;
         a = b = c = 0;
         int p, q, r;
         reset();
@@ -187,11 +187,15 @@ public class Engine extends Base {
                     this.question = stringBuilder.toString();
                 }
             }
-
-            Document doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
-
-            String text = doc.body().text().toLowerCase().replace("."," ");
-            String optionAsplit[] = optionA.split(" ");
+            Document doc;
+            if (isSearchWithQuesAndOptInFallbackDone && !Data.NORMAL_FALLBACK_MODE) {
+                String options = " +{ " + optionA + " | " + optionB + " | " + optionC + " }";
+                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
+            } else {
+                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
+            }
+            String text = doc.body().text().toLowerCase().replace(".", " ");
+            String[] optionAsplit = optionA.split(" ");
             aSize = optionAsplit.length;
 
             for (String words : optionAsplit) {
@@ -204,7 +208,7 @@ public class Engine extends Base {
                 }
             }
 
-            String optionBsplit[] = optionB.split(" ");
+            String[] optionBsplit = optionB.split(" ");
             bSize = optionBsplit.length;
 
             for (String words : optionBsplit) {
@@ -217,7 +221,7 @@ public class Engine extends Base {
                 }
             }
 
-            String optionCsplit[] = optionC.split(" ");
+            String[] optionCsplit = optionC.split(" ");
             cSize = optionCsplit.length;
 
             for (String words : optionCsplit) {
@@ -253,7 +257,20 @@ public class Engine extends Base {
             if (r != 0 && cSize > 1) c *= r;
 
             if (a == b && b == c && !isFallbackDone) {
-                return fallbackSearch(isNeg);
+                if (Data.NORMAL_FALLBACK_MODE) {
+                    Log.d(TAG, "search: " + Data.NORMAL_FALLBACK_MODE);
+                    return fallbackSearch(true);
+                } else {
+                    return searchWithQuesAndOptInFallback();
+                }
+            }
+            if (isNeg && (a == b || a == c || b == c)) {
+                if (Data.NORMAL_FALLBACK_MODE) {
+                    Log.d(TAG, "search: " + Data.NORMAL_FALLBACK_MODE);
+                    return fallbackSearch(true);
+                } else {
+                    return searchWithQuesAndOptInFallback();
+                }
             }
 
             A1.append("=(").append(a).append(")");
@@ -264,8 +281,11 @@ public class Engine extends Base {
 
         } catch (Exception ioe) {
             Logger.logException(ioe);
-            if (!isFallbackDone){
-                return fallbackSearch(isNeg);
+            if (!isFallbackDone) {
+                if (Data.NORMAL_FALLBACK_MODE)
+                    return fallbackSearch(true);
+                else
+                    return searchWithQuesAndOptInFallback();
             }
             error = true;
             optionRed = "b";
@@ -278,16 +298,25 @@ public class Engine extends Base {
         //String simplifiedQuestion = getSimplifiedString(question, null);
         checkForNegative = false;
         isFallbackDone = true;
+        isSearchWithQuesAndOptInFallbackDone = true;
         BASE_URL = Data.FALLBACK_SEARCH_ENGINE;
+        return search();
+    }
+
+    private String searchWithQuesAndOptInFallback() {
+        checkForNegative = false;
+        isSearchWithQuesAndOptInFallbackDone = true;
+        isFallbackDone = true;
+        BASE_URL = Data.BASE_SEARCH_URL;
+
         return search();
     }
 
     private String setAnswer(boolean isNeg) {
         if (!isNeg) {
-            if (a==b&&b==c){
+            if (a == b && b == c) {
                 optionRed = "abc";//if answer has same rating answer color will be black
-            }
-            else if (a > b) {
+            } else if (a > b) {
                 if (c > a) {
                     optionRed = "c";
                 } else {
@@ -301,17 +330,15 @@ public class Engine extends Base {
                 optionRed = "c";
             }
         } else {
-            if (a==b && b==c){
-                optionRed="abc";/* if a,b and c has same rating means no ans*/
-            }
-            else if (a==b && a<c){
-                optionRed="ab";/* a and b has same rating but less than c ans may be a or b*/
-            }else  if (a==c && a<b){
-                optionRed="ac";/* a and c has same rating but less than b*/
-            }else if(b==c && b<a){
-                optionRed="bc";/* b and c has same rating but less than a*/
-            }
-            else {
+            if (a == b && b == c) {
+                optionRed = "abc";/* if a,b and c has same rating means no ans*/
+            } else if (a == b && a < c) {
+                optionRed = "ab";/* a and b has same rating but less than c ans may be a or b*/
+            } else if (a == c && a < b) {
+                optionRed = "ac";/* a and c has same rating but less than b*/
+            } else if (b == c && b < a) {
+                optionRed = "bc";/* b and c has same rating but less than a*/
+            } else {
                 if (a < b) {
                     if (c < a) {
                         //c is most least

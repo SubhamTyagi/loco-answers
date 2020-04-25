@@ -1,30 +1,3 @@
-/*
- *   Copyright (C) 2018 SHUBHAM TYAGI
- *
- *    This file is part of Trivia Hack.
- *     Licensed under the GNU GENERAL PUBLIC LICENSE, Version 3.0 (the "License"); you may not
- *     use this file except in compliance with the License. You may obtain a copy of
- *     the License at
- *
- *     https://www.gnu.org/licenses/gpl-3.0
- *
- *    Trivia Hack is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with Trivia Hack.  If not, see <http://www.gnu.org/licenses/>.
- *
- *
- *     Unless required by applicable law or agreed to in writing, software
- *     distributed under the License is distributed on an "AS IS" BASIS,
- *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *     See the License for the specific language governing permissions and
- *     limitations under the License.
- *
- *
- */
 
 package ai.loko.hk.ui;
 
@@ -55,8 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
-import com.github.javiersantos.appupdater.AppUpdater;
-import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
@@ -66,7 +38,9 @@ import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
+import ai.loko.hk.ui.activities.LoginActivity;
 import ai.loko.hk.ui.activities.ProfileActivity;
 import ai.loko.hk.ui.activities.SettingsActivity;
 import ai.loko.hk.ui.constants.Constant;
@@ -75,6 +49,7 @@ import ai.loko.hk.ui.services.Floating;
 import ai.loko.hk.ui.services.OCRFloating;
 import ai.loko.hk.ui.services.option4.OCRFloating4;
 import ai.loko.hk.ui.utils.Logger;
+import ai.loko.hk.ui.utils.Utils;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ui.BuildConfig;
 import ui.R;
@@ -83,22 +58,24 @@ import ui.R;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 153;
+    private static final String TAG = "MainActivity";
     private final Handler mHandler = new Handler();
     SharedPreferences sharedPref;
     private Intent mFloatingIntent;
     private Button mOverlayPermmissionBtn, mAccessibilityPermissionBtn, startStopBtnLegacy, ocrBtn;
     private Button mOCRBtn4;
-
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_launcher);
+        mAuth = FirebaseAuth.getInstance();
         setupActionBar();
 
         mFloatingIntent = new Intent(MainActivity.this, Floating.class);
         takeStoragePermission();
-        checkForUpdates();
+        //checkForUpdates();
 
         mOverlayPermmissionBtn = findViewById(R.id.olpermission5);
         mAccessibilityPermissionBtn = findViewById(R.id.accpermission5);
@@ -161,12 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void checkForUpdates() {
-        new AppUpdater(this)
-                .setUpdateFrom(UpdateFrom.JSON)
-                .setUpdateJSON("https://raw.githubusercontent.com/rollychop/loco-answers/master/update-changelog.json")
-                .start();
-    }
 
     private void takeStoragePermission() {
         ActivityCompat.requestPermissions(this,
@@ -200,13 +171,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (isServiceRunning(Floating.class)) {
             startStopBtnLegacy.setText(R.string.start);
-            startStopBtnLegacy.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             stopService(mFloatingIntent);
         } else {
             if (canOverdraw()) {
                 if (isAccessibilityEnabled()) {
                     startStopBtnLegacy.setText(R.string.stop);
-                    startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.btnred));
+                    startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
                     startService(mFloatingIntent);
                     mHandler.postDelayed(new Runnable() {
@@ -236,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
         View actionBar = mInflater.inflate(R.layout.actionbar, null);
         TextView mTitleTextView = actionBar.findViewById(R.id.title_text);
         mTitleTextView.setText(R.string.app_name);
+        mTitleTextView.setTextColor(getResources().getColor(R.color.white));
         mActionBar.setCustomView(actionBar);
         mActionBar.setDisplayShowCustomEnabled(true);
         ((Toolbar) actionBar.getParent()).setContentInsetsAbsolute(0, 0);
@@ -243,8 +215,8 @@ public class MainActivity extends AppCompatActivity {
         BoomMenuButton rightBmb = actionBar.findViewById(R.id.action_bar_right_bmb);
 
         rightBmb.setButtonEnum(ButtonEnum.Ham);
-        rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
-        rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
+        rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_5);
+        rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_5);
 
         rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_settings_black_24dp).subNormalText("Common Settings related to App,Search Engine").normalText("Settings").listener(new OnBMClickListener() {
             @Override
@@ -256,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_help_white_24dp).subNormalText("If you are getting any error than get online help").normalText("Help Me").listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/HELP.md")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rollychop/loco-answers/HELP.md")));
             }
         }));
         rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_info_white_24dp).normalText("About").subNormalText("About me").listener(new OnBMClickListener() {
@@ -268,7 +240,15 @@ public class MainActivity extends AppCompatActivity {
         rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_directions_run_black_24dp).subNormalText("Click here to go to github release page").normalText("Update.").listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/releases/")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/rollychop/releases/")));
+            }
+        }));
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_person_black_24dp).normalText("Sign out").subNormalText(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail() + "").listener(new OnBMClickListener() {
+            @Override
+            public void onBoomButtonClick(int index) {
+                mAuth.signOut();
+                finish();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         }));
     }
@@ -322,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
             startActivityForResult(intent, Constant.CODE_DRAW_OVER_OTHER_APP_PERMISSION);
         } else {
-            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             Toast.makeText(this, "You do not need it", Toast.LENGTH_SHORT).show();
         }
     }
@@ -333,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
             case Constant.CODE_DRAW_OVER_OTHER_APP_PERMISSION:
                 //Check if the permission is granted or not.
                 if (resultCode == RESULT_OK) {
-                    mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+                    mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 }
                 break;
             default:
@@ -344,12 +324,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
+        Utils.updater(this);
         if (sharedPref.getBoolean(getString(R.string.custom_search_engine), false))
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.custom_search_engine_url), "https://www.google.com/search?q=");
         else
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.search_engine_key), "https://www.google.com/search?q=");
 
+        Data.NORMAL_FALLBACK_MODE = sharedPref.getBoolean(getString(R.string.fallback_mode), true);
+        Data.FALLBACK_SEARCH_ENGINE = sharedPref.getString(getString(R.string.fallback_search_engine_key), "https://www.startpage.com/do/search?query=");
         Data.GRAYSCALE_IAMGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.grayscale_image_ocr), false);
         Data.ENLARGE_IMAGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.enlarge_image_key), false);
 
@@ -368,47 +350,49 @@ public class MainActivity extends AppCompatActivity {
 
     private void setButtonsColorsAndText() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
-            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
-            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
+            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
         if (isAccessibilityEnabled()) {
-            mAccessibilityPermissionBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            mAccessibilityPermissionBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
-            mAccessibilityPermissionBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
+            mAccessibilityPermissionBtn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }
 
         if (isServiceRunning(Floating.class)) {
             startStopBtnLegacy.setText(R.string.stop);
-            startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.btnred));
+            startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         } else {
             startStopBtnLegacy.setText(R.string.start);
-            startStopBtnLegacy.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
         if (isServiceRunning(OCRFloating.class)) {
             ocrBtn.setText(R.string.ocr_btn_txt_stop);
-            ocrBtn.setBackgroundColor(getResources().getColor(R.color.btnred));
+            ocrBtn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         } else {
             ocrBtn.setText(R.string.ocr_btn_txt);
-            ocrBtn.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            ocrBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
 
         if (isServiceRunning(OCRFloating4.class)) {
             mOCRBtn4.setText(R.string.ocr_btn_txt_stop);
-            mOCRBtn4.setBackgroundColor(getResources().getColor(R.color.btnred));
+            mOCRBtn4.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         } else {
             mOCRBtn4.setText(R.string.ocr_btn_txt_4);
-            mOCRBtn4.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            mOCRBtn4.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
     }
 
     private void about() {
         new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText("Trivia Hack VERSION " + BuildConfig.VERSION_NAME)
-                .setContentText("This app is free and open source app hosted on GitHub")
+                .setTitleText("Trivia Hack V. " + BuildConfig.VERSION_NAME)
+                .setContentText("This app is free and open source app hosted on GitHub " +
+                        "\n Originally Developed by Shubham Tyagi " +
+                        "\n Modified By Rohit Kumar")
                 .setConfirmText("Ok")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override

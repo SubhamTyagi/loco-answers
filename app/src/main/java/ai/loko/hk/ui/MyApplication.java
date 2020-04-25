@@ -42,12 +42,10 @@ import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.utils.SpUtil;
 
 public class MyApplication extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        SpUtil.getInstance().init(this);
-        CrashReporter.initialize(this, Constant.PATH_TO_ERRORS);
-        notificationChannel();
+    private static MyApplication instance;
+
+    public static MyApplication getInstance() {
+        return instance;
     }
 
     @Override
@@ -56,15 +54,27 @@ public class MyApplication extends Application {
         MultiDex.install(this);
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+        SpUtil.getInstance().init(this);
+        CrashReporter.initialize(this, Constant.PATH_TO_ERRORS);
+        notificationChannel();
+    }
+
     private void notificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "STOP";
             String description = "Stop Overlay";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("stop", name, importance);
+            NotificationChannel crashReport = new NotificationChannel("crash", "Crash Reporter", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription(description);
+            crashReport.setDescription("In this channel Notification will be shown is any error occurs");
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(crashReport);
         }
     }
 }

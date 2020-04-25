@@ -28,14 +28,15 @@
 
 package com.balsikandar.crashreporter.utils;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.balsikandar.crashreporter.CrashReporter;
 import com.balsikandar.crashreporter.R;
@@ -50,7 +51,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class CrashUtil {
 
@@ -120,7 +120,7 @@ public class CrashUtil {
         if (CrashReporter.isNotificationEnabled()) {
             Context context = CrashReporter.getContext();
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "crash");
             builder.setSmallIcon(R.drawable.ic_warning_black_24dp);
 
             Intent intent = CrashReporter.getLaunchIntent();
@@ -141,8 +141,10 @@ public class CrashUtil {
             builder.setAutoCancel(true);
             builder.setColor(ContextCompat.getColor(context, R.color.colorAccent_CrashReporter));
 
-            NotificationManager notificationManager = (NotificationManager) context.
-                    getSystemService(NOTIFICATION_SERVICE);
+            //  NotificationManager notificationManager = (NotificationManager) context.
+            //          getSystemService(NOTIFICATION_SERVICE);
+            //      notificationManager.notify(Constants.NOTIFICATION_ID, builder.build());
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             notificationManager.notify(Constants.NOTIFICATION_ID, builder.build());
         }
     }

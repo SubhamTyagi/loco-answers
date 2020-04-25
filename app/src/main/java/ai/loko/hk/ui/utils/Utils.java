@@ -28,14 +28,20 @@
 
 package ai.loko.hk.ui.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
-import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,6 +52,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ai.loko.hk.ui.MyApplication;
 import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.data.Data;
 
@@ -162,4 +169,35 @@ public class Utils {
 
     }
     //public static String getDataUrl()
+    public static String getDomainName(String url) {
+        final String hostExtractorRegexString = "(https?://)(www)?(\\w+\\.)?(\\w+\\.)?(\\w+)(\\.\\w+)";
+        final Pattern hostExtractorRegexPattern = Pattern.compile(hostExtractorRegexString);
+
+        if (url == null)
+            return "Search";
+        url = url.trim();
+        Matcher m = hostExtractorRegexPattern.matcher(url);
+        if (m.find() && m.groupCount() == 6) {
+            return m.group(5).substring(0, 1).toUpperCase() + m.group(5).substring(1);
+        }
+        return "Search";
+    }
+
+    public static void updater(Context c) {
+        AppUpdater appUpdater = new AppUpdater(c);
+        appUpdater.setUpdateFrom(UpdateFrom.JSON)
+                .setUpdateJSON("https://raw.githubusercontent.com/rollychop/ChangeLogsAndUpdater/master/update-changelog.json")
+                .setCancelable(false)
+                .setButtonDoNotShowAgain(null)
+                .setButtonDismiss(null)
+                .start();
+    }
+
+    public static void showToast(String msg) {
+        Toast.makeText(MyApplication.getInstance(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showSnackbar(View v, String msg) {
+        Snackbar.make(v, msg, Snackbar.LENGTH_SHORT).show();
+    }
 }

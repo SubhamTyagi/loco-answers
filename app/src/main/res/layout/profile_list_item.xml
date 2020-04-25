@@ -11,40 +11,41 @@
     android:background="@drawable/bg1"
     android:padding="@dimen/padd_10">
 
-    <TextView
-        android:id="@+id/profile_name"
-        android:layout_width="0dp"
-        android:layout_height="21dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="profile name "
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/search_engine"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/search_icon"
         android:layout_width="47dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?android:attr/actionModeWebSearchDrawable" tools:targetApi="lollipop"/>
+        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+        tools:targetApi="lollipop" />
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="143dp"
+        android:layout_height="27dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="profile name "
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/search_engine"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/search_engine"
-        android:layout_width="91dp"
+        android:layout_width="162dp"
         android:layout_height="22dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Search"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/search_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

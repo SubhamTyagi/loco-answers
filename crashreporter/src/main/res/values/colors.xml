@@ -28,8 +28,8 @@
   -->
 
 <resources>
-    <color name="colorPrimary_CrashReporter">#ff4081</color>
-    <color name="colorPrimaryDark_CrashReporter">#f50057</color>
-    <color name="colorAccent_CrashReporter">#cf1162</color>
+    <color name="colorPrimary_CrashReporter">#0099ff</color>
+    <color name="colorPrimaryDark_CrashReporter">#0088ee</color>
+    <color name="colorAccent_CrashReporter">#D81B60</color>
     <color name="black">#000000</color>
 </resources>

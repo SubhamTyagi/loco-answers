@@ -30,7 +30,8 @@ package ai.loko.hk.ui.data;
 
 public abstract class Which {
 
-    public static boolean isFallbackDone =false;
+    protected static boolean isFallbackDone = false;
+    protected static boolean isSearchWithQuesAndOptInFallbackDone = false;
     protected static boolean checkForNegative;
     public static boolean error;
 }

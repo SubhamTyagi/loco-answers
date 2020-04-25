@@ -30,12 +30,15 @@ package com.balsikandar.crashreporter.ui;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.balsikandar.crashreporter.R;
 import com.balsikandar.crashreporter.utils.AppUtils;
@@ -44,32 +47,34 @@ import com.balsikandar.crashreporter.utils.FileUtils;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Objects;
 
 public class LogMessageActivity extends AppCompatActivity {
 
     String crashLog;
     private TextView appInfo;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_message);
-        appInfo = (TextView) findViewById(R.id.appInfo);
+        appInfo = findViewById(R.id.appInfo);
 
         Intent intent = getIntent();
         if (intent != null) {
             String dirPath = intent.getStringExtra("LogMessage");
             File file = new File(dirPath);
             crashLog = FileUtils.readFromFile(file);
-            TextView textView = (TextView) findViewById(R.id.logMessage);
+            TextView textView = findViewById(R.id.logMessage);
             textView.setText(crashLog);
         }
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         myToolbar.setTitle(getString(R.string.crash_reporter));
         setSupportActionBar(myToolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         getAppInfo();
     }
@@ -108,7 +113,7 @@ public class LogMessageActivity extends AppCompatActivity {
 
     private void shareCrashReport(String filePath) {
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/issues/new?title=" + URLEncoder.encode("App Crash", "UTF-8") + "&body=" + URLEncoder.encode(crashLog + "-----------------\n\n" + appInfo.getText().toString(), "UTF-8"))));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rollychop/loco-answers/issues/new?title=" + URLEncoder.encode("App Crash", "UTF-8") + "&body=" + URLEncoder.encode(crashLog + "-----------------\n\n" + appInfo.getText().toString(), "UTF-8"))));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

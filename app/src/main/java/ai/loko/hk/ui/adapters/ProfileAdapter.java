@@ -29,17 +29,20 @@
 package ai.loko.hk.ui.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
+import ai.loko.hk.ui.data.Data;
 import ai.loko.hk.ui.model.Profile;
+import ai.loko.hk.ui.utils.Utils;
 import ui.R;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHolder> {
@@ -68,6 +71,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
         holder.profileX2.setText(Float.toString(profile.getX2()));
         holder.profileY1.setText(Float.toString(profile.getY1()));
         holder.profileY2.setText(Float.toString(profile.getY2()));
+        holder.searchEngine.setText(Utils.getDomainName(Data.BASE_SEARCH_URL));
     }
 
     @Override
@@ -88,7 +92,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public ConstraintLayout viewForeground;
-        TextView profileName, profileX1, profileY1, profileX2, profileY2;
+        TextView profileName, profileX1, profileY1, profileX2, profileY2, searchEngine;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,6 +101,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
             profileY1 = itemView.findViewById(R.id.profile_y1);
             profileX2 = itemView.findViewById(R.id.profile_x2);
             profileY2 = itemView.findViewById(R.id.profile_y2);
+            searchEngine = itemView.findViewById(R.id.search_engine);
             viewForeground = itemView.findViewById(R.id.view_foreground);
         }
     }

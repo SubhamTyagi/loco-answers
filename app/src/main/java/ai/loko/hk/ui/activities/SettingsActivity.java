@@ -88,7 +88,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                 if (preference.getKey().equals(Constant.LANGUAGE_FOR_TESSERACT_OCR) && Data.IS_TESSERACT_OCR_USE) {
                     Data.TESSERACT_DATA = SpUtil.getInstance().getString(Constant.TESS_TRAINING_DATA_SOURCE, "fast");
-                    final String lang = listPreference.getEntryValues()[index >= 0 ? index : 0].toString();
+                    final String lang = listPreference.getEntryValues()[Math.max(index, 0)].toString();
                     if (!isLanguageDataExists(Data.TESSERACT_DATA, lang)) {
                         mSweetAlertDialogForProgressBar.show();
                         NetworkInfo ni = cm.getActiveNetworkInfo();
@@ -107,7 +107,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     }
                 } else if (preference.getKey().equals(Constant.TESS_TRAINING_DATA_SOURCE) && Data.IS_TESSERACT_OCR_USE) {
                     Data.TESSERACT_LANGUAGE = SpUtil.getInstance().getString(Constant.LANGUAGE_FOR_TESSERACT_OCR, "eng");
-                    final String data = listPreference.getEntryValues()[index >= 0 ? index : 0].toString();
+                    final String data = listPreference.getEntryValues()[Math.max(index, 0)].toString();
                     if (!isLanguageDataExists(data, Data.TESSERACT_LANGUAGE)) {
                         mSweetAlertDialogForProgressBar.show();
                         NetworkInfo ni = cm.getActiveNetworkInfo();
@@ -312,6 +312,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.custom_search_engine_url)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.tess_training_data_source)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.language_for_tesseract)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.fallback_search_engine_key)));
         }
 
         @Override

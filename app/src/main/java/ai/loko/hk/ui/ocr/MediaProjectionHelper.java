@@ -13,6 +13,7 @@ import android.os.Build;
  */
 public class MediaProjectionHelper {
 
+    private static final String TAG = "MediaProjectionHelper";
     /**
      * The constant screenshotPermission.
      */

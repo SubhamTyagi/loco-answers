@@ -1,13 +1,12 @@
 {
-  "latestVersion": "2.5.1",
-  "latestVersionCode": "32",
-  "url": "https://github.com/SubhamTyagi/loco-answers/releases",
+  "latestVersion": "2.6.0",
+  "latestVersionCode": "35",
+  "url": "https://github.com/SubhamTyagi/rollychop/releases",
   "releaseNotes": [
-       "- Blank screen bug fix",
-       "- Tesseract all types data(fast,best,standard) for accuracy and performance",
-       "- Grayscale image control setting",
-       "- Enlarge Image Setting",
-       "- Android 10 crash fix",
-       "- other bug fixes and performance improvements"	
+    "- Four option Error solved",
+    "- Blank screen bug fix",
+    "- Optimised for 100 MB",
+    "- Added features to change fallback search engine",
+    "- Added feature to search question and option at once in fallback"
        ]
 }
