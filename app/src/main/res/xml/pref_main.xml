@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Search Engine" />
 
-    <ListPreference
-        android:defaultValue="https://www.startpage.com/do/search?query="
-        android:dependency="@string/fallback_mode"
-        android:entries="@array/list_preference_fallback_search_engine"
-        android:entryValues="@array/list_preference_fallback_url_list"
-        android:key="@string/fallback_search_engine_key"
-        android:summary="Choose FallBack Search Engine"
-        android:title="Fallback Search Engine" />
     <!--Note this this list preference value will be ignored by Trivia Hack 2.0
         because i think google search engine is best for our services .
         as search engine does not allow bot search google is some time flexibly due to his high usage    -->
@@ -37,14 +30,20 @@
         android:title="Custom Search Engine URL" />
 
     <PreferenceCategory android:title="Fallback Search Engine" />
-    <PreferenceCategory android:title="Search Engine" />
-    <PreferenceCategory android:title="Search Engine" />
 
     <SwitchPreference
         android:defaultValue="true"
         android:key="@string/fallback_mode"
         android:summary="If this option is turned off Triva Hack will use 'SEARCH WITH QUESTION AND OPTION TOGETHER' when search engine fails and it will not use below fallback search engine"
         android:title="Fallback Search Type" />
+    <ListPreference
+        android:defaultValue="https://www.startpage.com/do/search?query="
+        android:dependency="@string/fallback_mode"
+        android:entries="@array/list_preference_fallback_search_engine"
+        android:entryValues="@array/list_preference_fallback_url_list"
+        android:key="@string/fallback_search_engine_key"
+        android:summary="Choose FallBack Search Engine"
+        android:title="Fallback Search Engine" />
     <PreferenceCategory android:title="Tesseract OCR Settings"/>
     <SwitchPreference
         android:defaultValue="false"
