@@ -38,7 +38,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="ai.loko.hk.ui.MyApplication"
+        android:name="ai.trivia.hk.ui.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -49,38 +49,38 @@
         tools:replace="android:icon">
 
         <activity
-            android:name="ai.loko.hk.ui.MainActivity"
+            android:name="ai.trivia.hk.ui.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
 
         </activity>
-        <activity android:name="ai.loko.hk.ui.activities.LoginActivity">
+        <activity android:name="ai.trivia.hk.ui.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ai.loko.hk.ui.activities.ForegroundActivity" />
+        <activity android:name="ai.trivia.hk.ui.activities.ForegroundActivity" />
 
-        <activity android:name="ai.loko.hk.ui.activities.TestActivity">
+        <activity android:name="ai.trivia.hk.ui.activities.TestActivity">
 
         </activity>
 
         <service
-            android:name="ai.loko.hk.ui.services.Floating"
+            android:name="ai.trivia.hk.ui.services.Floating"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="ai.loko.hk.ui.services.OCRFloating"
+            android:name="ai.trivia.hk.ui.services.OCRFloating"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="ai.loko.hk.ui.services.option4.OCRFloating4"
+            android:name="ai.trivia.hk.ui.services.option4.OCRFloating4"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="ai.loko.hk.ui.Accessibility"
+            android:name="ai.trivia.hk.ui.Accessibility"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
@@ -95,14 +95,14 @@
         </service>
 
         <activity
-            android:name="ai.loko.hk.ui.activities.SettingsActivity"
+            android:name="ai.trivia.hk.ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name="ai.loko.hk.ui.activities.ProfileActivity"
+            android:name="ai.trivia.hk.ui.activities.ProfileActivity"
             android:label="@string/title_activity_profile" />
 
         <activity
-            android:name="ai.loko.hk.ui.activities.CropActivity"
+            android:name="ai.trivia.hk.ui.activities.CropActivity"
             android:label="@string/title_activity_crop"
             android:theme="@style/NoActionBar" />
 

@@ -46,6 +46,11 @@
     <string name="use_gray_scale_image_for_ocr">Use Grayscale for OCR</string>
     <string name="gray_scale_detail">OCR will convert image to Grayscale(speed will decrease)</string>
     <string name="save_image_and_file_to_storage_key">save_images_and_file_to_storage_key</string>
+    <string name="proxy_setting_key">proxy_setting_key</string>
+    <string name="proxy_setting_title">Proxy Setting</string>
+    <string name="proxy_ip_address">proxy_ip_key</string>
+    <string name="proxy_port_number">proxy_port_number_key</string>
+    <string name="proxy_setting_description">Use only if you know</string>
     <string name="image_storage_titile">Save ScreenShot and logs</string>
     <string name="image_storage_details">Store question and option to Storage</string>
     <string name="training_data_tgz_url_template">http://downloads.sourceforge.net/project/tesseract-ocr-alt/tesseract-ocr-3.02.%s.tar.gz</string>

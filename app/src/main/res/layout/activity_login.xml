@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ai.loko.hk.ui.activities.LoginActivity">
+    tools:context="ai.trivia.hk.ui.activities.LoginActivity">
 
     <Button
         android:id="@+id/login_btn"

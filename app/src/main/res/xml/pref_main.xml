@@ -98,4 +98,33 @@
         android:title="@string/image_storage_titile" />
 
 
+<!--    <PreferenceCategory android:title="Proxy Setting"/>-->
+
+<!--    <SwitchPreference-->
+<!--        android:defaultValue="false"-->
+<!--        android:key="@string/proxy_setting_key"-->
+<!--        android:summary="@string/proxy_setting_description"-->
+<!--        android:title="@string/proxy_setting_title" />-->
+
+<!--        <EditTextPreference-->
+<!--        android:defaultValue="https://www.google.com/search?q="-->
+<!--        android:dependency="@string/proxy_setting_key"-->
+<!--        android:key="@string/proxy_ip_address"-->
+<!--        android:selectAllOnFocus="true"-->
+<!--        android:singleLine="true"-->
+<!--        android:inputType="numberDecimal"-->
+<!--        android:summary="Enter working ip address other wise trivia hack will not work"-->
+<!--        android:title="IP address" />-->
+
+<!--        <EditTextPreference-->
+<!--        android:defaultValue="https://www.google.com/search?q="-->
+<!--        android:dependency="@string/proxy_setting_key"-->
+<!--        android:key="@string/proxy_port_number"-->
+<!--        android:selectAllOnFocus="true"-->
+<!--        android:singleLine="true"-->
+<!--        android:inputType="number"-->
+<!--        android:summary="Port Number"-->
+<!--        android:title="Port Number" />-->
+
+
 </PreferenceScreen>

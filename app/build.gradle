@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "ai.loko.hk.ui"
+        applicationId "ai.trivia.hk.ui"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 35
