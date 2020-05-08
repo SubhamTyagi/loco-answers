@@ -28,7 +28,7 @@
 
 #-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*,!code/allocation/variable
 -allowaccessmodification
--repackageclasses ''
+#-repackageclasses ''
 
 -keep class com.google.android.material.** { *; }
 

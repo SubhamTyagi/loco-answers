@@ -17,9 +17,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <!--        <item name="android:colorBackground">@color/lime</item>-->
-        <!--        <item name="android:colorForeground">#FF212121</item>-->
-        <!--        <item name="android:windowBackground">#FFfafafa</item>-->
+<!--                <item name="android:colorBackground">@color/lime</item>-->
+<!--                <item name="android:colorForeground">@color/white</item>-->
+<!--                <item name="android:windowBackground">@color/purple_progress</item>-->
     </style>
 
 

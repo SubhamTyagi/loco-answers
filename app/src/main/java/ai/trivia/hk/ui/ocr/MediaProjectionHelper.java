@@ -8,6 +8,8 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 
+import androidx.annotation.RequiresApi;
+
 /**
  * The type Media projection helper.
  */
@@ -47,7 +49,8 @@ public class MediaProjectionHelper {
      * @param context the context
      * @return the media projection
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected static MediaProjection getMediaProjection(Context context){
         MediaProjectionManager mgr= (MediaProjectionManager) context.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
         if(mMediaProjection!=null){

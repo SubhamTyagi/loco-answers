@@ -329,7 +329,10 @@ public class MainActivity extends AppCompatActivity {
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.custom_search_engine_url), "https://www.google.com/search?q=");
         else
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.search_engine_key), "https://www.google.com/search?q=");
-
+        if (sharedPref.getBoolean(getString(R.string.user_agent_key),false))
+            Data.USER_AGENT = System.getProperty("http.agent");
+        else
+            Data.USER_AGENT = sharedPref.getString(getString(R.string.user_agent_text),System.getProperty("http.agent"));
         Data.NORMAL_FALLBACK_MODE = sharedPref.getBoolean(getString(R.string.fallback_mode), true);
         Data.FALLBACK_SEARCH_ENGINE = sharedPref.getString(getString(R.string.fallback_search_engine_key), "https://www.startpage.com/do/search?query=");
         Data.GRAYSCALE_IAMGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.grayscale_image_ocr), false);

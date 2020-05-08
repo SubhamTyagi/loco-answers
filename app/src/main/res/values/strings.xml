@@ -46,6 +46,8 @@
     <string name="use_gray_scale_image_for_ocr">Use Grayscale for OCR</string>
     <string name="gray_scale_detail">OCR will convert image to Grayscale(speed will decrease)</string>
     <string name="save_image_and_file_to_storage_key">save_images_and_file_to_storage_key</string>
+   <string name="user_agent_key">user_agent_key</string>
+    <string name="user_agent_text">user_agent_text</string>
     <string name="proxy_setting_key">proxy_setting_key</string>
     <string name="proxy_setting_title">Proxy Setting</string>
     <string name="proxy_ip_address">proxy_ip_key</string>

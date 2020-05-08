@@ -28,6 +28,7 @@
 
 package ai.trivia.hk.ui.answers;
 
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -53,8 +54,7 @@ import static ai.trivia.hk.ui.utils.Utils.stringToArrayList;
  * The Search Engine.
  */
 public class Engine extends Base {
-    private final String TAG = "Engine";
-
+ //   private static final String TAG = "Engine";
     /**
      * Instantiates a new Engine.
      *
@@ -188,19 +188,27 @@ public class Engine extends Base {
                 }
             }
             Document doc;
-            if (isSearchWithQuesAndOptInFallbackDone && !Data.NORMAL_FALLBACK_MODE) {
+            if (!isNeg && stringToArrayList(question).removeAll(Data.COMPARATIVE_WORDS)){
                 String options = " +{ " + optionA + " | " + optionB + " | " + optionC + " }";
-                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
+                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8")).userAgent(Data.USER_AGENT).get();
+                BASE_URL = Data.FALLBACK_SEARCH_ENGINE;
+            //    Log.d(TAG, "search: in comparative block");
+            } else if (isSearchWithQuesAndOptInFallbackDone && !Data.NORMAL_FALLBACK_MODE) {
+                String options = " +{ " + optionA + " | " + optionB + " | " + optionC + " }";
+                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8")).userAgent(Data.USER_AGENT).get();
+           //     Log.d(TAG, "search: in fall back with q and option");
             } else {
-                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
+                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8")).userAgent(Data.USER_AGENT).get();
+           //     Log.d(TAG, "search: in normal search");
             }
             String text = doc.body().text().toLowerCase().replace(".", " ");
+       //     Log.d(TAG, "search: "+text);
             String[] optionAsplit = optionA.split(" ");
             aSize = optionAsplit.length;
 
             for (String words : optionAsplit) {
                 if (!skip.contains(words)) {
-                    p = count(words, text);
+                        p = count(words, text);
                     a += p;
                     A1.append(words).append("(").append(p).append(") ");
                 } else {
@@ -258,7 +266,6 @@ public class Engine extends Base {
 
             if (a == b && b == c && !isFallbackDone) {
                 if (Data.NORMAL_FALLBACK_MODE) {
-                    Log.d(TAG, "search: " + Data.NORMAL_FALLBACK_MODE);
                     return fallbackSearch(true);
                 } else {
                     return searchWithQuesAndOptInFallback();
@@ -266,7 +273,6 @@ public class Engine extends Base {
             }
             if (isNeg && (a == b || a == c || b == c)) {
                 if (Data.NORMAL_FALLBACK_MODE) {
-                    Log.d(TAG, "search: " + Data.NORMAL_FALLBACK_MODE);
                     return fallbackSearch(true);
                 } else {
                     return searchWithQuesAndOptInFallback();
@@ -323,7 +329,7 @@ public class Engine extends Base {
                     optionRed = "a";
                 }
             } else if (b > c) {
-                //b is gerater than a check for c and b b>c>a
+                //b is greater than a check for c and b b>c>a
                 optionRed = "b";
             } else {
                 // c is greater c>b>a
@@ -363,7 +369,12 @@ public class Engine extends Base {
 
     @NonNull
     private String getResponseFromInternet(String simplifiedQuestion, String sub) throws IOException {
-        return Jsoup.connect(BASE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=8").userAgent(Data.USER_AGENT).get().body().text().toLowerCase();
+        return Jsoup.connect(BASE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8"))
+                .userAgent(Data.USER_AGENT)
+                .get()
+                .body()
+                .text()
+                .toLowerCase();
     }
 }
 

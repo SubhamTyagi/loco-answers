@@ -36,8 +36,8 @@ android {
     }
     buildTypes {
         release {
-            //minifyEnabled true
-            //shrinkResources true
+//            minifyEnabled true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
@@ -62,14 +62,14 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     implementation 'com.google.android.gms:play-services-vision:20.0.0'
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'androidx.room:room-runtime:2.2.5'
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
     implementation 'org.jsoup:jsoup:1.13.1'
@@ -78,7 +78,7 @@ dependencies {
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
     implementation 'com.github.javiersantos:AppUpdater:2.7'
-    implementation "com.android.support:support-compat:28.0.0"
+    implementation 'androidx.core:core:1.2.0'
     //downloader
     //implementation 'com.ixuea:AndroidDownloader:2.0.6'
     implementation project(path: ':crashreporter')

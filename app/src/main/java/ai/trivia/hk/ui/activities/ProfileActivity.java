@@ -29,6 +29,7 @@
 package ai.trivia.hk.ui.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -153,8 +154,18 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
             @Override
             public void onLongClick(View view, int position) {
                 // long click is not supported yet
-                // Toast.makeText(ProfileActivity.this, position + "long clicked", Toast.LENGTH_SHORT).show();
-            }
+//                new SweetAlertDialog(ProfileActivity.this, SweetAlertDialog.WARNING_TYPE)
+//                        .setTitleText(profiles.get(position).getName())
+//                        .setContentText("Coordinate X "+profiles.get(position).getX1()+" "+profiles.get(position).getX2()+"\nCoordinate Y "+profiles.get(position).getY1()+" "+profiles.get(position).getY2()+" ")
+//                        .setConfirmText("I understood")
+//                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                startActivityForResult(new Intent(ProfileActivity.this, CropActivity.class), CODE_FOR_CROP);
+//                                sweetAlertDialog.dismissWithAnimation();
+//                            }
+//                        }).show();
+                  }
         }));
 
         ItemTouchHelper.SimpleCallback itemSimpleCallback = new ListItemSwipeListener(0, ItemTouchHelper.LEFT, this);
@@ -271,6 +282,7 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void setUpDataFromDB() {
         new AsyncTask<Void, Void, Void>() {
             @Override

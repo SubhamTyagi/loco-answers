@@ -65,7 +65,7 @@ public class Utils {
         list.removeAll(Data.removeWords);
 
         if (optionalRemoveWord != null) {
-            String x[] = optionalRemoveWord.split(" ");
+            String[] x = optionalRemoveWord.split(" ");
             ArrayList<String> x2 = new ArrayList<>(Arrays.asList(x));
             list.removeAll(x2);
         }
@@ -78,19 +78,19 @@ public class Utils {
     }
 
     public static ArrayList<String> stringToArrayList(String text) {
-        String split[] = text.split(" ");
+        String[] split = text.split(" ");
         return new ArrayList<>(Arrays.asList(split));
     }
 
     public static ArrayList<String> getSimplifiedQuestion(String question) {
-        String splitQuestion[] = question.split(" ");
+        String[] splitQuestion = question.split(" ");
         ArrayList<String> simplifiedQuestion = new ArrayList<>(Arrays.asList(splitQuestion));
         simplifiedQuestion.removeAll(Data.removeWords);
         return simplifiedQuestion;
     }
 
     public static ArrayList<String> getSimplifiedQuestion(String question, int a) {
-        String splitQuestion[] = question.split(" ");
+        String[] splitQuestion = question.split(" ");
         ArrayList<String> simplifiedQuestion = new ArrayList<>(Arrays.asList(splitQuestion));
         simplifiedQuestion.removeAll(Data.removeNegativeWords);
         return simplifiedQuestion;
@@ -108,7 +108,7 @@ public class Utils {
 
     public static int count2(String subString, String string) {
         int cnt = 0;
-        Pattern p = Pattern.compile(Pattern.quote(subString));
+        Pattern p = Pattern.compile(""+Pattern.quote(subString)+"");
         Matcher m = p.matcher(string);
         while (m.find())
             cnt++;
@@ -195,9 +195,5 @@ public class Utils {
 
     public static void showToast(String msg) {
         Toast.makeText(MyApplication.getInstance(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    public static void showSnackbar(View v, String msg) {
-        Snackbar.make(v, msg, Snackbar.LENGTH_SHORT).show();
     }
 }
