@@ -37,12 +37,12 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
 
-        versionCode 33
-        versionName '2.6'
+        versionCode 34
+        versionName '2.6.1'
 
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionNameSuffix '-Cow'
+        versionNameSuffix '-Chipmunk'
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
 
@@ -63,7 +63,7 @@ android {
     }
     buildTypes {
         release {
-           // minifyEnabled true
+            //minifyEnabled true
             //shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

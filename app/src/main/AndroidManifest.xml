@@ -67,17 +67,17 @@
 
         <service
             android:name="ai.loko.hk.ui.services.Floating"
-            android:foregroundServiceType="mediaProjection"
+
             android:enabled="true"
             android:exported="false" />
         <service
             android:name="ai.loko.hk.ui.services.OCRFloating"
-            android:foregroundServiceType="mediaProjection"
+
             android:enabled="true"
             android:exported="false" />
         <service
             android:name="ai.loko.hk.ui.services.option4.OCRFloating4"
-            android:foregroundServiceType="mediaProjection"
+
             android:enabled="true"
             android:exported="false" />
         <service
