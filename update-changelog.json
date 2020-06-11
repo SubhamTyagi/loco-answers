@@ -1,10 +1,10 @@
 {
-  "latestVersion": "2.6",
-  "latestVersionCode": "33",
+  "latestVersion": "2.6.1",
+  "latestVersionCode": "34",
   "url": "https://github.com/SubhamTyagi/loco-answers/releases",
   "releaseNotes": [
-       "- Filipino language support",
-       "- Performance improvements",
-       "- Dependencies updates"
+       "- Option 4 bug fix",
+       "- Icon fix for new Android versions",
+       "- Notification fix"
        ]
 }

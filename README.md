@@ -1,5 +1,5 @@
 
-[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.6-green.svg)[ ![HitCount](http://hits.dwyl.io/SubhamTyagi/loco-answers.svg)](http://hits.dwyl.io/SubhamTyagi/loco-answers)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
+[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.6.1-green.svg)[ ![HitCount](http://hits.dwyl.io/SubhamTyagi/loco-answers.svg)](http://hits.dwyl.io/SubhamTyagi/loco-answers)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
 
 # Trivia hack  
 
@@ -7,7 +7,7 @@
 * Previously Known as LoKo HacK
 * It is time to say goodbye to this repo. No further updates to this repo from my side.
 
-### * Version 2.6 is the latest version of this app.
+### * Version 2.6.1 is the latest version of this app.
 
 ## Features
 * Free ,open source, No ads.
