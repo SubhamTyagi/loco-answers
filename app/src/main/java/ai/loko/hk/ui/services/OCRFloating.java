@@ -53,6 +53,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -80,7 +81,7 @@ public class OCRFloating extends Service {
     ActionProcessButton getAnswer;
 
     int[] coordinate = new int[4];
-    private NotificationManager notificationManager;
+    private NotificationManagerCompat notificationManager;
     private WindowManager mWindowManager;
     private View mFloatingView;
     private TextView option1, option2, option3;
@@ -98,7 +99,8 @@ public class OCRFloating extends Service {
     public void onCreate() {
         super.onCreate();
         android.os.Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = NotificationManagerCompat.from(this);
+
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating, new LinearLayout(this));
         notification();
@@ -224,7 +226,7 @@ public class OCRFloating extends Service {
         i.setAction("stop");
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "stop");
         mBuilder.setContentText("Trivia Hack: Committed to speed and performance :)")
                 .setContentTitle("Tap to remove overlay screen")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
