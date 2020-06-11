@@ -340,13 +340,13 @@ public class OCRFloating4 extends Service {
             publishProgress(65);
 
             if (questionAndOption.length >= 5) {
-                engine = new Engine4(new Question4(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3], questionAndOption[5]));
+                engine = new Engine4(new Question4(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3], questionAndOption[4]));
                 engine.search();
                 if (!engine.isError()) {
                     publishProgress(90);
                     return engine.getAnswer();
                 } else {
-                    engine = new Engine4(new Question4(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3], questionAndOption[5]));
+                    engine = new Engine4(new Question4(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3], questionAndOption[4]));
                     publishProgress(90);
                     return engine.search();
                 }
