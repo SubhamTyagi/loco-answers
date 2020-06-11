@@ -29,14 +29,14 @@
 package ai.trivia.hk.ui.answers;
 
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -47,14 +47,15 @@ import ai.trivia.hk.ui.utils.Logger;
 import static ai.trivia.hk.ui.data.Data.skip;
 import static ai.trivia.hk.ui.utils.Utils.count;
 import static ai.trivia.hk.ui.utils.Utils.getSimplifiedQuestion;
-import static ai.trivia.hk.ui.utils.Utils.getSimplifiedString;
 import static ai.trivia.hk.ui.utils.Utils.stringToArrayList;
 
 /**
  * The Search Engine.
  */
 public class Engine extends Base {
- //   private static final String TAG = "Engine";
+    public static final String KEY = "Key1";
+//    private static final String TAG = "Engine";
+
     /**
      * Instantiates a new Engine.
      *
@@ -65,6 +66,7 @@ public class Engine extends Base {
     }
 
     //currently not IN use but will be...
+    /*
     private String pairSearch() {
         boolean isNeg;
         a = b = c = 0;
@@ -171,7 +173,9 @@ public class Engine extends Base {
             return "error";
         }
     }
+     */
     synchronized public String search() {
+        Log.d("Engine", "search: Thread Name: "+Thread.currentThread().getName());
         a = b = c = 0;
         int p, q, r;
         reset();
@@ -188,27 +192,27 @@ public class Engine extends Base {
                 }
             }
             Document doc;
-            if (!isNeg && stringToArrayList(question).removeAll(Data.COMPARATIVE_WORDS)){
+//            if (!isNeg && stringToArrayList(question).removeAll(Data.COMPARATIVE_WORDS)){
+//                String options = " +{ " + optionA + " | " + optionB + " | " + optionC + " }";
+//                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8")).userAgent(Data.USER_AGENT).get();
+//                BASE_URL = Data.FALLBACK_SEARCH_ENGINE;
+//            //    Log.d(TAG, "search: in comparative block");
+//            } else
+            if (isSearchWithQuesAndOptInFallbackDone && !Data.NORMAL_FALLBACK_MODE) {
                 String options = " +{ " + optionA + " | " + optionB + " | " + optionC + " }";
                 doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8")).userAgent(Data.USER_AGENT).get();
-                BASE_URL = Data.FALLBACK_SEARCH_ENGINE;
-            //    Log.d(TAG, "search: in comparative block");
-            } else if (isSearchWithQuesAndOptInFallbackDone && !Data.NORMAL_FALLBACK_MODE) {
-                String options = " +{ " + optionA + " | " + optionB + " | " + optionC + " }";
-                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8")).userAgent(Data.USER_AGENT).get();
-           //     Log.d(TAG, "search: in fall back with q and option");
+
             } else {
                 doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8")).userAgent(Data.USER_AGENT).get();
-           //     Log.d(TAG, "search: in normal search");
             }
             String text = doc.body().text().toLowerCase().replace(".", " ");
-       //     Log.d(TAG, "search: "+text);
+
             String[] optionAsplit = optionA.split(" ");
             aSize = optionAsplit.length;
 
             for (String words : optionAsplit) {
                 if (!skip.contains(words)) {
-                        p = count(words, text);
+                    p = count(words, text);
                     a += p;
                     A1.append(words).append("(").append(p).append(") ");
                 } else {
@@ -367,15 +371,16 @@ public class Engine extends Base {
         return optionRed;
     }
 
-    @NonNull
-    private String getResponseFromInternet(String simplifiedQuestion, String sub) throws IOException {
-        return Jsoup.connect(BASE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8"))
-                .userAgent(Data.USER_AGENT)
-                .get()
-                .body()
-                .text()
-                .toLowerCase();
-    }
+//    @NonNull
+//    private String getResponseFromInternet(String simplifiedQuestion, String sub) throws IOException {
+//        return Jsoup.connect(BASE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8"))
+//                .userAgent(Data.USER_AGENT)
+//                .get()
+//                .body()
+//                .text()
+//                .toLowerCase();
+//    }
+//
 }
 
 

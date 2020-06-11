@@ -66,12 +66,12 @@ abstract class Base extends Which {
     protected static String BASE_URL;
     boolean isNeg;
 
-
     /**
      * Instantiates a new Base.
      *
      * @param questionObj the question obj
      */
+
     public Base(Question questionObj) {
         this.questionObj = questionObj;
         this.question = questionObj.getQuestionText();

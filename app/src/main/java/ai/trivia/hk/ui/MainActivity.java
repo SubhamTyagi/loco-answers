@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -86,28 +87,22 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        startStopBtnLegacy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetworkAvailable())
-                    startFloatingWindow();
-                else
-                    showAlertNetworkNotAvailable();
-            }
+        startStopBtnLegacy.setOnClickListener(v -> {
+            if (isNetworkAvailable())
+                startFloatingWindow();
+            else
+                showAlertNetworkNotAvailable();
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ocrBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (isServiceRunning(OCRFloating.class)) {
-                        stopService(new Intent(MainActivity.this, OCRFloating.class));
-                    } else if (isNetworkAvailable()) {
-                        Data.IS_THIS_REQUEST_FOR_OPTION_FOUR = false;
-                        startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                    } else {
-                        showAlertNetworkNotAvailable();
-                    }
+            ocrBtn.setOnClickListener(view -> {
+                if (isServiceRunning(OCRFloating.class)) {
+                    stopService(new Intent(MainActivity.this, OCRFloating.class));
+                } else if (isNetworkAvailable()) {
+                    Data.IS_THIS_REQUEST_FOR_OPTION_FOUR = false;
+                    startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                } else {
+                    showAlertNetworkNotAvailable();
                 }
             });
 
@@ -152,19 +147,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void givePermission() {
-        mOverlayPermmissionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                giveOverlayPermission();
-            }
-        });
+        mOverlayPermmissionBtn.setOnClickListener(v -> giveOverlayPermission());
 
-        mAccessibilityPermissionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                giveAccessibilityPermission();
-            }
-        });
+        mAccessibilityPermissionBtn.setOnClickListener(v -> giveAccessibilityPermission());
     }
 
     public void startFloatingWindow() {
@@ -180,12 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     startStopBtnLegacy.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
                     startService(mFloatingIntent);
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
-                    }, 500);
+                    mHandler.postDelayed(this::finish, 500);
 
                 } else {
                     giveAccessibilityPermission();
@@ -218,38 +198,20 @@ public class MainActivity extends AppCompatActivity {
         rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_5);
         rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_5);
 
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_settings_black_24dp).subNormalText("Common Settings related to App,Search Engine").normalText("Settings").listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-            }
-        }));
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_settings_black_24dp).subNormalText("Common Settings related to App,Search Engine").normalText("Settings").listener(index -> startActivity(new Intent(MainActivity.this, SettingsActivity.class))));
 
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_help_white_24dp).subNormalText("If you are getting any error than get online help").normalText("Help Me").listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rollychop/loco-answers/HELP.md")));
-            }
-        }));
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_help_white_24dp).subNormalText("If you are getting any error than get online help").normalText("Help Me").listener(index -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rollychop/loco-answers/HELP.md")))));
         rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_info_white_24dp).normalText("About").subNormalText("About me").listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
                 about();
             }
         }));
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_directions_run_black_24dp).subNormalText("Click here to go to github release page").normalText("Update.").listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rollychop/loco-answers/releases/")));
-            }
-        }));
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_person_black_24dp).normalText("Sign out").subNormalText(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail() + "").listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
-                mAuth.signOut();
-                finish();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_directions_run_black_24dp).subNormalText("Click here to go to github release page").normalText("Update.").listener(index -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rollychop/loco-answers/releases/")))));
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_person_black_24dp).normalText("Sign out").subNormalText(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail() + "").listener(index -> {
+            mAuth.signOut();
+            finish();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }));
     }
 
@@ -309,30 +271,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case Constant.CODE_DRAW_OVER_OTHER_APP_PERMISSION:
-                //Check if the permission is granted or not.
-                if (resultCode == RESULT_OK) {
-                    mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                }
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-                break;
+        if (requestCode == Constant.CODE_DRAW_OVER_OTHER_APP_PERMISSION) {//Check if the permission is granted or not.
+            if (resultCode == RESULT_OK) {
+                mOverlayPermmissionBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "onResume: before updater");
+
         Utils.updater(this);
         if (sharedPref.getBoolean(getString(R.string.custom_search_engine), false))
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.custom_search_engine_url), "https://www.google.com/search?q=");
         else
             Data.BASE_SEARCH_URL = sharedPref.getString(getString(R.string.search_engine_key), "https://www.google.com/search?q=");
-        if (sharedPref.getBoolean(getString(R.string.user_agent_key),false))
+        if (!sharedPref.getBoolean(getString(R.string.user_agent_key), true))
             Data.USER_AGENT = System.getProperty("http.agent");
         else
-            Data.USER_AGENT = sharedPref.getString(getString(R.string.user_agent_text),System.getProperty("http.agent"));
+            Data.USER_AGENT = sharedPref.getString(getString(R.string.user_agent_text), "Mozilla/5.0 (Linux; U; Android 10; en-us; SCH-I535 Build/KOT49H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
         Data.NORMAL_FALLBACK_MODE = sharedPref.getBoolean(getString(R.string.fallback_mode), true);
         Data.FALLBACK_SEARCH_ENGINE = sharedPref.getString(getString(R.string.fallback_search_engine_key), "https://www.startpage.com/do/search?query=");
         Data.GRAYSCALE_IAMGE_FOR_OCR = sharedPref.getBoolean(getString(R.string.grayscale_image_ocr), false);

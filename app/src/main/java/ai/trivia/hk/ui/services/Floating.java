@@ -29,6 +29,7 @@
 package ai.trivia.hk.ui.services;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -88,7 +89,7 @@ public class Floating extends Service {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         //Add the view to the window.
 
-        notification();
+
 
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -180,6 +181,17 @@ public class Floating extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Intent i = new Intent(this, Floating.class);
+        i.setAction("stop");
+        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        Notification notification = new NotificationCompat.Builder(this,"stop")
+                .setContentText("Trivia Hack: Committed to speed and performance :)")
+                .setContentTitle("Tap to remove overlay screen")
+                .setContentIntent(pi)
+                .setSmallIcon(R.drawable.ic_search_white_24dp)
+                .build();
+        startForeground(1545,notification);
         String action = null;
 
         if (intent != null)

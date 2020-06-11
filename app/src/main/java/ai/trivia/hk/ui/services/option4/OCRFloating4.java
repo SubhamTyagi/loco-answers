@@ -5,6 +5,7 @@ package ai.trivia.hk.ui.services.option4;
 
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -79,7 +80,7 @@ public class OCRFloating4 extends Service {
 
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating4, new LinearLayout(this));
 
-        notification();
+
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -194,6 +195,16 @@ public class OCRFloating4 extends Service {
         if (action != null && action.equalsIgnoreCase("stop")) {
             stopSelf();
         }
+        Intent i = new Intent(this, OCRFloating4.class);
+        i.setAction("stop");
+        PendingIntent pi = PendingIntent.getService(this, 171, i, 0);
+        Notification notification = new NotificationCompat.Builder(this,"stop")
+                .setContentText("Trivia Hack: Committed to speed and performance :)")
+                .setContentTitle("Tap to remove overlay screen")
+                .setContentIntent(pi)
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .build();
+        startForeground(1695,notification);
         return super.onStartCommand(intent, flags, startId);
     }
 

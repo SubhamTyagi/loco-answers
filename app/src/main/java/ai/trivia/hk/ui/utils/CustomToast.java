@@ -38,7 +38,7 @@ import android.widget.Toast;
 import ui.R;
 
 public class CustomToast {
-    private Context context = null;
+    private Context context;
     private String msg;
     private int duration = 0;
 

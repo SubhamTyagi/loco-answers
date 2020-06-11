@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name="ai.trivia.hk.ui.MyApplication"
@@ -44,15 +45,33 @@
         <service
             android:name="ai.trivia.hk.ui.services.Floating"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"/>
+<!--        <service-->
+<!--            android:name="ai.trivia.hk.ui.services.Floating"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false"-->
+<!--            />-->
         <service
             android:name="ai.trivia.hk.ui.services.OCRFloating"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"/>
+<!--        <service-->
+<!--            android:name="ai.trivia.hk.ui.services.OCRFloating"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false"-->
+<!--            />-->
+<!--        <service-->
+<!--            android:name="ai.trivia.hk.ui.services.option4.OCRFloating4"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false"-->
+<!--            />-->
         <service
             android:name="ai.trivia.hk.ui.services.option4.OCRFloating4"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"/>
         <service
             android:name="ai.trivia.hk.ui.Accessibility"
             android:enabled="true"

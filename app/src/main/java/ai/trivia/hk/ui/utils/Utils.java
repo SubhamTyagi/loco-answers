@@ -34,12 +34,14 @@ import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.Display;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -185,7 +187,8 @@ public class Utils {
 
     public static void updater(Context c) {
         AppUpdater appUpdater = new AppUpdater(c);
-        appUpdater.setUpdateFrom(UpdateFrom.JSON)
+        appUpdater.setDisplay(Display.DIALOG)
+                .setUpdateFrom(UpdateFrom.JSON)
                 .setUpdateJSON("https://raw.githubusercontent.com/rollychop/ChangeLogsAndUpdater/master/update-changelog.json")
                 .setCancelable(false)
                 .setButtonDoNotShowAgain(null)

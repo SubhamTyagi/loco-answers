@@ -410,7 +410,7 @@ public class Accessibility extends AccessibilityService {
     protected void onServiceConnected() {
     }
 
-    private class Update extends AsyncTask<String, Void, String> {
+    private class Update extends AsyncTask<String, Void, String>{
         //FindAnswers obj;
 
         Engine engine;
@@ -450,6 +450,7 @@ public class Accessibility extends AccessibilityService {
 
 
         }
+
     }
 
 

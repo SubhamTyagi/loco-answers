@@ -5,14 +5,14 @@ apply plugin: 'com.google.gms.google-services'
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "ai.trivia.hk.ui"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 35
-        versionName '2.6.1'
+        versionName '2.6.2'
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         versionNameSuffix '-Instant'
@@ -56,6 +56,10 @@ android {
             //signingConfig signingConfigs.debug
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 
 }
 
@@ -63,11 +67,11 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.2.0-beta01'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta6'
     implementation 'com.google.android.gms:play-services-vision:20.0.0'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'androidx.room:room-runtime:2.2.5'
@@ -78,7 +82,7 @@ dependencies {
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
     implementation 'com.github.javiersantos:AppUpdater:2.7'
-    implementation 'androidx.core:core:1.2.0'
+    implementation 'androidx.core:core:1.3.0'
     //downloader
     //implementation 'com.ixuea:AndroidDownloader:2.0.6'
     implementation project(path: ':crashreporter')
