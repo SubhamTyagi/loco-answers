@@ -34,7 +34,7 @@ import java.util.Arrays;
 
 public class Data {
     //public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64)";
-    public static final String USER_AGENT = System.getProperty("http.agent");
+    public static String USER_AGENT = System.getProperty("http.agent");
     public static boolean GRAYSCALE_IAMGE_FOR_OCR = false;
     public static boolean ENLARGE_IMAGE_FOR_OCR=false;
     public static boolean NORMAL_FALLBACK_MODE = true;
@@ -52,7 +52,7 @@ public class Data {
     public static String BASE_SEARCH_URL = "https://www.google.com/search?q=";
     public static String FALLBACK_SEARCH_ENGINE = "https://www.startpage.com/do/search?q=";
 
-    public static String skip = "the of a an ? & and , in - ";
+    public static String skip = "the of a an ? & and , in - b c";
     public static boolean IMAGE_LOGS_STORAGE = true;
     public static boolean IS_TESSERACT_OCR_USE = false;
     public static String TESSERACT_LANGUAGE = "eng";
@@ -62,6 +62,8 @@ public class Data {
 
     private static String[] negativeWords = {"not", "least", "never", "incorrect", "incorrectly", "none", "cannot", "can't", "didn't"};
     public static final ArrayList<String> removeNegativeWords = new ArrayList<>(Arrays.asList(negativeWords));
+    private static final String[] COMPARING_WORDS_ARRAY = {"among"};
+    public static final ArrayList<String> COMPARATIVE_WORDS = new ArrayList<>(Arrays.asList(COMPARING_WORDS_ARRAY));
 
     public static boolean IS_THIS_REQUEST_FOR_OPTION_FOUR=false;
 }

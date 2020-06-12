@@ -3,6 +3,7 @@
 package ai.loko.hk.ui.services;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -13,7 +14,11 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -25,13 +30,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
-import ai.loko.hk.ui.MainActivity;
 import ai.loko.hk.ui.answers.Engine;
 import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.data.Data;
@@ -50,7 +54,8 @@ import static android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class OCRFloating extends Service {
 
-    private static final String TAG = OCRFloating.class.getSimpleName();
+    private static final String TAG = "OCRFloating";
+    //    private static final String TAG = OCRFloating.class.getSimpleName();
     public static boolean isGoogle = true;
     ActionProcessButton getAnswer;
 
@@ -76,7 +81,7 @@ public class OCRFloating extends Service {
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating, new LinearLayout(this));
-        notification();
+
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -161,26 +166,21 @@ public class OCRFloating extends Service {
         screenshotter.setSize(width, height);
 
 
-        getAnswer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OCRFloating.isGoogle = true;
-                getAnswer.setProgress(10);
-                screenshotter.takeScreenshot(new Screenshotter.ScreenshotCallback() {
-                    @Override
-                    public void onScreenshot(Bitmap bitmap) {
-                        getAnswer.setProgress(25);
+        getAnswer.setOnClickListener(v -> {
+            OCRFloating.isGoogle = true;
+            getAnswer.setProgress(10);
+            screenshotter.takeScreenshot(bitmap -> {
+                getAnswer.setProgress(25);
 
-                        new ProcessImageAndSearch().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bitmap);
-                    }
-                });
-            }
+                new ProcessImageAndSearch().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bitmap);
+            });
         });
 
         coordinate[0] = (int) Math.ceil(Points.X1);
         coordinate[1] = (int) Math.ceil(Points.Y1);
         coordinate[2] = (int) Math.ceil(Points.X2);
         coordinate[3] = (int) Math.ceil(Points.Y2);
+
     }
 
     @Override
@@ -191,25 +191,17 @@ public class OCRFloating extends Service {
         if (action != null && action.equalsIgnoreCase("stop")) {
             stopSelf();
         }
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    private void notification() {
         Intent i = new Intent(this, OCRFloating.class);
         i.setAction("stop");
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "stop");
-        mBuilder.setContentText("Trivia Hack: Committed to speed and performance :)")
+        Notification notification = new NotificationCompat.Builder(this, "stop")
+                .setContentText("Trivia Hack: Committed to speed and performance :)")
                 .setContentTitle("Tap to remove overlay screen")
                 .setContentIntent(pi)
-                .setSmallIcon(R.drawable.ic_stat_name)
-                .setOngoing(true).setAutoCancel(true)
-                .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
-
-        // notificationManager.notify(1545, mBuilder.build());
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(1545, mBuilder.build());
+                .setSmallIcon(R.drawable.ic_search_white_24dp)
+                .build();
+        startForeground(1545, notification);
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -229,10 +221,57 @@ public class OCRFloating extends Service {
         return null;
     }
 
+
     private class ProcessImageAndSearch extends AsyncTask<Bitmap, Integer, String> {
         private String[] questionAndOption;
         private Bitmap croppedGrayscaleImage;
         private Engine engine;
+
+        @Override
+        protected String doInBackground(Bitmap... bitmaps) {
+//            Log.d(TAG, "doInBackground: ");
+            android.os.Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
+            if (coordinate[2] == 0 || coordinate[3] == 0) {
+                coordinate[2] = width;
+                coordinate[3] = height;
+            }
+            croppedGrayscaleImage = Bitmap.createBitmap(bitmaps[0], coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
+
+            if (Data.GRAYSCALE_IAMGE_FOR_OCR) {
+//                Log.d(TAG, "doInBackground: converting to grayscale");
+                croppedGrayscaleImage = Utils.convertToGrayscale(croppedGrayscaleImage);
+            }
+            if (Data.ENLARGE_IMAGE_FOR_OCR) {
+                croppedGrayscaleImage = Bitmap.createScaledBitmap(croppedGrayscaleImage, (int) (width * 1.5), (int) (height * 1.5), true);
+            }
+            publishProgress(40);
+
+            if (Data.IS_TESSERACT_OCR_USE)
+                questionAndOption = tesseractImageTextReader.getTextFromBitmap(croppedGrayscaleImage);
+            else
+                questionAndOption = imageTextReader.getTextFromBitmap(croppedGrayscaleImage);
+
+            publishProgress(65);
+            if (questionAndOption.length == 5) {
+                engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
+                engine.search();
+                if (!engine.isError()) {
+                    publishProgress(90);
+                    return engine.getAnswer();
+                }
+                else {
+                    engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
+                    publishProgress(90);
+                    return engine.search();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            getAnswer.setProgress(values[0]);
+        }
 
         @Override
         protected void onPostExecute(final String s) {
@@ -292,51 +331,6 @@ public class OCRFloating extends Service {
                     }
                 }.start();
             }
-        }
-
-        @Override
-        protected String doInBackground(Bitmap... bitmaps) {
-            Log.d(TAG, "doInBackground: ");
-            android.os.Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
-            if (coordinate[2] == 0 || coordinate[3] == 0) {
-                coordinate[2] = width;
-                coordinate[3] = height;
-            }
-            croppedGrayscaleImage = Bitmap.createBitmap(bitmaps[0], coordinate[0], coordinate[1], coordinate[2] - coordinate[0], coordinate[3] - coordinate[1]);
-
-            if (Data.GRAYSCALE_IAMGE_FOR_OCR) {
-                Log.d(TAG, "doInBackground: converting to grayscale");
-                croppedGrayscaleImage = Utils.convertToGrayscale(croppedGrayscaleImage);
-            }
-            if (Data.ENLARGE_IMAGE_FOR_OCR) {
-                croppedGrayscaleImage = Bitmap.createScaledBitmap(croppedGrayscaleImage, (int) (width * 1.5), (int) (height * 1.5), true);
-            }
-            publishProgress(40);
-
-            if (Data.IS_TESSERACT_OCR_USE)
-                questionAndOption = tesseractImageTextReader.getTextFromBitmap(croppedGrayscaleImage);
-            else
-                questionAndOption = imageTextReader.getTextFromBitmap(croppedGrayscaleImage);
-
-            publishProgress(65);
-            if (questionAndOption.length == 5) {
-                engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
-                engine.search();
-                if (!engine.isError()) {
-                    publishProgress(90);
-                    return engine.getAnswer();
-                } else {
-                    engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
-                    publishProgress(90);
-                    return engine.search();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            getAnswer.setProgress(values[0]);
         }
     }
 }

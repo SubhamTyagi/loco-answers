@@ -310,6 +310,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
             bindPreferenceSummaryToValue(findPreference(getString(R.string.search_engine_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.custom_search_engine_url)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.user_agent_text)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.tess_training_data_source)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.language_for_tesseract)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.fallback_search_engine_key)));

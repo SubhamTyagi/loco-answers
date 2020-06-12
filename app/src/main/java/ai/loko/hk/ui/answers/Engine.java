@@ -28,14 +28,15 @@
 
 package ai.loko.hk.ui.answers;
 
-import android.util.Log;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -46,14 +47,14 @@ import ai.loko.hk.ui.utils.Logger;
 import static ai.loko.hk.ui.data.Data.skip;
 import static ai.loko.hk.ui.utils.Utils.count;
 import static ai.loko.hk.ui.utils.Utils.getSimplifiedQuestion;
-import static ai.loko.hk.ui.utils.Utils.getSimplifiedString;
 import static ai.loko.hk.ui.utils.Utils.stringToArrayList;
 
 /**
  * The Search Engine.
  */
 public class Engine extends Base {
-    private final String TAG = "Engine";
+    public static final String KEY = "Key1";
+//    private static final String TAG = "Engine";
 
     /**
      * Instantiates a new Engine.
@@ -65,6 +66,7 @@ public class Engine extends Base {
     }
 
     //currently not IN use but will be...
+    /*
     private String pairSearch() {
         boolean isNeg;
         a = b = c = 0;
@@ -171,7 +173,9 @@ public class Engine extends Base {
             return "error";
         }
     }
+     */
     synchronized public String search() {
+        Log.d("Engine", "search: Thread Name: "+Thread.currentThread().getName());
         a = b = c = 0;
         int p, q, r;
         reset();
@@ -188,13 +192,21 @@ public class Engine extends Base {
                 }
             }
             Document doc;
+//            if (!isNeg && stringToArrayList(question).removeAll(Data.COMPARATIVE_WORDS)){
+//                String options = " +{ " + optionA + " | " + optionB + " | " + optionC + " }";
+//                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8")).userAgent(Data.USER_AGENT).get();
+//                BASE_URL = Data.FALLBACK_SEARCH_ENGINE;
+//            //    Log.d(TAG, "search: in comparative block");
+//            } else
             if (isSearchWithQuesAndOptInFallbackDone && !Data.NORMAL_FALLBACK_MODE) {
                 String options = " +{ " + optionA + " | " + optionB + " | " + optionC + " }";
-                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
+                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question + options, "UTF-8")).userAgent(Data.USER_AGENT).get();
+
             } else {
-                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
+                doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8")).userAgent(Data.USER_AGENT).get();
             }
             String text = doc.body().text().toLowerCase().replace(".", " ");
+
             String[] optionAsplit = optionA.split(" ");
             aSize = optionAsplit.length;
 
@@ -258,7 +270,6 @@ public class Engine extends Base {
 
             if (a == b && b == c && !isFallbackDone) {
                 if (Data.NORMAL_FALLBACK_MODE) {
-                    Log.d(TAG, "search: " + Data.NORMAL_FALLBACK_MODE);
                     return fallbackSearch(true);
                 } else {
                     return searchWithQuesAndOptInFallback();
@@ -266,7 +277,6 @@ public class Engine extends Base {
             }
             if (isNeg && (a == b || a == c || b == c)) {
                 if (Data.NORMAL_FALLBACK_MODE) {
-                    Log.d(TAG, "search: " + Data.NORMAL_FALLBACK_MODE);
                     return fallbackSearch(true);
                 } else {
                     return searchWithQuesAndOptInFallback();
@@ -323,7 +333,7 @@ public class Engine extends Base {
                     optionRed = "a";
                 }
             } else if (b > c) {
-                //b is gerater than a check for c and b b>c>a
+                //b is greater than a check for c and b b>c>a
                 optionRed = "b";
             } else {
                 // c is greater c>b>a
@@ -361,10 +371,16 @@ public class Engine extends Base {
         return optionRed;
     }
 
-    @NonNull
-    private String getResponseFromInternet(String simplifiedQuestion, String sub) throws IOException {
-        return Jsoup.connect(BASE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8") + "&num=8").userAgent(Data.USER_AGENT).get().body().text().toLowerCase();
-    }
+//    @NonNull
+//    private String getResponseFromInternet(String simplifiedQuestion, String sub) throws IOException {
+//        return Jsoup.connect(BASE_URL + URLEncoder.encode(simplifiedQuestion + " " + sub, "UTF-8"))
+//                .userAgent(Data.USER_AGENT)
+//                .get()
+//                .body()
+//                .text()
+//                .toLowerCase();
+//    }
+//
 }
 
 
