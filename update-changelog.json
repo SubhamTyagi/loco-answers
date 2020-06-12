@@ -1,12 +1,10 @@
 {
-  "latestVersion": "2.6.0",
-  "latestVersionCode": "35",
-  "url": "https://github.com/SubhamTyagi/rollychop/releases",
+  "latestVersion": "2.6.3",
+  "latestVersionCode": "36",
+  "url": "https://firebasestorage.googleapis.com/v0/b/trivia-hack-1c678.appspot.com/o/Builds%2FTrivia-Hack-release-2.6.3-Instant-20200612183939.apk?alt=media&token=d88379a7-1f3e-4e48-b280-0966f1745528",
   "releaseNotes": [
-    "- Four option Error solved",
-    "- Blank screen bug fix",
-    "- Optimised for 100 MB",
-    "- Added features to change fallback search engine",
-    "- Added feature to search question and option at once in fallback"
+    "- Added fully support for android 10",
+    "- Optimised for Vedantu",
+    "- Added features to change User Agent"
        ]
 }
