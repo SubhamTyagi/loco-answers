@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
@@ -39,9 +38,7 @@ import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
-import ai.loko.hk.ui.activities.LoginActivity;
 import ai.loko.hk.ui.activities.ProfileActivity;
 import ai.loko.hk.ui.activities.SettingsActivity;
 import ai.loko.hk.ui.constants.Constant;
@@ -65,13 +62,11 @@ public class MainActivity extends AppCompatActivity {
     private Intent mFloatingIntent;
     private Button mOverlayPermmissionBtn, mAccessibilityPermissionBtn, startStopBtnLegacy, ocrBtn;
     private Button mOCRBtn4;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_launcher);
-        mAuth = FirebaseAuth.getInstance();
         setupActionBar();
 
         mFloatingIntent = new Intent(MainActivity.this, Floating.class);
@@ -192,8 +187,8 @@ public class MainActivity extends AppCompatActivity {
         BoomMenuButton rightBmb = actionBar.findViewById(R.id.action_bar_right_bmb);
 
         rightBmb.setButtonEnum(ButtonEnum.Ham);
-        rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_5);
-        rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_5);
+        rightBmb.setPiecePlaceEnum(PiecePlaceEnum.HAM_4);
+        rightBmb.setButtonPlaceEnum(ButtonPlaceEnum.HAM_4);
 
         rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_settings_black_24dp).subNormalText("Common Settings related to App,Search Engine").normalText("Settings").listener(index -> startActivity(new Intent(MainActivity.this, SettingsActivity.class))));
 
@@ -204,12 +199,11 @@ public class MainActivity extends AppCompatActivity {
                 about();
             }
         }));
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_directions_run_black_24dp).subNormalText("Click here to go to github release page").normalText("Update.").listener(index -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/rollychop/loco-answers/releases/")))));
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_person_black_24dp).normalText("Sign out").subNormalText(Objects.requireNonNull(mAuth.getCurrentUser()).getEmail() + "").listener(index -> {
-            mAuth.signOut();
-            finish();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }));
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_directions_run_black_24dp).subNormalText("Click here to go to github release page")
+                .normalText("Update.")
+                .listener(index -> startActivity(
+                        new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://github.com/rollychop/loco-answers/releases/")))));
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {
@@ -279,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume: before updater");
 
         Utils.updater(this);
         if (sharedPref.getBoolean(getString(R.string.custom_search_engine), false))
