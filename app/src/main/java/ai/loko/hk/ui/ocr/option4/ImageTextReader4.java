@@ -106,7 +106,7 @@ public class ImageTextReader4 {
 
                 for (Text text : textLines) {
                     if (text != null && text.getValue() != null) {
-                        lines.append(text.getValue() + " \n");
+                        lines.append(text.getValue()).append(" \n");
                     }
                 }
             } else {
@@ -119,7 +119,7 @@ public class ImageTextReader4 {
             }
             String lines2 = lines.toString();
 
-            int indexOfQuestionMark = 0;
+            int indexOfQuestionMark;
 
             if ((indexOfQuestionMark = lines2.indexOf("?")) != -1) {
                 String question = lines2.substring(0, indexOfQuestionMark);
@@ -128,6 +128,15 @@ public class ImageTextReader4 {
                     String[] options = lines2.substring(indexOfQuestionMark + 1).split("\n");
                     if (options.length == 4)
                         return new String[]{question, options[0], options[1], options[2], options[3], lines2};
+
+                    String[] optionss = lines2.substring(indexOfQuestionMark + 2).split("\n");
+
+                    if (optionss.length == 4)
+                        return new String[]{question, optionss[0], optionss[1], optionss[2], optionss[3], lines2};
+
+                    if (options.length > 4) {
+                        return new String[]{question, options[options.length - 4], options[options.length - 3], options[options.length - 2], options[options.length - 1], lines2};
+                    }
                 }
             } else if ((indexOfQuestionMark = lines2.indexOf(".")) != -1) {
                 String question = lines2.substring(0, indexOfQuestionMark);

@@ -28,7 +28,6 @@
 
 package ai.loko.hk.ui.data;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -52,7 +51,7 @@ public class Data {
     public static String BASE_SEARCH_URL = "https://www.google.com/search?q=";
     public static String FALLBACK_SEARCH_ENGINE = "https://www.startpage.com/do/search?q=";
 
-    public static String skip = "the of a an ? & and , in - ";
+    public static String skip = "the of a an ? & and , in - b c";
     public static boolean IMAGE_LOGS_STORAGE = true;
     public static boolean IS_TESSERACT_OCR_USE = false;
     public static String TESSERACT_LANGUAGE = "eng";

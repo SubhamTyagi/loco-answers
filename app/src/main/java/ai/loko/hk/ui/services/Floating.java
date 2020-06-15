@@ -29,7 +29,7 @@
 package ai.loko.hk.ui.services;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -37,7 +37,6 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.core.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -47,9 +46,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import com.dd.processbutton.iml.ActionProcessButton;
 
-import ai.loko.hk.ui.MainActivity;
 import ai.loko.hk.ui.activities.ForegroundActivity;
 import ui.R;
 
@@ -60,7 +61,7 @@ import static android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE;
 public class Floating extends Service {
 
     ActionProcessButton getAnswer;//, wiki;
-    private NotificationManager notificationManager;
+    private NotificationManagerCompat notificationManager;
     //public static boolean isGoogle = true;
     private WindowManager mWindowManager;
     private View mFloatingView;
@@ -83,10 +84,10 @@ public class Floating extends Service {
         LinearLayout linearLayout = new LinearLayout(this);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating, linearLayout);
 
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = NotificationManagerCompat.from(this);
         //Add the view to the window.
 
-        notification();
+//        notification();
 
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -174,7 +175,7 @@ public class Floating extends Service {
         Intent i = new Intent(getApplicationContext(), ForegroundActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
-     }
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -219,7 +220,16 @@ public class Floating extends Service {
         } else if (action != null && action.equalsIgnoreCase("stop")) {
             stopSelf();
         }
-
+        Intent i = new Intent(this, Floating.class);
+        i.setAction("stop");
+        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+        Notification notification = new NotificationCompat.Builder(this, "crash")
+                .setContentText("Trivia Hack: Committed to speed and performance :)")
+                .setContentTitle("Tap to remove overlay screen")
+                .setContentIntent(pi)
+                .setSmallIcon(R.drawable.ic_search_white_24dp)
+                .build();
+        startForeground(1545, notification);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -231,21 +241,20 @@ public class Floating extends Service {
 
     }
 
-    private void notification() {
-        Intent i = new Intent(this, Floating.class);
-        i.setAction("stop");
-        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
-        mBuilder.setContentText("Trivia Hack most accurate answer")
-                .setContentTitle("Tap to remove overlay screen")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pi)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setOngoing(true).setAutoCancel(true)
-                .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(1234, mBuilder.build());
-    }
+//    private void notification() {
+//        Intent i = new Intent(this, Floating.class);
+//        i.setAction("stop");
+//        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+//        NotificationCompat.Builder mBuilder =
+//                new NotificationCompat.Builder(this, "stop")
+//                        .setContentText("Trivia Hack most accurate answer")
+//                        .setContentTitle("Tap to remove overlay screen")
+//                        .setContentIntent(pi)
+//                        .setSmallIcon(R.mipmap.ic_launcher_round)
+//                        .setOngoing(true).setAutoCancel(true)
+//                        .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
+//
+//        notificationManager.notify(1234, mBuilder.build());
+//    }
 }

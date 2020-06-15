@@ -29,7 +29,7 @@
 package ai.loko.hk.ui.services;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -53,10 +53,10 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
-import ai.loko.hk.ui.MainActivity;
 import ai.loko.hk.ui.answers.Engine;
 import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.data.Data;
@@ -80,7 +80,7 @@ public class OCRFloating extends Service {
     ActionProcessButton getAnswer;
 
     int[] coordinate = new int[4];
-    private NotificationManager notificationManager;
+    private NotificationManagerCompat notificationManager;
     private WindowManager mWindowManager;
     private View mFloatingView;
     private TextView option1, option2, option3;
@@ -98,10 +98,10 @@ public class OCRFloating extends Service {
     public void onCreate() {
         super.onCreate();
         android.os.Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager = NotificationManagerCompat.from(this);
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating, new LinearLayout(this));
-        notification();
+//        notification();
         int LAYOUT_FLAG;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -216,26 +216,39 @@ public class OCRFloating extends Service {
         if (action != null && action.equalsIgnoreCase("stop")) {
             stopSelf();
         }
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    private void notification() {
         Intent i = new Intent(this, OCRFloating.class);
         i.setAction("stop");
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
-        mBuilder.setContentText("Trivia Hack: Committed to speed and performance :)")
+        Notification notification = new NotificationCompat.Builder(this, "crash")
+                .setContentText("Trivia Hack: Committed to speed and performance :)")
                 .setContentTitle("Tap to remove overlay screen")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pi)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setOngoing(true).setAutoCancel(true)
-                .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
-
-        notificationManager.notify(1545, mBuilder.build());
-
+                .setSmallIcon(R.drawable.ic_search_white_24dp)
+                .build();
+        startForeground(1545, notification);
+        return super.onStartCommand(intent, flags, startId);
     }
+
+//    private void notification() {
+//        Intent i = new Intent(this, OCRFloating.class);
+//        i.setAction("stop");
+//        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+//        PendingIntent pendingIntent =
+//                PendingIntent.getActivity(this, 0,
+//                        new Intent(getApplicationContext(), MainActivity.class), 0);
+//        NotificationCompat.Builder notification =
+//                new NotificationCompat.Builder(this, "crash")
+//                        .setContentText("Trivia Hack: Committed to speed and performance :)")
+//                        .setContentTitle("Tap to remove overlay screen")
+//                        .setContentIntent(pi)
+//                        .setSmallIcon(R.mipmap.ic_launcher_round)
+//                        .setOngoing(true)
+//                        .setAutoCancel(true)
+//                        .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
+//
+//        notificationManager.notify(1545, notification.build());
+//
+//    }
 
     @Override
     public void onDestroy() {

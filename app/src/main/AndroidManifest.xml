@@ -30,13 +30,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ui">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <application
         android:name="ai.loko.hk.ui.MyApplication"
         android:allowBackup="true"
@@ -49,8 +42,8 @@
         tools:replace="android:icon">
 
         <activity
-
-            android:name="ai.loko.hk.ui.MainActivity">
+            android:name="ai.loko.hk.ui.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -63,10 +56,21 @@
 
         </activity>
 
+        <activity
+            android:name="ai.loko.hk.ui.activities.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name="ai.loko.hk.ui.activities.ProfileActivity"
+            android:label="@string/title_activity_profile" />
+        <activity
+            android:name="ai.loko.hk.ui.activities.CropActivity"
+            android:label="@string/title_activity_crop"
+            android:theme="@style/NoActionBar" />
         <service
             android:name="ai.loko.hk.ui.services.Floating"
             android:enabled="true"
             android:exported="false" />
+
         <service
             android:name="ai.loko.hk.ui.services.OCRFloating"
             android:enabled="true"
@@ -75,6 +79,7 @@
             android:name="ai.loko.hk.ui.services.option4.OCRFloating4"
             android:enabled="true"
             android:exported="false" />
+
         <service
             android:name="ai.loko.hk.ui.Accessibility"
             android:enabled="true"
@@ -89,18 +94,14 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibilty" />
         </service>
-
-        <activity
-            android:name="ai.loko.hk.ui.activities.SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity
-            android:name="ai.loko.hk.ui.activities.ProfileActivity"
-            android:label="@string/title_activity_profile" />
-
-        <activity
-            android:name="ai.loko.hk.ui.activities.CropActivity"
-            android:label="@string/title_activity_crop"
-            android:theme="@style/NoActionBar" />
     </application>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

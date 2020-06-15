@@ -8,7 +8,7 @@
 *  Previously Known as LoKo HacK
 * **(16/Nov/2019:00:07 ist):** it is time to say goodbye to this repo. As today i quit programming and development efforts. Todays efforts was the last efforts towards my apps developments. No further updates to this repo from my side.
 
-### * Version 2.5.1 is the last and latest version of this wonderful app.
+### * Version 2.6.3 is the last and latest version of this wonderful app.
 
 ## Features
 * Free ,open source, No ads.

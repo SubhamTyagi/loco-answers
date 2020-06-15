@@ -56,6 +56,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.Display;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -163,8 +164,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkForUpdates() {
         new AppUpdater(this)
+                .setDisplay(Display.DIALOG)
                 .setUpdateFrom(UpdateFrom.JSON)
-                .setUpdateJSON("https://raw.githubusercontent.com/SubhamTyagi/loco-answers/master/update-changelog.json")
+                .setButtonDismiss(null)
+                .setButtonDoNotShowAgain(null)
+                .setUpdateJSON("https://raw.githubusercontent.com/rollychop" +
+                        "/loco-answers/master/update-changelog.json")
                 .start();
     }
 
@@ -265,12 +270,14 @@ public class MainActivity extends AppCompatActivity {
                 about();
             }
         }));
-        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_directions_run_black_24dp).subNormalText("Click here to go to github release page").normalText("Update.").listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SubhamTyagi/loco-answers/releases/")));
-            }
-        }));
+        rightBmb.addBuilder(new HamButton.Builder().normalImageRes(R.drawable.ic_directions_run_black_24dp).subNormalText("Click here to go to github release page").normalText("Update.")
+                .listener(new OnBMClickListener() {
+                    @Override
+                    public void onBoomButtonClick(int index) {
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://github.com/rollychop/loco-answers/releases/")));
+                    }
+                }));
     }
 
     private boolean isServiceRunning(Class<?> serviceClass) {
