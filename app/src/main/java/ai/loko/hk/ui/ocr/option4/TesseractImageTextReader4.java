@@ -35,7 +35,6 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.util.ArrayList;
 
-import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.utils.Logger;
 
 //TODO: PIXA
@@ -43,20 +42,21 @@ public class TesseractImageTextReader4 {
 
     private static volatile TessBaseAPI api;
 
-    public static TesseractImageTextReader4 geInstance(String path ,String language) {
+    public static TesseractImageTextReader4 geInstance(String path, String language) {
         api = new TessBaseAPI();
         api.init(path, language);
         api.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO_OSD);
         return new TesseractImageTextReader4();
     }
 
-    public  String[] getTextFromBitmap(Bitmap src) {
+
+    public String[] getTextFromBitmap(Bitmap src) {
         api.setImage(src);
         String textOnImage;
 
         try {
             textOnImage = api.getUTF8Text();
-           // api.end();
+            // api.end();
         } catch (Exception e) {
             Logger.logException(e);
             return new String[]{"Scan Failed:  Could not set up the detector!"};
@@ -67,6 +67,7 @@ public class TesseractImageTextReader4 {
         }
 
         String[] textOnScreenArray = textOnImage.split("\n");
+
         ArrayList<String> textOnScreen = new ArrayList<>();
 
         for (String s : textOnScreenArray) {
@@ -75,13 +76,15 @@ public class TesseractImageTextReader4 {
             }
         }
         int lineCount = textOnScreen.size();
+
         if (lineCount > 4) {
             StringBuilder question = new StringBuilder();
             for (int i = 0; i < lineCount - 4; i++) {
                 question.append(textOnScreen.get(i));
             }
-            return new String[]{question.toString(),textOnScreen.get(lineCount - 4), textOnScreen.get(lineCount - 3), textOnScreen.get(lineCount - 2), textOnScreen.get(lineCount - 1), textOnImage};
-        }else {
+
+            return new String[]{question.toString(), textOnScreen.get(lineCount - 4), textOnScreen.get(lineCount - 3), textOnScreen.get(lineCount - 2), textOnScreen.get(lineCount - 1), textOnImage};
+        } else {
             StringBuilder question = new StringBuilder();
             for (int i = 0; i < lineCount; i++) {
                 question.append(textOnScreen.get(i));

@@ -72,6 +72,8 @@ public class ImageTextReader4 {
     }
 
     //will return String[5] 0-> question 1->option1 2->option2 3-> option3 4->option4
+
+
     public String[] getTextFromBitmap(Bitmap src) {
         if (textRecognizer.isOperational() && src != null) {
 
@@ -117,6 +119,7 @@ public class ImageTextReader4 {
                     }
                 }
             }
+
             String lines2 = lines.toString();
 
             int indexOfQuestionMark;
@@ -156,10 +159,12 @@ public class ImageTextReader4 {
                 }
                 return new String[]{question.toString(), textOnScreen[lineCount - 4], textOnScreen[lineCount - 3], textOnScreen[lineCount - 2], textOnScreen[lineCount - 1], lines2};
             }
+
             return new String[]{"Scan Failed: Could not read options"};
 
         } else {
             return new String[]{"Scan Failed:  Could not set up the detector!"};
         }
     }
+
 }

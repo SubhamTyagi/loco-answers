@@ -1,4 +1,4 @@
-include ':app', ':crashreporter', ':tesseract4android'
+include ':app', ':crashreporter'
 /*
  *   Copyright (C) 2018 SHUBHAM TYAGI
  *

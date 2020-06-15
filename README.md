@@ -1,14 +1,14 @@
 
-[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.5.1-green.svg)[ ![HitCount](http://hits.dwyl.io/SubhamTyagi/loco-answers.svg)](http://hits.dwyl.io/SubhamTyagi/loco-answers)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
+[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.6.1-green.svg)[ ![HitCount](http://hits.dwyl.io/SubhamTyagi/loco-answers.svg)](http://hits.dwyl.io/SubhamTyagi/loco-answers)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
 
-# Trivia hack  <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" /></a>
-
+# Trivia hack  
 
 * A free, 100 % open source, ads free trivia helper app that respect user sentiments.
-*  Previously Known as LoKo HacK
-* **(16/Nov/2019:00:07 ist):** it is time to say goodbye to this repo. As today i quit programming and development efforts. Todays efforts was the last efforts towards my apps developments. No further updates to this repo from my side.
+* Previously Known as LoKo HacK
+* It is time to say goodbye to this repo. No further updates to this repo from my side.
 
-### * Version 2.6.3 is the last and latest version of this wonderful app.
+
+### * Version 2.6.1 is the latest version of this app.
 
 ## Features
 * Free ,open source, No ads.
@@ -16,8 +16,7 @@
 * Highest Speed.
 * Bug reporter.
 * Trivia Games Supported by OCR and Accessibility 
-## Download <a target="_blank" href="https://paypal.me/shubhamtyagi1" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-red.svg" /></a>
-
+## Download
 * Before downloading please give this app a :star: by pressing ![Star](/.github/assets/star.PNG) it means a lot to me it boost me to build more features and help you guys.
 * [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers/releases)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
 

@@ -55,10 +55,12 @@ public class MyApplication extends Application {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
+
     private void notificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "STOP";
             String description = "Stop Overlay";
+
             int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel = new NotificationChannel("stop", name, importance);
             NotificationChannel crashReport = new NotificationChannel(
@@ -72,6 +74,13 @@ public class MyApplication extends Application {
                     getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
             notificationManager.createNotificationChannel(crashReport);
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("stop", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
         }
     }
 }

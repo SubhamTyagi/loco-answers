@@ -27,12 +27,13 @@
 -libraryjars libs
 
 #-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*,!code/allocation/variable
--allowaccessmodification
--repackageclasses ''
+#-allowaccessmodification
+#-repackageclasses
+-dontobfuscate
 
 -keep class android.support.v7.widget.** { *; }
 -keep class cn.pedant.SweetAlert.Rotate3dAnimation { public <init>(...); }
--keep public class * implements com.ixuea.android.downloader.db.DownloadDBController
+#-keep public class * implements com.ixuea.android.downloader.db.DownloadDBController
 -dontwarn com.google.**
 
 #-keepattributes SourceFile,LineNumberTable

@@ -99,6 +99,7 @@ public class OCRFloating extends Service {
         super.onCreate();
         android.os.Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
         notificationManager = NotificationManagerCompat.from(this);
+
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.floating, new LinearLayout(this));
 //        notification();
@@ -219,8 +220,14 @@ public class OCRFloating extends Service {
         Intent i = new Intent(this, OCRFloating.class);
         i.setAction("stop");
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+
         Notification notification = new NotificationCompat.Builder(this, "crash")
                 .setContentText("Trivia Hack: Committed to speed and performance :)")
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "stop");
+        mBuilder.setContentText("Trivia Hack: Committed to speed and performance :)")
+
                 .setContentTitle("Tap to remove overlay screen")
                 .setContentIntent(pi)
                 .setSmallIcon(R.drawable.ic_search_white_24dp)
@@ -229,26 +236,6 @@ public class OCRFloating extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-//    private void notification() {
-//        Intent i = new Intent(this, OCRFloating.class);
-//        i.setAction("stop");
-//        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-//        PendingIntent pendingIntent =
-//                PendingIntent.getActivity(this, 0,
-//                        new Intent(getApplicationContext(), MainActivity.class), 0);
-//        NotificationCompat.Builder notification =
-//                new NotificationCompat.Builder(this, "crash")
-//                        .setContentText("Trivia Hack: Committed to speed and performance :)")
-//                        .setContentTitle("Tap to remove overlay screen")
-//                        .setContentIntent(pi)
-//                        .setSmallIcon(R.mipmap.ic_launcher_round)
-//                        .setOngoing(true)
-//                        .setAutoCancel(true)
-//                        .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
-//
-//        notificationManager.notify(1545, notification.build());
-//
-//    }
 
     @Override
     public void onDestroy() {

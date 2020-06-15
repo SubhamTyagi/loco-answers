@@ -30,6 +30,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ui">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name="ai.loko.hk.ui.MyApplication"
         android:allowBackup="true"
@@ -68,15 +77,18 @@
             android:theme="@style/NoActionBar" />
         <service
             android:name="ai.loko.hk.ui.services.Floating"
+
             android:enabled="true"
             android:exported="false" />
 
         <service
             android:name="ai.loko.hk.ui.services.OCRFloating"
+
             android:enabled="true"
             android:exported="false" />
         <service
             android:name="ai.loko.hk.ui.services.option4.OCRFloating4"
+
             android:enabled="true"
             android:exported="false" />
 
@@ -95,13 +107,5 @@
                 android:resource="@xml/accessibilty" />
         </service>
     </application>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
