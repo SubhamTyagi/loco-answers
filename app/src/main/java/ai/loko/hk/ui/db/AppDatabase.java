@@ -28,10 +28,11 @@
 
 package ai.loko.hk.ui.db;
 
+import android.content.Context;
+
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import android.content.Context;
 
 @Database(entities = {ProfileEntity.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
@@ -40,7 +41,10 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
-                INSTANCE = Room.databaseBuilder(context, AppDatabase.class, "database-for_profile").build();
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context, AppDatabase.class, "database-for_profile").build();
+                }
+
             }
         }
         return INSTANCE;

@@ -177,6 +177,8 @@ public class Engine extends Base {
     }
 
     synchronized public String search() {
+//        if (question.replaceAll("[\\s\\W]+","").length()<10)
+//            return null;
         boolean isNeg = false;
         a = b = c = 0;
         int p, q, r;
@@ -262,6 +264,8 @@ public class Engine extends Base {
             if (r != 0 && cSize > 1) c *= r;
 
             if (a == b && b == c && !isFallbackDone) {
+                if (consumer != null)
+                    consumer.accept(2);
                 return fallbackSearch(isNeg);
             }
 
@@ -274,7 +278,10 @@ public class Engine extends Base {
         } catch (Exception ioe) {
             Logger.logException(ioe);
             if (!isFallbackDone) {
+                if (consumer != null)
+                    consumer.accept(3);
                 return fallbackSearch(isNeg);
+
             }
             error = true;
             optionRed = "b";

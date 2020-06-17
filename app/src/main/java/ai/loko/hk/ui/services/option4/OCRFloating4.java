@@ -59,8 +59,6 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.util.Consumer;
 
 import com.dd.processbutton.iml.ActionProcessButton;
-import com.googlecode.tesseract.android.TessBaseAPI;
-
 
 import ai.loko.hk.ui.answers.option4.Engine4;
 import ai.loko.hk.ui.constants.Constant;
@@ -276,12 +274,6 @@ public class OCRFloating4 extends Service {
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         Notification notification = new NotificationCompat.Builder(this, "crash")
                 .setContentText("Trivia Hack: Committed to speed and performance :)")
-
-        PendingIntent pi = PendingIntent.getService(this, 171, i, 0);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 172, new Intent(this, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "stop");
-        mBuilder.setContentText("Trivia Hack: Committed to speed and performance :)")
-
                 .setContentTitle("Tap to remove overlay screen")
                 .setContentIntent(pi)
                 .setSmallIcon(R.drawable.ic_search_white_24dp)

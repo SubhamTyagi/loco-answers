@@ -37,8 +37,6 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -244,23 +242,6 @@ public class Floating extends Service {
     }
 
 
-    private void notification() {
-        Intent i = new Intent(this, Floating.class);
-        i.setAction("stop");
-        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "stop");
-        mBuilder.setContentText("Trivia Hack most accurate answer")
-                .setContentTitle("Tap to remove overlay screen")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pi)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setOngoing(true).setAutoCancel(true)
-                .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
 
-       // NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(1234, mBuilder.build());
-    }
 
 }

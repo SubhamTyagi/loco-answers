@@ -29,20 +29,22 @@
 package ai.loko.hk.ui.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
+import ai.loko.hk.ui.adapters.ProfileAdapter.MyViewHolder;
 import ai.loko.hk.ui.model.Profile;
 import ui.R;
 
-public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHolder> {
+public class ProfileAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     private List<Profile> profileList;
 
@@ -85,7 +87,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
         notifyItemInserted(position);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         public ConstraintLayout viewForeground;
         TextView profileName, profileX1, profileY1, profileX2, profileY2;

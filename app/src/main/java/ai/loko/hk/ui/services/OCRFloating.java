@@ -57,8 +57,8 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.util.Consumer;
 
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.google.android.gms.common.util.BiConsumer;
 
-import ai.loko.hk.ui.MainActivity;
 import ai.loko.hk.ui.answers.Engine;
 import ai.loko.hk.ui.constants.Constant;
 import ai.loko.hk.ui.data.Data;
@@ -67,9 +67,8 @@ import ai.loko.hk.ui.ocr.ImageTextReader;
 import ai.loko.hk.ui.ocr.Points;
 import ai.loko.hk.ui.ocr.Screenshotter;
 import ai.loko.hk.ui.ocr.TesseractImageTextReader;
-import ai.loko.hk.ui.utils.CustomToast;
-import ai.loko.hk.ui.utils.functions.Consumer3;
 import ai.loko.hk.ui.utils.Utils;
+import ai.loko.hk.ui.utils.functions.Consumer3;
 import ui.R;
 
 import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
@@ -90,7 +89,7 @@ public class OCRFloating extends Service {
     private NotificationManagerCompat notificationManager;
     private WindowManager mWindowManager;
     private View mFloatingView;
-    private TextView option1, option2, option3;
+    private TextView option1, option2, option3, mNotifierText;
     private WindowManager.LayoutParams params;
     private ImageTextReader imageTextReader;
     private TesseractImageTextReader tesseractImageTextReader;
@@ -166,6 +165,7 @@ public class OCRFloating extends Service {
         option1 = mFloatingView.findViewById(R.id.optionA);
         option2 = mFloatingView.findViewById(R.id.optionB);
         option3 = mFloatingView.findViewById(R.id.optionC);
+        mNotifierText = mFloatingView.findViewById(R.id.notifier);
 
         imageTextReader = new ImageTextReader(getApplicationContext());
 
@@ -196,7 +196,7 @@ public class OCRFloating extends Service {
         getAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNeg){
+                if (isNeg) {
                     mFloatingView.setBackgroundColor(colorDefault);
                     isNeg = false;
                 }
@@ -212,7 +212,7 @@ public class OCRFloating extends Service {
                                 imageTextReader,
                                 OCRFloating.this::showAnswer,
                                 progress -> getAnswer.setProgress(progress),
-                                OCRFloating.this::_notify)
+                                OCRFloating.this::notifier)
                                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bitmap);
                     }
                 });
@@ -225,14 +225,17 @@ public class OCRFloating extends Service {
         coordinate[2] = (int) Math.ceil((double) Points.X2);
         coordinate[3] = (int) Math.ceil((double) Points.Y2);
     }
-    private void _notify(String msg){
-        Toast.makeText(OCRFloating.this, msg, Toast.LENGTH_SHORT).show();
 
-            mFloatingView.setBackgroundColor(colorWarn);
-            isNeg = true;
+    private void notifier(String code, String msg) {
+        Toast.makeText(OCRFloating.this, msg, Toast.LENGTH_SHORT).show();
+        mNotifierText.setText(code);
+        mNotifierText.setVisibility(View.VISIBLE);
+        mFloatingView.setBackgroundColor(colorWarn);
+        isNeg = true;
     }
+
     private void showAnswer(String ans, String opt1, String opt2, String opt3,
-                           String[] questionAndOption) {
+                            String[] questionAndOption) {
 
         if (ans != null) {
             option1.setText(opt1);
@@ -280,9 +283,14 @@ public class OCRFloating extends Service {
             Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
         }
         getAnswer.setProgress(100);
-        if (isNeg)
-            mFloatingView.postDelayed(() -> mFloatingView.setBackgroundColor(colorDefault) ,1000);
+        if (isNeg) {
+            mFloatingView.postDelayed(() -> {
+                mNotifierText.setVisibility(View.GONE);
+                mFloatingView.setBackgroundColor(colorDefault);
+            }, 3000);
+        }
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = "";
@@ -304,26 +312,6 @@ public class OCRFloating extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-//    private void notification() {
-//        Intent i = new Intent(this, OCRFloating.class);
-//        i.setAction("stop");
-//        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-//        PendingIntent pendingIntent =
-//                PendingIntent.getActivity(this, 0,
-//                        new Intent(getApplicationContext(), MainActivity.class), 0);
-//        NotificationCompat.Builder notification =
-//                new NotificationCompat.Builder(this, "crash")
-//                        .setContentText("Trivia Hack: Committed to speed and performance :)")
-//                        .setContentTitle("Tap to remove overlay screen")
-//                        .setContentIntent(pi)
-//                        .setSmallIcon(R.mipmap.ic_launcher_round)
-//                        .setOngoing(true)
-//                        .setAutoCancel(true)
-//                        .addAction(android.R.drawable.ic_menu_more, "Open Trivia Hack", pendingIntent);
-//
-//        notificationManager.notify(1545, notification.build());
-//
-//    }
 
     @Override
     public void onDestroy() {
@@ -348,7 +336,7 @@ public class OCRFloating extends Service {
         private Engine engine;
         private final Consumer3 postExecute;
         private final Consumer<Integer> progress;
-        private final Consumer<String> notify;
+        private final BiConsumer<String, String> notify;
         private final int[] coordinate;
         private final int height;
         private final int width;
@@ -363,7 +351,7 @@ public class OCRFloating extends Service {
                 ImageTextReader imageTextReader,
                 Consumer3 postExecute,
                 Consumer<Integer> progress,
-                Consumer<String> notify
+                BiConsumer<String, String> notify
         ) {
             this.postExecute = postExecute;
             this.progress = progress;
@@ -378,8 +366,13 @@ public class OCRFloating extends Service {
 
         @Override
         protected void onPostExecute(final String s) {
-            postExecute.accept(s, engine.getA1(), engine.getB2(), engine.getC3(), questionAndOption);
-
+            if (s != null)
+                postExecute.accept(s, engine.getA1(), engine.getB2(), engine.getC3(), questionAndOption);
+            else {
+                postExecute.accept("abc", "Option A", "Option B", "Option C", new String[]{"", "", "", ""});
+                progress.accept(100);
+                notify.accept("E","Scan Failed");
+            }
             if (Data.IMAGE_LOGS_STORAGE) {
                 new Thread() {
                     @Override
@@ -412,13 +405,14 @@ public class OCRFloating extends Service {
 
             if (Data.IS_TESSERACT_OCR_USE)
                 questionAndOption = tesseractImageTextReader.getTextFromBitmap(croppedGrayscaleImage);
-            else
+            else{
                 questionAndOption = imageTextReader.getTextFromBitmap(croppedGrayscaleImage);
 
+            }
             publishProgress(65);
             if (questionAndOption.length == 5) {
                 engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
-                engine.setConsumer(value -> publishProgress(65,value));
+                engine.setConsumer(value -> publishProgress(65, value));
                 engine.search();
                 if (!engine.isError()) {
                     publishProgress(90);
@@ -426,7 +420,7 @@ public class OCRFloating extends Service {
                 } else {
                     engine = new Engine(new Question(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3]));
                     publishProgress(90);
-                    engine.setConsumer(value -> publishProgress(90,value));
+                    engine.setConsumer(value -> publishProgress(90, value));
                     return engine.search();
                 }
             }
@@ -436,8 +430,12 @@ public class OCRFloating extends Service {
         @Override
         protected void onProgressUpdate(Integer... values) {
             progress.accept(values[0]);
-            if (values.length == 2 && values[1]==1){
-                notify.accept("Question is Negative");
+            if (values.length == 2 && values[1] == 1) {
+                notify.accept("N", "Question is Negative");
+            } else if (values.length == 2 && values[1] == 2) {
+                notify.accept("F", "FallBack Search");
+            } else if (values.length == 2 && values[1] == 3) {
+                notify.accept("E", "Error Fallback");
             }
 //            getAnswer.setProgress(values[0]);
         }

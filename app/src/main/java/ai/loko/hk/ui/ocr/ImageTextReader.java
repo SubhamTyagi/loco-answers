@@ -105,7 +105,7 @@ public class ImageTextReader {
 
                 for (Text text : textLines) {
                     if (text != null && text.getValue() != null) {
-                        lines.append(text.getValue() + " \n");
+                        lines.append(text.getValue()).append(" \n");
                     }
                 }
             } else {

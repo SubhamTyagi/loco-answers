@@ -30,19 +30,19 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "ai.loko.hk.ui"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
 
-        versionCode 34
-        versionName '2.6.1'
+        versionCode 37
+        versionName '2.7'
 
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionNameSuffix '-Chipmunk'
+        versionNameSuffix '-AginstChina'
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
 
@@ -98,7 +98,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta6'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta7'
     implementation 'com.google.android.gms:play-services-vision:20.1.0'
     implementation 'androidx.room:room-runtime:2.2.5'
 

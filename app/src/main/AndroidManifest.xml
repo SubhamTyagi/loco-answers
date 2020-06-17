@@ -51,16 +51,19 @@
         <service
             android:name="ai.loko.hk.ui.services.Floating"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"/>
 
         <service
             android:name="ai.loko.hk.ui.services.OCRFloating"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"/>
         <service
             android:name="ai.loko.hk.ui.services.option4.OCRFloating4"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"/>
 
         <service
             android:name="ai.loko.hk.ui.Accessibility"

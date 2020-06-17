@@ -28,14 +28,12 @@
 
 package ai.loko.hk.ui.activities;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -71,7 +69,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     private static SweetAlertDialog mSweetAlertDialogForProgressBar;
 
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener
+            = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(final Preference preference, Object value) {
             String stringValue = value.toString();
@@ -88,7 +87,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                 if (preference.getKey().equals(Constant.LANGUAGE_FOR_TESSERACT_OCR) && Data.IS_TESSERACT_OCR_USE) {
                     Data.TESSERACT_DATA = SpUtil.getInstance().getString(Constant.TESS_TRAINING_DATA_SOURCE, "fast");
-                    final String lang = listPreference.getEntryValues()[index >= 0 ? index : 0].toString();
+                    final String lang = listPreference.getEntryValues()[Math.max(index, 0)].toString();
                     if (!isLanguageDataExists(Data.TESSERACT_DATA, lang)) {
                         mSweetAlertDialogForProgressBar.show();
                         NetworkInfo ni = cm.getActiveNetworkInfo();
@@ -107,7 +106,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     }
                 } else if (preference.getKey().equals(Constant.TESS_TRAINING_DATA_SOURCE) && Data.IS_TESSERACT_OCR_USE) {
                     Data.TESSERACT_LANGUAGE = SpUtil.getInstance().getString(Constant.LANGUAGE_FOR_TESSERACT_OCR, "eng");
-                    final String data = listPreference.getEntryValues()[index >= 0 ? index : 0].toString();
+                    final String data = listPreference.getEntryValues()[Math.max(index, 0)].toString();
                     if (!isLanguageDataExists(data, Data.TESSERACT_LANGUAGE)) {
                         mSweetAlertDialogForProgressBar.show();
                         NetworkInfo ni = cm.getActiveNetworkInfo();
@@ -217,7 +216,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         protected void onPostExecute(Boolean bool) {
-            mSweetAlertDialogForProgressBar.setTitleText("Success").setConfirmText("Ok").changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+            mSweetAlertDialogForProgressBar.setTitleText("Success")
+                    .setConfirmText("Ok")
+                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
         }
 
         @Override
@@ -301,7 +302,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+
     public static class MainPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {

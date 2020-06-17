@@ -39,22 +39,25 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.util.Consumer;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -235,7 +238,7 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
         return false;
     }
 
-    private Profile getProfileForView(ProfileEntity profileEntity) {
+    private static Profile getProfileForView(ProfileEntity profileEntity) {
         return new Profile(profileEntity.getName(), profileEntity.getX1(), profileEntity.getY1(), profileEntity.getX2(), profileEntity.getY2());
     }
 
@@ -270,22 +273,56 @@ public class ProfileActivity extends AppCompatActivity implements ListItemSwipeL
     }
 
     private void setUpDataFromDB() {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                List<ProfileEntity> profileEntities = db.profileDAO().getAll();
-                for (ProfileEntity profileEntity : profileEntities) {
-                    // if (profileEntity.getUid() != 0)
-                    profiles.add(getProfileForView(profileEntity));
-                }
-                return null;
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//                List<ProfileEntity> profileEntities = db.profileDAO().getAll();
+//                for (ProfileEntity profileEntity : profileEntities) {
+//                    // if (profileEntity.getUid() != 0)
+//                    profiles.add(getProfileForView(profileEntity));
+//                }
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void aVoid) {
+//                mProfileAdapter.notifyDataSetChanged();
+//            }
+//        }.execute();
+        new getDataFromDB(db,
+                data -> profiles.addAll(data),
+                () -> mProfileAdapter.notifyDataSetChanged()).execute();
+    }
+    private static class getDataFromDB
+            extends AsyncTask<Void,Void,List<Profile>>{
+        private  Consumer<List<Profile>> sendData;
+        private  Runnable notifier;
+        private  AppDatabase db;
+
+        public getDataFromDB(AppDatabase db,Consumer<List<Profile>> data, Runnable notifier) {
+            this.sendData = data;
+            this.notifier = notifier;
+            this.db = db;
+        }
+
+
+        @Override
+        protected List<Profile> doInBackground(Void... voids) {
+            List<ProfileEntity> profileEntities = db.profileDAO().getAll();
+            List<Profile> profiles = new ArrayList<>();
+            for (ProfileEntity profileEntity : profileEntities) {
+                // if (profileEntity.getUid() != 0)
+                profiles.add(getProfileForView(profileEntity));
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                mProfileAdapter.notifyDataSetChanged();
-            }
-        }.execute();
+            return profiles;
+        }
+
+        @Override
+        protected void onPostExecute(List<Profile> profiles) {
+            sendData.accept(profiles);
+            notifier.run();
+        }
     }
 
     private void insertDataToDB(final ProfileEntity profileEntity) {

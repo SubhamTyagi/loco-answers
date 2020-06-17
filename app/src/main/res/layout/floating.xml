@@ -134,6 +134,18 @@
             app:pb_textError="Error"
             app:pb_textProgress="Finding Answer..."
             />
+        <TextView
+            android:id="@+id/notifier"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/yellow"
+            android:textSize="20sp"
+            android:background="@color/black"
+            android:text="N"
+            />
+
+
 
         <!-- <ai.myfancy.button.iml.ActionProcessButton
             android:id="@+id/wiki1"
