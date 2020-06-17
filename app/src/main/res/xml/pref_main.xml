@@ -28,7 +28,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Search Engine"></PreferenceCategory>
+    <PreferenceCategory android:title="Search Engine" />
     <!--Note this this list preference value will be ignored by Trivia Hack 2.0
         because i think google search engine is best for our services .
         as search engine does not allow bot search google is some time flexibly due to his high usage    -->

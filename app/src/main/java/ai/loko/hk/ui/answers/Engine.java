@@ -29,6 +29,7 @@
 package ai.loko.hk.ui.answers;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Consumer;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,6 +53,11 @@ import static ai.loko.hk.ui.utils.Utils.stringToArrayList;
  */
 public class Engine extends Base {
     private final String TAG = "Engine";
+    private Consumer<Integer> consumer;
+
+    public void setConsumer(@NonNull Consumer<Integer> consumer) {
+        this.consumer = consumer;
+    }
 
     /**
      * Instantiates a new Engine.
@@ -93,7 +99,7 @@ public class Engine extends Base {
             C3.append(sub3).append("-");
 
             sub1 = optionA.substring(optionA.indexOf("-") + 1);
-            String optionA[] = sub1.split(" ");
+            String[] optionA = sub1.split(" ");
             aSize = optionA.length;
 
             for (String words : optionA) {
@@ -110,7 +116,7 @@ public class Engine extends Base {
             String text2 = getResponseFromInternet(simplifiedQuestion, sub2);
 
             sub2 = optionB.substring(optionB.indexOf("-") + 1);
-            String optionB[] = sub2.split(" ");
+            String[] optionB = sub2.split(" ");
             bSize = optionB.length;
 
             for (String words : optionB) {
@@ -124,7 +130,7 @@ public class Engine extends Base {
             }
 
             sub3 = optionC.substring(optionC.indexOf("-") + 1);
-            String optionC[] = sub3.split(" ");
+            String[] optionC = sub3.split(" ");
             cSize = optionC.length;
 
             String text3 = getResponseFromInternet(simplifiedQuestion, sub3);
@@ -176,9 +182,12 @@ public class Engine extends Base {
         int p, q, r;
         reset();
         try {
+
             if (checkForNegative) {
                 isNeg = stringToArrayList(question).removeAll(Data.removeNegativeWords);
                 if (isNeg) {
+                    if (consumer != null)
+                        consumer.accept(1);
                     ArrayList<String> simplifiedQuestion = getSimplifiedQuestion(question, 1);//1 means negative words remove
                     StringBuilder stringBuilder = new StringBuilder();
                     for (String s : simplifiedQuestion) {
@@ -188,10 +197,10 @@ public class Engine extends Base {
                 }
             }
 
-            Document doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8") + "&num=20").userAgent(Data.USER_AGENT).get();
+            Document doc = Jsoup.connect(BASE_URL + URLEncoder.encode(question, "UTF-8")).userAgent(Data.USER_AGENT).get();
 
-            String text = doc.body().text().toLowerCase().replace("."," ");
-            String optionAsplit[] = optionA.split(" ");
+            String text = doc.body().text().toLowerCase().replace(".", " ");
+            String[] optionAsplit = optionA.split(" ");
             aSize = optionAsplit.length;
 
             for (String words : optionAsplit) {
@@ -204,7 +213,7 @@ public class Engine extends Base {
                 }
             }
 
-            String optionBsplit[] = optionB.split(" ");
+            String[] optionBsplit = optionB.split(" ");
             bSize = optionBsplit.length;
 
             for (String words : optionBsplit) {
@@ -217,7 +226,7 @@ public class Engine extends Base {
                 }
             }
 
-            String optionCsplit[] = optionC.split(" ");
+            String[] optionCsplit = optionC.split(" ");
             cSize = optionCsplit.length;
 
             for (String words : optionCsplit) {
@@ -264,7 +273,7 @@ public class Engine extends Base {
 
         } catch (Exception ioe) {
             Logger.logException(ioe);
-            if (!isFallbackDone){
+            if (!isFallbackDone) {
                 return fallbackSearch(isNeg);
             }
             error = true;
@@ -284,10 +293,15 @@ public class Engine extends Base {
 
     private String setAnswer(boolean isNeg) {
         if (!isNeg) {
-            if (a==b&&b==c){
+            if (a == b && b == c) {
                 optionRed = "abc";//if answer has same rating answer color will be black
-            }
-            else if (a > b) {
+            } else if (a == b && a > c) {
+                optionRed = "ab";
+            } else if (a == c && a > b) {
+                optionRed = "ac";
+            } else if (b == c && b > a) {
+                optionRed = "bc";
+            } else if (a > b) {
                 if (c > a) {
                     optionRed = "c";
                 } else {
@@ -301,17 +315,15 @@ public class Engine extends Base {
                 optionRed = "c";
             }
         } else {
-            if (a==b && b==c){
-                optionRed="abc";/* if a,b and c has same rating means no ans*/
-            }
-            else if (a==b && a<c){
-                optionRed="ab";/* a and b has same rating but less than c ans may be a or b*/
-            }else  if (a==c && a<b){
-                optionRed="ac";/* a and c has same rating but less than b*/
-            }else if(b==c && b<a){
-                optionRed="bc";/* b and c has same rating but less than a*/
-            }
-            else {
+            if (a == b && b == c) {
+                optionRed = "abc";/* if a,b and c has same rating means no ans*/
+            } else if (a == b && a < c) {
+                optionRed = "ab";/* a and b has same rating but less than c ans may be a or b*/
+            } else if (a == c && a < b) {
+                optionRed = "ac";/* a and c has same rating but less than b*/
+            } else if (b == c && b < a) {
+                optionRed = "bc";/* b and c has same rating but less than a*/
+            } else {
                 if (a < b) {
                     if (c < a) {
                         //c is most least

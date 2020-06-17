@@ -56,8 +56,11 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.util.Consumer;
 
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.googlecode.tesseract.android.TessBaseAPI;
+
 
 import ai.loko.hk.ui.answers.option4.Engine4;
 import ai.loko.hk.ui.constants.Constant;
@@ -68,6 +71,7 @@ import ai.loko.hk.ui.ocr.Screenshotter;
 import ai.loko.hk.ui.ocr.option4.ImageTextReader4;
 import ai.loko.hk.ui.ocr.option4.TesseractImageTextReader4;
 import ai.loko.hk.ui.utils.Utils;
+import ai.loko.hk.ui.utils.functions.Consumer4;
 import ui.R;
 
 import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
@@ -200,7 +204,12 @@ public class OCRFloating4 extends Service {
                     public void onScreenshot(Bitmap bitmap) {
                         getAnswer.setProgress(25);
                         Log.d(TAG, "onScreenshot: one time screenshot taken");
-                        new ProcessImageAndSearch().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bitmap);
+                        new ProcessImageAndSearch(
+                                height,width,coordinate,
+                                OCRFloating4.this::showAnswer,
+                                value->getAnswer.setProgress(value),
+                                tesseractImageTextReader4,imageTextReader4
+                        ).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bitmap);
 
                     }
                 });
@@ -210,6 +219,47 @@ public class OCRFloating4 extends Service {
         coordinate[1] = (int) Math.ceil((double) Points.Y1);
         coordinate[2] = (int) Math.ceil((double) Points.X2);
         coordinate[3] = (int) Math.ceil((double) Points.Y2);
+    }
+
+    private void showAnswer(String ans, String opt1, String opt2, String opt3,
+                            String opt4, String[] questionAndOption) {
+        if (ans != null) {
+            Log.d(TAG, "onPostExecute: setting values on screen");
+            option1.setText(opt1);
+            option2.setText(opt2);
+            option3.setText(opt3);
+            option4.setText(opt4);
+            switch (ans) {
+                case "a":
+                    option1.setTextColor(Color.RED);
+                    option2.setTextColor(Color.BLACK);
+                    option3.setTextColor(Color.BLACK);
+                    option4.setTextColor(Color.BLACK);
+                    break;
+                case "b":
+                    option2.setTextColor(Color.RED);
+                    option3.setTextColor(Color.BLACK);
+                    option4.setTextColor(Color.BLACK);
+                    option1.setTextColor(Color.BLACK);
+                    break;
+                case "c":
+                    option3.setTextColor(Color.RED);
+                    option4.setTextColor(Color.BLACK);
+                    option1.setTextColor(Color.BLACK);
+                    option2.setTextColor(Color.BLACK);
+                    break;
+                case "d":
+                    option4.setTextColor(Color.RED);
+                    option1.setTextColor(Color.BLACK);
+                    option2.setTextColor(Color.BLACK);
+                    option3.setTextColor(Color.BLACK);
+            }
+        } else if (questionAndOption.length > 0) {
+            Log.d(TAG, "onPostExecute: question and option lenght==" + questionAndOption.length);
+            Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
+        }
+        getAnswer.setProgress(100);
+
     }
 
 
@@ -261,49 +311,33 @@ public class OCRFloating4 extends Service {
         return null;
     }
 
-    private class ProcessImageAndSearch extends AsyncTask<Bitmap, Integer, String> {
+    private static class ProcessImageAndSearch extends AsyncTask<Bitmap, Integer, String> {
         private String[] questionAndOption;
         private Bitmap croppedGrayscaleImage;
         private Engine4 engine;
+        private final int height;
+        private final int width;
+        private final int[] coordinate;
+        private Consumer4 showAnswer;
+        private Consumer<Integer> progressUpdate;
+        private TesseractImageTextReader4 tesseractImageTextReader4;
+        private ImageTextReader4 imageTextReader4;
+
+        public ProcessImageAndSearch(int height, int width, int[] coordinate, Consumer4 showAnswer, Consumer<Integer> progressUpdate, TesseractImageTextReader4 tesseractImageTextReader4, ImageTextReader4 imageTextReader4) {
+            this.height = height;
+            this.width = width;
+            this.coordinate = coordinate;
+            this.showAnswer = showAnswer;
+            this.progressUpdate = progressUpdate;
+            this.tesseractImageTextReader4 = tesseractImageTextReader4;
+            this.imageTextReader4 = imageTextReader4;
+        }
+
 
         @Override
         protected void onPostExecute(final String s) {
-            if (s != null) {
-                Log.d(TAG, "onPostExecute: setting values on screen");
-                option1.setText(engine.getA1());
-                option2.setText(engine.getB2());
-                option3.setText(engine.getC3());
-                option4.setText(engine.getD4());
-                switch (s) {
-                    case "a":
-                        option1.setTextColor(Color.RED);
-                        option2.setTextColor(Color.BLACK);
-                        option3.setTextColor(Color.BLACK);
-                        option4.setTextColor(Color.BLACK);
-                        break;
-                    case "b":
-                        option2.setTextColor(Color.RED);
-                        option3.setTextColor(Color.BLACK);
-                        option4.setTextColor(Color.BLACK);
-                        option1.setTextColor(Color.BLACK);
-                        break;
-                    case "c":
-                        option3.setTextColor(Color.RED);
-                        option4.setTextColor(Color.BLACK);
-                        option1.setTextColor(Color.BLACK);
-                        option2.setTextColor(Color.BLACK);
-                        break;
-                    case "d":
-                        option4.setTextColor(Color.RED);
-                        option1.setTextColor(Color.BLACK);
-                        option2.setTextColor(Color.BLACK);
-                        option3.setTextColor(Color.BLACK);
-                }
-            } else if (questionAndOption.length > 0) {
-                Log.d(TAG, "onPostExecute: question and option lenght==" + questionAndOption.length);
-                Toast.makeText(getApplicationContext(), questionAndOption[0], Toast.LENGTH_SHORT).show();
-            }
-            getAnswer.setProgress(100);
+            showAnswer.accept(s,engine.getA1(),engine.getB2(),engine.getC3(),engine.getD4(),questionAndOption);
+
 
             if (Data.IMAGE_LOGS_STORAGE) {
                 new Thread() {
@@ -344,13 +378,23 @@ public class OCRFloating4 extends Service {
             publishProgress(65);
 
             if (questionAndOption.length >= 5) {
-                engine = new Engine4(new Question4(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3], questionAndOption[4]));
+                engine = new Engine4(
+                        new Question4(questionAndOption[0],
+                                questionAndOption[1],
+                                questionAndOption[2],
+                                questionAndOption[3],
+                                questionAndOption[4]));
                 engine.search();
                 if (!engine.isError()) {
                     publishProgress(90);
                     return engine.getAnswer();
                 } else {
-                    engine = new Engine4(new Question4(questionAndOption[0], questionAndOption[1], questionAndOption[2], questionAndOption[3], questionAndOption[4]));
+                    engine = new Engine4(
+                            new Question4(questionAndOption[0],
+                                    questionAndOption[1],
+                                    questionAndOption[2],
+                                    questionAndOption[3],
+                                    questionAndOption[4]));
                     publishProgress(90);
                     return engine.search();
                 }
@@ -362,7 +406,8 @@ public class OCRFloating4 extends Service {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            getAnswer.setProgress(values[0]);
+//            getAnswer.setProgress(values[0]);
+            progressUpdate.accept(values[0]);
         }
     }
 

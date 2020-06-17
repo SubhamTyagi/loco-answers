@@ -31,6 +31,7 @@ package ai.loko.hk.ui.ocr.option4;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -40,9 +41,11 @@ import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import ai.loko.hk.ui.data.Data;
 
@@ -130,15 +133,15 @@ public class ImageTextReader4 {
                 if (indexOfQuestionMark != lines2.length()) {
                     String[] options = lines2.substring(indexOfQuestionMark + 1).split("\n");
                     if (options.length == 4)
-                        return new String[]{question, options[0], options[1], options[2], options[3], lines2};
+                        return new String[]{question, options[0], options[1], options[2], options[3]};
 
                     String[] optionss = lines2.substring(indexOfQuestionMark + 2).split("\n");
 
                     if (optionss.length == 4)
-                        return new String[]{question, optionss[0], optionss[1], optionss[2], optionss[3], lines2};
+                        return new String[]{question, optionss[0], optionss[1], optionss[2], optionss[3]};
 
                     if (options.length > 4) {
-                        return new String[]{question, options[options.length - 4], options[options.length - 3], options[options.length - 2], options[options.length - 1], lines2};
+                        return new String[]{question, options[options.length - 4], options[options.length - 3], options[options.length - 2], options[options.length - 1]};
                     }
                 }
             } else if ((indexOfQuestionMark = lines2.indexOf(".")) != -1) {
@@ -146,7 +149,7 @@ public class ImageTextReader4 {
                 if (indexOfQuestionMark != lines2.length()) {
                     String[] options = lines2.substring(indexOfQuestionMark + 1).split("\n");
                     if (options.length == 4)
-                        return new String[]{question, options[0], options[1], options[2], options[3], lines2};
+                        return new String[]{question, options[0], options[1], options[2], options[3]};
                 }
             }
 
@@ -157,7 +160,7 @@ public class ImageTextReader4 {
                 for (int i = 0; i < lineCount - 4; i++) {
                     question.append(textOnScreen[i]);
                 }
-                return new String[]{question.toString(), textOnScreen[lineCount - 4], textOnScreen[lineCount - 3], textOnScreen[lineCount - 2], textOnScreen[lineCount - 1], lines2};
+                return new String[]{question.toString(), textOnScreen[lineCount - 4], textOnScreen[lineCount - 3], textOnScreen[lineCount - 2], textOnScreen[lineCount - 1]};
             }
 
             return new String[]{"Scan Failed: Could not read options"};

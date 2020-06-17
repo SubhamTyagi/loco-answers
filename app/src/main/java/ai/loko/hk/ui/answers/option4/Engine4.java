@@ -209,7 +209,7 @@ public class Engine4 extends Base4 {
 
             String text = doc.body().text().toLowerCase();
 
-            String optionAsplit[] = optionA.split(" ");
+            String[] optionAsplit = optionA.split(" ");
             aSize = optionAsplit.length;
 
             for (String words : optionAsplit) {
@@ -222,7 +222,7 @@ public class Engine4 extends Base4 {
                 }
             }
 
-            String optionBsplit[] = optionB.split(" ");
+            String[] optionBsplit = optionB.split(" ");
             bSize = optionBsplit.length;
 
             for (String words : optionBsplit) {
@@ -235,7 +235,7 @@ public class Engine4 extends Base4 {
                 }
             }
 
-            String optionCsplit[] = optionC.split(" ");
+            String[] optionCsplit = optionC.split(" ");
             cSize = optionCsplit.length;
             for (String words : optionCsplit) {
                 if (!skip.contains(words)) {
@@ -247,7 +247,7 @@ public class Engine4 extends Base4 {
                 }
             }
 
-            String optionDsplit[] = optionD.split(" ");
+            String[] optionDsplit = optionD.split(" ");
             dSize = optionDsplit.length;
             for (String words : optionDsplit) {
                 if (!skip.contains(words)) {
@@ -284,7 +284,6 @@ public class Engine4 extends Base4 {
             if (p != 0 && aSize > 1) a *= p;
             if (q != 0 && bSize > 1) b *= q;
             if (r != 0 && cSize > 1) c *= r;
-
             if (s != 0 && cSize > 1) d *= s;
 
             if (a == b && b == c && c == d && !isFallbackDone) {
@@ -322,7 +321,27 @@ public class Engine4 extends Base4 {
 
     private String setAnswer(boolean isNeg) {
         if (!isNeg) {
-            if (a > b && a > c && a > d) {
+            if (a == b && b == c && c == d) {
+                optionRed = "abcd";
+            } else if (a == b && b == c && a > d) {
+                optionRed = "abc";
+            } else if (a == c && c == d && a > b) {
+                optionRed = "abd";
+            } else if (a == b && a > c && a > d) {
+                optionRed = "ab";
+            } else if (a == c && a > b && a > d) {
+                optionRed = "ac";
+            } else if (a == d && a > b && a > c) {
+                optionRed = "ad";
+            } else if (b == c && c == d && b > a) {
+                optionRed = "bcd";
+            } else if (b == c && b > a && b > d) {
+                optionRed = "bc";
+            } else if (b == d && b > a && b > c) {
+                optionRed = "bd";
+            } else if (c == d && c > a && c > b) {
+                optionRed = "abc";
+            } else if (a > b && a > c && a > d) {
                 optionRed = "a";
             } else if (b > c && b > d) {
                 optionRed = "b";
@@ -330,7 +349,27 @@ public class Engine4 extends Base4 {
                 optionRed = "c";
             } else optionRed = "d";
         } else {
-            if (a < b && a < c && a < d) {
+            if (a == b && b == c && c == d) {
+                optionRed = "abcd";
+            } else if (a == b && b == c && a < d) {
+                optionRed = "abc";
+            } else if (a == c && c == d && a < b) {
+                optionRed = "abd";
+            } else if (a == b && a < c && a < d) {
+                optionRed = "ab";
+            } else if (a == c && a < b && a < d) {
+                optionRed = "ac";
+            } else if (a == d && a < b && a < c) {
+                optionRed = "ad";
+            } else if (b == c && c == d && b < a) {
+                optionRed = "bcd";
+            } else if (b == c && b < a && b < d) {
+                optionRed = "bc";
+            } else if (b == d && b < a && b < c) {
+                optionRed = "bd";
+            } else if (c == d && c < a && c < b) {
+                optionRed = "abc";
+            } else if (a < b && a < c && a < d) {
                 optionRed = "a";
             } else if (b < c && b < d && b < a) {
                 optionRed = "b";
