@@ -75,11 +75,7 @@ public class MyApplication extends Application {
             notificationManager.createNotificationChannel(channel);
             notificationManager.createNotificationChannel(crashReport);
 
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("stop", name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            
 
         }
     }
