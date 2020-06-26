@@ -168,8 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 .setUpdateFrom(UpdateFrom.JSON)
                 .setButtonDismiss(null)
                 .setButtonDoNotShowAgain(null)
-                .setUpdateJSON("https://raw.githubusercontent.com/rollychop" +
-                        "/loco-answers/master/update-changelog.json")
+                .setUpdateJSON("https://raw.githubusercontent.com/SubhamTyagi/loco-answers/master/update-changelog.json")
                 .start();
     }
 
@@ -275,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onBoomButtonClick(int index) {
                         startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("https://github.com/rollychop/loco-answers/releases/")));
+                                Uri.parse("https://github.com/SubhamTyagi/loco-answers/releases/")));
                     }
                 }));
     }
