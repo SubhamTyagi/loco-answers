@@ -1,7 +1,7 @@
 {
-  "latestVersion": "2.7",
-  "latestVersionCode": "37",
-  "url": "https://github.com/rollychop/loco-answers/releases",
+  "latestVersion": "2.6.1",
+  "latestVersionCode": "34",
+  "url": "https://github.com/SubhamTyagi/loco-answers/releases",
   "releaseNotes": [
     "- Negative Question Notifier",
     "- FallBack Notifier",
