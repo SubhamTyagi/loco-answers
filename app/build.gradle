@@ -38,11 +38,11 @@ android {
         targetSdkVersion 29
 
         versionCode 37
-        versionName '2.7'
+        versionName '2.6.1'
 
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionNameSuffix '-AginstChina'
+        versionNameSuffix '-Chipmunk'
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
 
