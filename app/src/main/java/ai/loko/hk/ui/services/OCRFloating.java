@@ -230,7 +230,7 @@ public class OCRFloating extends Service {
         Toast.makeText(OCRFloating.this, msg, Toast.LENGTH_SHORT).show();
         mNotifierText.setText(code);
         mNotifierText.setVisibility(View.VISIBLE);
-        mFloatingView.setBackgroundColor(colorWarn);
+//        mFloatingView.setBackgroundColor(colorWarn);
         isNeg = true;
     }
 
@@ -286,7 +286,7 @@ public class OCRFloating extends Service {
         if (isNeg) {
             mFloatingView.postDelayed(() -> {
                 mNotifierText.setVisibility(View.GONE);
-                mFloatingView.setBackgroundColor(colorDefault);
+//                mFloatingView.setBackgroundColor(colorDefault);
             }, 3000);
         }
     }
