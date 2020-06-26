@@ -1,13 +1,13 @@
 
-[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/rollychop/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.6.1-green.svg)[ ![HitCount](http://hits.dwyl.io/rollychop/loco-answers.svg)](http://hits.dwyl.io/rollychop/loco-answers)  ![GitHub All Releases](https://img.shields.io/github/downloads/rollychop/loco-answers/total.svg?style=social)
+[![licence](https://img.shields.io/badge/Licence-GPLv3-red.svg)](https://github.com/SubhamTyagi/loco-answers/blob/master/LICENSE) ![version](https://img.shields.io/badge/Version-2.6.1-green.svg)[ ![HitCount](http://hits.dwyl.io/SubhamTyagi/loco-answers.svg)](http://hits.dwyl.io/SubhamTyagi/loco-answers)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
 
 # Trivia hack  
 
 * A free, 100 % open source, ads free trivia helper app that respect user sentiments.
 * Previously Known as LoKo HacK
+* It is time to say goodbye to this repo. No further updates to this repo from my side.
 
-
-### * Version 2.7 is the latest version of this app.
+### * Version 2.6.1 is the latest version of this app.
 
 ## Features
 * Free ,open source, No ads.
@@ -17,17 +17,25 @@
 * Trivia Games Supported by OCR and Accessibility 
 ## Download
 * Before downloading please give this app a :star: by pressing ![Star](/.github/assets/star.PNG) it means a lot to me it boost me to build more features and help you guys.
-* [Download latest Apk File](https://github.com/rollychop/loco-answers/releases)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
+* [Download latest Apk File](https://github.com/SubhamTyagi/loco-answers/releases)  ![GitHub All Releases](https://img.shields.io/github/downloads/SubhamTyagi/loco-answers/total.svg?style=social)
 
 ## See Demo on YouTube
 * ### [Here](https://youtu.be/H0LvFNW_svA)
 ## Supported Apps
 - ### All Apps supported
-* Make Sure you use correctly
+##### Following apps are also supported by Accessibility.
+1. Loco `version 2.1.9 or older`
+2. Brainbazzi `2.0.4 or older`
+3. Qureka `latest 1.0.30 or older`
+4. SWOO `5.7.0 or older`
+5. HQ `1.6.2 or older`
+6. The Question `2.0.6 or older`
+8. We Show
+9. Mob Show
+10. Swag IQ
 
 ## Contribution
-* [Shubham Tyagi](https://subhamtyagi.github.io/)
-* [Rohit Kumar](https://rollychop.github.io/)
+* [Shubham Tyagi](https://subhamtyagi.github.io/) 
 
 ## Trivia Hack Logo
 * Trivia hack logo is designed by [Deb Pedrano](https://github.com/debpedrano) |[blog](https://steemit.com/@debpedrano)
