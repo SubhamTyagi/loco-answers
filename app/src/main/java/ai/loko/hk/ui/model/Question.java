@@ -52,9 +52,9 @@ public class Question {
             this.questionText = questionText.substring(0, questionText.length() - 1).toLowerCase();
         } else
             this.questionText = questionText.toLowerCase();
-        this.optionA = optionA.toLowerCase().replace(".","");
-        this.optionB = optionB.toLowerCase().replace(".","");
-        this.optionC = optionC.toLowerCase().replace(".","");
+        this.optionA = optionA.toLowerCase().replaceAll("[\W_]+","");
+        this.optionB = optionB.toLowerCase().replaceAll("[\W_]+","");
+        this.optionC = optionC.toLowerCase().replaceAll("[\W_]+","");
     }
 
     public String getQuestionText() {
