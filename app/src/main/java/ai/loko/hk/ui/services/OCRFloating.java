@@ -227,7 +227,7 @@ public class OCRFloating extends Service {
     }
 
     private void notifier(String code, String msg) {
-        Toast.makeText(OCRFloating.this, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(OCRFloating.this, msg, Toast.LENGTH_SHORT).setGravity(Gravity.TOP|Gravity.LEFT, 0, 0).show();
         mNotifierText.setText(code);
         mNotifierText.setVisibility(View.VISIBLE);
 //        mFloatingView.setBackgroundColor(colorWarn);
